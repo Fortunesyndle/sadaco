@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,500..800&family=Saira+Condensed:wght@600;700&family=Michroma&display=block" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 2000px; height: 1400px; overflow: hidden; }
+  body { font-family: 'Montserrat', 'Segoe UI', sans-serif; background: #F3F5F8; color: #1D2530; }
+  .page { width: 2000px; height: 1400px; padding: 48px 64px 52px; display: flex; flex-direction: column; }
+  .top { display: flex; justify-content: space-between; font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: #6B7785; font-weight: 600; }
+  .top .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #7ED957; margin-right: 10px; vertical-align: middle; }
+  h1 { font-size: 40px; font-weight: 800; color: #004AAD; margin-top: 18px; }
+  h1 .tag { color: #2E9E5B; }
+  .lead { font-size: 17px; color: #4A5563; margin-top: 8px; font-weight: 500; }
+
+  .matrix { display: grid; grid-template-columns: 170px repeat(7, 1fr); grid-template-rows: 64px repeat(4, 1fr); gap: 12px; margin-top: 22px; flex: 1; }
+  .colh { display: flex; flex-direction: column; justify-content: flex-end; padding: 0 4px 6px; }
+  .colh b { font-size: 14px; font-weight: 800; color: #004AAD; }
+  .colh span { font-size: 11.5px; color: #6B7785; margin-top: 2px; }
+  .rowh { display: flex; flex-direction: column; justify-content: center; }
+  .rowh .no { font-size: 12px; font-weight: 800; color: #2E9E5B; letter-spacing: .08em; }
+  .rowh b { font-size: 18px; font-weight: 800; color: #004AAD; margin-top: 2px; }
+  .rowh img { width: 120px; height: 120px; margin-top: 8px; }
+  .cell { background: #fff; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.05), 0 6px 18px rgba(16,24,40,.06);
+          display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; overflow: hidden; }
+  .cell > img { width: 150px; height: 150px; margin-top: -8px; }
+
+  .wmk { display: flex; flex-direction: column; align-items: center; color: #0A2E6E; line-height: 1; white-space: nowrap; }
+  .wmk .n { width: max-content; }
+  .wmk .d { width: max-content; font: 500 11px 'Montserrat'; margin-top: 8px; }
+  .w1 .n, .w2 .n { font: 800 34px 'Montserrat'; letter-spacing: .06em; }
+  .w1 .band { background: #139058; height: 15px; margin-top: 5px; display: flex; align-items: center; justify-content: center; }
+  .w1 .band span { font: 700 7.5px 'Montserrat'; color: #fff; }
+  .w2 .d { font-weight: 600; font-size: 9px; color: #6B7785; margin-top: 7px; }
+  .w3 .n { font: 600 30px 'Montserrat'; letter-spacing: .12em; }
+  .w4 .n { font: 400 24px 'Michroma'; letter-spacing: .04em; -webkit-text-stroke: 1.9px #0A2E6E; paint-order: stroke fill; }
+  .w5 .n { font: 600 44px 'Saira Condensed'; letter-spacing: .2em; margin-right: -.2em; }
+  .w5 .d { margin-top: 4px; }
+  .w6 .n svg { display: block; height: 28px; }
+  .w6 .d, .w7 .d { color: #139058; }
+  .w6 .d { margin-top: 11px; }
+  .cell .w6 .n svg { width: 158px; height: auto; }
+  .cell .w6 .d { margin-top: 8px; }
+  .w7 .n { font: 800 40px 'Montserrat'; display: flex; align-items: baseline; }
+  .w7 .n > * { margin-right: .035em; }
+  .w7 .n > :last-child { margin-right: 0; }
+  .w7 .n svg { height: .7em; overflow: visible; }
+
+  html.clean .top, html.clean h1, html.clean .lead, html.clean .cap { display: none; }
+  html.clean .solo-grid { margin-top: 0; }
+  html.solo, .solo body, .solo .page { height: 1250px; }
+  html.solo-logos, .solo-logos body, .solo-logos .page { height: 900px; }
+  html.clean.solo-logos, .clean.solo-logos body, .clean.solo-logos .page { height: 620px; }
+  .solo-grid { flex: 1; display: grid; gap: 24px; margin-top: 30px; }
+  .logos { grid-template-columns: repeat(4, 1fr); }
+  .words { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; }
+  .card { background: #fff; border-radius: 20px; box-shadow: 0 1px 2px rgba(16,24,40,.05), 0 8px 24px rgba(16,24,40,.07);
+          display: flex; flex-direction: column; overflow: hidden; }
+  .card .art { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .logos .art img { width: 440px; height: 440px; }
+  .words.zoomed .wmk { zoom: 2.4; }
+  .words.zoomed .wmk.w6 { zoom: 2; }
+  .card .cap { padding: 18px 24px 22px; border-top: 1px solid #EEF1F5; }
+  .card .cap .no { font-size: 13px; font-weight: 800; color: #2E9E5B; letter-spacing: .08em; margin-right: 8px; }
+  .card .cap b { font-size: 20px; font-weight: 800; color: #004AAD; }
+  .card .cap p { font-size: 14px; color: #6B7785; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="page" id="app"></div>
+<script src="../globo/variants.js"></script>
+<script>
+const GLOBES = [['03-tricolor', '03', 'Tricolor'], ['04-pin', '04', 'Pin de ubicación'], ['08-relieve', '08', 'Relieve'], ['10-chincheta', '10', 'Chincheta']];
+const NAVY = '#0A2E6E', GREEN = '#139058';
+const pts = a => a.map(p => p.join(',')).join(' ');
+
+function lambda(W, t, flat) {
+  const h = W / 2, th = t / Math.sin(Math.atan(100 / (h - flat)));
+  const yi = 100 - (h - th) * 100 / (h - flat);
+  const outer = y => h + flat + (h - flat) * y / 100;
+  const inner = y => h + (h - th) * (y - yi) / (100 - yi);
+  return { W, th, yi, outer, inner, full: [[0, 100], [h - flat, 0], [h + flat, 0], [W, 100], [W - th, 100], [h, yi], [th, 100]] };
+}
+
+// SΛDΛCO geométrico: trazo uniforme, esquinas redondeadas, H = 100
+function geoWord() {
+  const t = 21, c = t / 2, gap = 30, b = 100 - c;
+  const L = lambda(120, t * 1.02, 3);
+  const r = 18, rd = 27, rc = 29;
+  const glyphs = [
+    [118, `<path d="M118,${c} H${c + r} A${r},${r} 0 0 0 ${c},${c + r} V${50 - r} A${r},${r} 0 0 0 ${c + r},50 H${118 - c - r} A${r},${r} 0 0 1 ${118 - c},${50 + r} V${b - r} A${r},${r} 0 0 1 ${118 - c - r},${b} H0"/>`],
+    [120, `<polygon points="${pts(L.full)}" stroke="none" fill="${NAVY}"/>`],
+    [116, `<path d="M${c},${c} H${116 - c - rd} A${rd},${rd} 0 0 1 ${116 - c},${c + rd} V${b - rd} A${rd},${rd} 0 0 1 ${116 - c - rd},${b} H${c} Z"/>`],
+    [120, `<polygon points="${pts(L.full)}" stroke="none" fill="${NAVY}"/>`],
+    [110, `<path d="M110,${c} H${c + rc} A${rc},${rc} 0 0 0 ${c},${c + rc} V${b - rc} A${rc},${rc} 0 0 0 ${c + rc},${b} H110"/>`],
+    [116, `<rect x="${c}" y="${c}" width="${116 - t}" height="${100 - t}" rx="29"/>`],
+  ];
+  let x = 0;
+  const body = glyphs.map(([w, g]) => { const s = `<g transform="translate(${x},0)">${g}</g>`; x += w + gap; return s; }).join('');
+  const W = x - gap;
+  return `<svg viewBox="0 0 ${W} 100" width="${W * .28}"><g fill="none" stroke="${NAVY}" stroke-width="${t}" stroke-linejoin="miter">${body}</g></svg>`;
+}
+
+// Λ de la versión "O verde"; split = pata derecha cortada con el tramo inferior en verde
+function boldLambda(split) {
+  const L = lambda(108, 22, 2);
+  const svg = inner => `<svg viewBox="0 0 108 100" style="width:${.7 * 1.08}em">${inner}</svg>`;
+  if (!split) return svg(`<polygon points="${pts(L.full)}" fill="${NAVY}"/>`);
+  const a = 57, b = 66;
+  const navy = [[0, 100], [54 - 2, 0], [54 + 2, 0], [L.outer(a), a], [L.inner(a), a], [54, L.yi], [L.th, 100]];
+  const green = [[L.inner(b), b], [L.outer(b), b], [108, 100], [108 - L.th, 100]];
+  return svg(`<polygon points="${pts(navy)}" fill="${NAVY}"/><polygon points="${pts(green)}" fill="${GREEN}"/>`);
+}
+const O_ACCENT = `<svg viewBox="0 0 100 100" style="width:.7em"><circle cx="50" cy="50" r="42.5" fill="none" stroke="${GREEN}" stroke-width="16"/><rect x="47.8" y="12" width="4.4" height="76" fill="${GREEN}"/></svg>`;
+const O_VERDE = `<span>S</span>${boldLambda(true)}<span>D</span>${boldLambda(false)}<span>C</span>${O_ACCENT}`;
+const WORDMARKS = [
+  ['w1', 'Placa verde', 'Servicios y Suministros', `<div class="n">SADACO</div><div class="band"><span>SERVICIOS Y SUMINISTROS</span></div>`],
+  ['w2', 'Sólida', 'Con descriptor gris', `<div class="n">SADACO</div><div class="d">SERVICIOS Y SUMINISTROS</div>`],
+  ['w3', 'Espaciada', 'Con Venezuela', `<div class="n">SADACO</div><div class="d">VENEZUELA</div>`],
+  ['w4', 'Extendida', 'Ancha y robusta', `<div class="n">SADACO</div><div class="d">VENEZUELA</div>`],
+  ['w5', 'Condensada', 'Técnica, industrial', `<div class="n">SADACO</div><div class="d">VENEZUELA</div>`],
+  ['w6', 'Geométrica', 'A sin travesaño', `<div class="n">${geoWord()}</div><div class="d">VENEZUELA</div>`],
+  ['w7', 'O verde', 'A con corte verde y O industrial', `<div class="n">${O_VERDE}</div><div class="d">VENEZUELA</div>`],
+];
+const src = f => `../globo/svg/${f}.svg`;
+const params = new URLSearchParams(location.search);
+const board = params.get('b');
+if (params.has('clean')) document.documentElement.classList.add('clean');
+const GLOBE_NOTES = {
+  '03': 'Venezuela con los tres colores de la bandera y doble contorno.',
+  '04': 'Marcador de mapa clavado en Venezuela: “aquí estamos”.',
+  '08': 'Venezuela se levanta del mapa, más grande y con sombra.',
+  '10': 'Chincheta roja clavada en Venezuela, como en un mapa de pared.',
+};
+const header = (right, title, lead) => `
+  <div class="top"><div><span class="dot"></span>SADACO C.A. · Globo SADACO International · Finalistas</div><div>${right}</div></div>
+  <h1>${title}</h1>
+  <div class="lead">${lead}</div>`;
+
+if (board === 'logos') {
+  document.documentElement.classList.add('solo', 'solo-logos');
+  document.getElementById('app').innerHTML = header('Símbolos',
+    'Cuatro <span class="tag">símbolos finalistas</span>',
+    'El globo de SADACO International con América al centro. Venezuela, con el Guayana Esequiba, va ampliada y con sombra para que no se pierda.') + `
+  <div class="solo-grid logos">
+    ${GLOBES.map(([file, no, name]) => `
+      <div class="card"><div class="art"><img src="${src(file)}"></div>
+      <div class="cap"><span class="no">${no}</span><b>${name}</b><p>${GLOBE_NOTES[no]}</p></div></div>`).join('')}
+  </div>`;
+} else if (board === 'words') {
+  var WORD_NOTES = {
+    w2: 'Negrita compacta', w3: 'Letras abiertas y espaciadas', w4: 'Ancha y robusta',
+    w5: 'Técnica, industrial', w6: 'A sin travesaño, esquinas redondeadas', w7: 'A con corte verde y O industrial',
+  };
+  document.documentElement.classList.add('solo');
+  document.getElementById('app').innerHTML = header('Logotipos',
+    'Seis formas de <span class="tag">escribir SADACO</span>',
+    'Solo el nombre, sin textos secundarios, para acompañar cualquiera de los cuatro símbolos.') + `
+  <div class="solo-grid words">
+    ${WORDMARKS.filter(([cls]) => cls in WORD_NOTES).map(([cls, t, , html], i) => `
+      <div class="card"><div class="art"><div class="wmk ${cls}">${html}</div></div>
+      <div class="cap"><span class="no">${String(i + 1).padStart(2, '0')}</span><b>${t}</b><p>${WORD_NOTES[cls]}</p></div></div>`).join('')}
+  </div>`;
+  document.querySelectorAll('.words .d, .words .band').forEach(el => el.remove());
+} else document.getElementById('app').innerHTML = `
+  <div class="top"><div><span class="dot"></span>SADACO C.A. · Globo SADACO International · Finalistas</div><div>Globo + logotipo</div></div>
+  <h1>Cuatro finalistas y <span class="tag">siete formas de escribir SADACO</span></h1>
+  <div class="lead">Cada fila es un globo, cada columna un estilo de logotipo. Venezuela va ampliada y con sombra para que no se pierda en tamaños pequeños.</div>
+  <div class="matrix">
+    <div></div>
+    ${WORDMARKS.map(([, t, s]) => `<div class="colh"><b>${t}</b><span>${s}</span></div>`).join('')}
+    ${GLOBES.map(([file, no, name]) => `
+      <div class="rowh"><span class="no">${no}</span><b>${name}</b></div>
+      ${WORDMARKS.map(([cls, , , html]) => `<div class="cell"><img src="${src(file)}"><div class="wmk ${cls}">${html}</div></div>`).join('')}
+    `).join('')}
+  </div>`;
+
+function fitSpacing(el, target) {
+  el.style.letterSpacing = '0px';
+  let w = el.getBoundingClientRect().width;
+  if (w > target * 0.9) {
+    el.style.fontSize = (parseFloat(getComputedStyle(el).fontSize) * target * 0.9 / w) + 'px';
+    w = el.getBoundingClientRect().width;
+  }
+  const s = (target - w) / (el.textContent.length - 1);
+  el.style.letterSpacing = s + 'px';
+  el.style.marginRight = (-s) + 'px';
+}
+
+document.fonts.ready.then(() => {
+  document.querySelectorAll('.wmk').forEach(w => {
+    const n = w.querySelector('.n');
+    const ls = parseFloat(getComputedStyle(n).letterSpacing) || 0;
+    const width = n.getBoundingClientRect().width - ls;
+    const band = w.querySelector('.band');
+    if (band) { band.style.width = width + 'px'; fitSpacing(band.querySelector('span'), width * 0.88); }
+    const d = w.querySelector('.d');
+    if (d) fitSpacing(d, width);
+  });
+  document.querySelector('.words')?.classList.add('zoomed');
+});
+</script>
+</body>
+</html>

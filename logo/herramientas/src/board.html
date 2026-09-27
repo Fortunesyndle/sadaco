@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=block" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1600px; height: 1000px; overflow: hidden; }
+  body { font-family: 'Montserrat', 'Segoe UI', sans-serif; background: #F3F5F8; color: #1D2530; }
+  .page { width: 1600px; height: 1000px; padding: 44px 64px 48px; display: flex; flex-direction: column; }
+  .top { display: flex; justify-content: space-between; align-items: center; font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: #6B7785; font-weight: 600; }
+  .top .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #2E9E5B; margin-right: 10px; vertical-align: middle; }
+  h1 { font-size: 40px; font-weight: 800; letter-spacing: -.01em; margin-top: 22px; color: #0A3A7A; }
+  h1 .tag { color: #2E9E5B; }
+  .lead { font-size: 17px; color: #4A5563; margin-top: 8px; font-weight: 500; }
+  .card { background: #fff; border-radius: 18px; box-shadow: 0 1px 2px rgba(16,24,40,.05), 0 8px 24px rgba(16,24,40,.06); }
+  .label { position: absolute; left: 18px; top: 14px; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; }
+
+  .lockup { display: flex; align-items: center; }
+  .wm { display: flex; flex-direction: column; }
+  .wm .name { font-weight: 800; letter-spacing: .06em; line-height: 1; width: max-content; }
+  .wm .sub { font-weight: 600; line-height: 1; white-space: nowrap; width: max-content; }
+  .plate { display: flex; flex-direction: column; align-items: flex-start; }
+  .plate .name { font-weight: 800; letter-spacing: .06em; line-height: 1; width: max-content; }
+  .plate .band { display: flex; justify-content: center; align-items: center; }
+  .plate .band span { font-weight: 700; white-space: nowrap; line-height: 1; }
+
+  /* variant board */
+  .vgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 24px; flex: 1; }
+  .vc { display: flex; flex-direction: column; overflow: hidden; }
+  .vc .pos { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; }
+  .vc .neg { height: 150px; display: flex; align-items: center; justify-content: center; }
+  .vc .minis { display: grid; grid-template-columns: 1fr 1fr 1.25fr; height: 112px; border-bottom: 1px solid #EEF1F4; }
+  .vc .minis > div { display: flex; align-items: center; justify-content: center; position: relative; }
+  .vc .minis > div + div { border-left: 1px solid #EEF1F4; }
+  .vc .minis .label { font-size: 9px; left: 10px; top: 8px; color: #8A94A1; }
+  .vc .cap { padding: 16px 22px 18px; height: 112px; }
+  .vc .cap b { display: block; font-size: 17px; color: #0A3A7A; font-weight: 800; }
+  .vc .cap span { font-size: 13.5px; color: #4A5563; line-height: 1.45; display: block; margin-top: 4px; }
+  .sizes { display: flex; align-items: flex-end; gap: 16px; padding-top: 10px; }
+  .sizes div { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 10px; color: #8A94A1; font-weight: 600; }
+
+  /* overview */
+  .ov { display: grid; grid-template-columns: 190px repeat(3, 1fr); grid-auto-rows: 1fr; gap: 18px 22px; margin-top: 24px; flex: 1; }
+  .ov .rl { display: flex; flex-direction: column; justify-content: center; }
+  .ov .rl b { font-size: 18px; font-weight: 800; color: #0A3A7A; }
+  .ov .rl span { font-size: 13px; color: #4A5563; margin-top: 4px; line-height: 1.4; }
+  .ov .oc { display: flex; align-items: center; gap: 22px; padding: 0 26px; }
+  .ov .oc div b { display: block; font-size: 15px; font-weight: 800; color: #1D2530; }
+  .ov .oc div span { font-size: 12.5px; color: #6B7785; }
+  .ov .oc .no { font-size: 12px; font-weight: 800; color: #2E9E5B; letter-spacing: .1em; }
+
+  /* selection */
+  .sel { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 20px 24px; margin-top: 22px; flex: 1; }
+  .sc { display: flex; flex-direction: column; overflow: hidden; position: relative; }
+  .sc .pos { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .sc .neg { height: 84px; display: flex; align-items: center; justify-content: center; }
+  .sc .cap { padding: 12px 20px 14px; height: 68px; display: flex; gap: 12px; align-items: baseline; }
+  .sc .cap .no { font-size: 12px; font-weight: 800; color: #2E9E5B; letter-spacing: .08em; }
+  .sc .cap b { font-size: 15px; font-weight: 800; color: #0A3A7A; }
+  .sc .cap span { font-size: 12.5px; color: #4A5563; line-height: 1.4; display: block; margin-top: 2px; }
+  .badge { position: absolute; top: 14px; right: 14px; background: #2E9E5B; color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; }
+
+  /* plate + symbol */
+  .pl { display: flex; align-items: center; }
+  .pl.v { flex-direction: column; }
+  .pl.v .plate { align-items: center; }
+  .pgrid { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: 1fr 1fr; gap: 20px; margin-top: 22px; flex: 1; }
+  .pc { display: flex; flex-direction: column; position: relative; }
+  .pc .pv { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .pcap { padding: 12px 18px 14px; border-top: 1px solid #EEF1F4; display: flex; gap: 10px; align-items: baseline; }
+  .pcap .no, .hcap .no { font-size: 12px; font-weight: 800; color: #2E9E5B; letter-spacing: .08em; }
+  .pcap b { font-size: 14px; font-weight: 800; color: #0A3A7A; }
+  .hgrid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, 1fr); gap: 12px 22px; margin-top: 20px; flex: 1; }
+  .hc { display: grid; grid-template-columns: 1fr 1fr 0.95fr; overflow: hidden; }
+  .hc .hp, .hc .hn { display: flex; align-items: center; justify-content: center; }
+  .hcap { padding: 0 18px; display: flex; gap: 10px; align-items: center; border-left: 1px solid #EEF1F4; }
+  .hcap b { font-size: 13.5px; font-weight: 800; color: #0A3A7A; display: block; }
+  .hcap span:not(.no) { font-size: 11.5px; color: #4A5563; line-height: 1.35; display: block; margin-top: 2px; }
+
+  /* context */
+  .ctx { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 28px; flex: 1; }
+  .cx { padding: 30px 34px; display: flex; flex-direction: column; }
+  .cx h3 { font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: #2E9E5B; font-weight: 700; }
+  .cx .f { font-size: 26px; font-weight: 700; color: #0A3A7A; line-height: 1.35; margin-top: 10px; }
+  .cx .arrow { margin-top: auto; padding-top: 18px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #8A94A1; font-weight: 700; border-top: 1px solid #EEF1F4; }
+  .cx .d { font-size: 17px; color: #333D4A; line-height: 1.55; margin-top: 8px; }
+
+  /* palette */
+  .pal { display: grid; grid-template-columns: 1fr 470px; gap: 28px; margin-top: 26px; flex: 1; }
+  .prow { padding: 24px 28px; flex: 1; display: flex; flex-direction: column; }
+  .prow h3 { font-size: 13px; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+  .prow .why { font-size: 14px; color: #4A5563; margin-bottom: 16px; }
+  .sw { display: grid; grid-template-columns: 1.6fr 1.6fr 1fr 1fr 1fr; gap: 12px; flex: 1; }
+  .sw > div { border-radius: 12px; min-height: 150px; padding: 14px; display: flex; flex-direction: column; justify-content: flex-end; font-size: 12px; font-weight: 600; line-height: 1.5; }
+  .sw b { font-size: 14px; font-weight: 800; }
+  .side { display: flex; flex-direction: column; gap: 24px; }
+  .ref { padding: 22px 26px; display: flex; gap: 20px; align-items: center; }
+  .ref img { width: 120px; height: 120px; }
+  .ref p { font-size: 13.5px; color: #4A5563; line-height: 1.5; }
+  .type { padding: 24px 28px; flex: 1; }
+  .type .big { font-size: 64px; font-weight: 800; color: #0A3A7A; letter-spacing: .04em; line-height: 1; margin: 10px 0 12px; }
+  .type .w { display: flex; gap: 18px; font-size: 20px; color: #1D2530; margin-bottom: 12px; }
+  .type p { font-size: 14px; color: #4A5563; line-height: 1.5; }
+  .alpha { font-size: 19px; font-weight: 600; color: #0A3A7A; letter-spacing: .04em; line-height: 1.45; margin: 16px 0 14px; }
+</style>
+</head>
+<body>
+<div class="page" id="app"></div>
+<script>
+const PAL = {
+  evo: { name: 'Evolución', blue: '#0A3A7A', green: '#2E9E5B', greenDark: '#5CCB8A', steel: '#6B7785', plateText: '#FFFFFF' },
+  con: { name: 'Continuidad', blue: '#004AAD', green: '#7ED957', greenDark: '#7ED957', steel: '#6B7785', plateText: '#004AAD' },
+};
+
+function scheme(p, mode) {
+  switch (mode) {
+    case 'neg':  return { a: '#FFFFFF', b: p.greenDark, bOnA: p.green, bg: p.blue, text: '#FFFFFF', sub: 'rgba(255,255,255,.72)', plate: p.greenDark, plateText: p.blue };
+    case 'mono': return { a: '#1D2530', b: '#1D2530', bOnA: '#FFFFFF', bg: '#FFFFFF', text: '#1D2530', sub: '#1D2530', plate: '#1D2530', plateText: '#FFFFFF' };
+    default:     return { a: p.blue, b: p.green, bOnA: p.green, bg: '#FFFFFF', text: p.blue, sub: p.steel, plate: p.green, plateText: p.plateText };
+  }
+}
+
+let uid = 0;
+const nid = p => p + (uid++);
+
+/* ---------- shared geometry ---------- */
+
+function sPath(L, T, H, sw, k) {
+  const r = (H - sw) / 4;
+  const yT = T + sw / 2, yM = T + H / 2, yB = T + H - sw / 2;
+  const a = L + sw / 2 + r, b = a + k;
+  return `M${L},${yB} H${b} A${r},${r} 0 0 0 ${b},${yM} H${a} A${r},${r} 0 0 1 ${a},${yT} H${b + r + sw / 2}`;
+}
+
+function svLigature(sColor, vColor) {
+  const id = nid('lg');
+  return `<defs><clipPath id="${id}"><rect x="0" y="50" width="200" height="100"/></clipPath></defs>
+    <g clip-path="url(#${id})" fill="none" stroke-width="22" stroke-linejoin="miter">
+      <path d="M30,139 H74 A19.5,19.5 0 0 0 74,100 H58 A19.5,19.5 0 0 1 58,61 H112" stroke="${sColor}"/>
+      <path d="M103,39 L135,139 L167,39" stroke="${vColor}"/>
+    </g>`;
+}
+
+function globeBase(c, element, simple, { water = false, over = '' } = {}) {
+  const id = nid('gb');
+  const cy = 262, R = 150;
+  let grid = '';
+  if (water) {
+    grid = `<g fill="none" stroke="${c.bg}" stroke-width="${simple ? 5 : 3.5}">
+      ${(simple ? [134] : [140, 126, 112]).map(r => `<circle cx="100" cy="${cy}" r="${r}"/>`).join('')}
+    </g>`;
+  } else if (!simple) {
+    grid = `<g fill="none" stroke="${c.bg}" stroke-width="3">
+      <line x1="100" y1="${cy - R}" x2="100" y2="200"/>
+      ${[52, 104].map(rx => `<ellipse cx="100" cy="${cy}" rx="${rx}" ry="${R}"/>`).join('')}
+      ${[132, 116].map(r => `<circle cx="100" cy="${cy}" r="${r}"/>`).join('')}
+    </g>`;
+  }
+  return `<defs><clipPath id="${id}"><circle cx="100" cy="100" r="86"/></clipPath></defs>
+    <circle cx="100" cy="100" r="86" fill="${c.a}"/>
+    <g clip-path="url(#${id})">${element}
+      <circle cx="100" cy="${cy}" r="${R}" fill="${c.b}"/>${grid}${over}
+    </g>`;
+}
+
+/* ---------- B · globo industrial ---------- */
+
+function symDerrick(c, simple) {
+  const L = y => 92 - 13 * (y - 34) / 70, Rr = y => 108 + 13 * (y - 34) / 70;
+  const braces = simple ? [68] : [56, 80];
+  const zig = simple
+    ? `M${L(34)},34 L${Rr(68)},68 L${L(102)},102`
+    : `M${L(34)},34 L${Rr(56)},56 L${L(80)},80 L${Rr(102)},102`;
+  const sw = simple ? 6 : 4.5;
+  const piles = (simple ? [82, 118] : [80, 100, 120])
+    .map(x => `<line x1="${x}" y1="110" x2="${x}" y2="148" stroke="${c.bg}" stroke-width="${simple ? 6 : 4.5}"/>`).join('');
+  return globeBase(c, `
+    <g stroke="${c.bg}" stroke-width="${sw}" fill="none" stroke-linejoin="round" stroke-linecap="round">
+      <line x1="${L(34)}" y1="34" x2="${L(104)}" y2="104"/>
+      <line x1="${Rr(34)}" y1="34" x2="${Rr(104)}" y2="104"/>
+      ${braces.map(y => `<line x1="${L(y)}" y1="${y}" x2="${Rr(y)}" y2="${y}"/>`).join('')}
+      <path d="${zig}"/>
+    </g>
+    <rect x="86" y="24" width="28" height="10" rx="2" fill="${c.bg}"/>
+    <line x1="100" y1="14" x2="100" y2="24" stroke="${c.bg}" stroke-width="${sw}"/>`, simple, {
+    water: true,
+    over: `${piles}<rect x="70" y="103" width="60" height="8" rx="1.5" fill="${c.bg}"/>`,
+  });
+}
+
+function gearPoints(cx, cy, R, r, n) {
+  const pts = [], step = 360 / n;
+  const P = (deg, rad) => { const t = deg * Math.PI / 180; return `${(cx + rad * Math.cos(t)).toFixed(2)},${(cy + rad * Math.sin(t)).toFixed(2)}`; };
+  for (let i = 0; i < n; i++) {
+    const a = i * step;
+    pts.push(P(a - 9, r), P(a - 5.5, R), P(a + 5.5, R), P(a + 9, r), P(a + step / 2, r));
+  }
+  return pts.join(' ');
+}
+
+function symGear(c, simple) {
+  return globeBase(c, `
+    <polygon points="${gearPoints(100, 114, 48, 38, 12)}" fill="${c.bg}"/>
+    <circle cx="100" cy="114" r="17" fill="${c.a}"/>`, simple);
+}
+
+function symGauge(c, simple) {
+  const cx = 100, cy = 112, P = (deg, r) => {
+    const t = deg * Math.PI / 180;
+    return [(cx + r * Math.cos(t)).toFixed(2), (cy + r * Math.sin(t)).toFixed(2)];
+  };
+  const ticks = (simple ? [-165, -130, -90, -50, -15] : [-165, -147, -129, -111, -93, -75, -57, -39, -21])
+    .map((a, i) => {
+      const major = simple || i % 2 === 0;
+      const [x1, y1] = P(a, major ? 31 : 35), [x2, y2] = P(a, 42);
+      return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c.a}" stroke-width="${simple ? 5 : major ? 4 : 2.5}" stroke-linecap="round"/>`;
+    }).join('');
+  const [nx, ny] = P(-52, 34);
+  const needle = c.a === c.b ? c.a : c.bOnA;
+  return globeBase(c, `
+    <circle cx="${cx}" cy="${cy}" r="50" fill="${c.bg}"/>
+    ${ticks}
+    <line x1="${cx}" y1="${cy}" x2="${nx}" y2="${ny}" stroke="${needle}" stroke-width="${simple ? 8 : 6}" stroke-linecap="round"/>
+    <circle cx="${cx}" cy="${cy}" r="9" fill="${c.a}"/>`, simple);
+}
+
+/* ---------- M · monogramas SV ---------- */
+
+function symLigature(c) {
+  return svLigature(c.a, c.b);
+}
+
+function symShield(c) {
+  return `<path d="M44,44 Q44,30 58,30 H142 Q156,30 156,44 V104 L100,172 L44,104 Z" fill="${c.a}"/>
+    <path d="${sPath(76.5, 42, 60, 14, 10)}" fill="none" stroke="${c.bg}" stroke-width="14"/>
+    <path d="M70,114.6 L100,150 L130,114.6" fill="none" stroke="${c.bOnA}" stroke-width="14" stroke-linejoin="miter"/>`;
+}
+
+function symSquare(c) {
+  const v = [[112, 52], [130, 52], [141, 104.8], [152, 52], [170, 52], [150, 148], [132, 148]];
+  return `<rect x="20" y="20" width="160" height="160" rx="28" fill="${c.a}"/>
+    <g transform="translate(-3,0)">
+      <path d="${sPath(35.5, 52, 96, 18, 12)}" fill="none" stroke="${c.bg}" stroke-width="18"/>
+      <polygon points="${v.map(p => p.join(',')).join(' ')}" fill="${c.bOnA}"/>
+    </g>`;
+}
+
+/* ---------- X · corporativas ---------- */
+
+function symHex(c) {
+  const pts = [];
+  for (let i = 0; i < 6; i++) {
+    const t = (i * 60 - 90) * Math.PI / 180;
+    pts.push(`${(100 + 80 * Math.cos(t)).toFixed(2)},${(100 + 80 * Math.sin(t)).toFixed(2)}`);
+  }
+  return `<polygon points="${pts.join(' ')}" fill="${c.a}" stroke="${c.a}" stroke-width="16" stroke-linejoin="round"/>
+    <g transform="translate(100,100) scale(.6) translate(-101,-100)">${svLigature(c.bg, c.bOnA)}</g>`;
+}
+
+function symCorpGlobe(c) {
+  const id = nid('cg');
+  const cy = 262, R = 150;
+  return `<defs><clipPath id="${id}"><circle cx="100" cy="100" r="86"/></clipPath></defs>
+    <circle cx="100" cy="100" r="86" fill="${c.a}"/>
+    <g clip-path="url(#${id})">
+      <g fill="none" stroke="${c.bg}" stroke-width="7">
+        <circle cx="100" cy="${cy}" r="${R + 26}"/>
+        <circle cx="100" cy="${cy}" r="${R + 54}"/>
+        <circle cx="100" cy="${cy}" r="${R + 84}"/>
+      </g>
+      <circle cx="100" cy="${cy}" r="${R}" fill="${c.b}"/>
+    </g>`;
+}
+
+function symPlateIcon(c) {
+  return `<rect x="20" y="20" width="160" height="160" rx="28" fill="${c.a}"/>
+    <text x="100" y="128" text-anchor="middle" font-family="Montserrat" font-weight="800" font-size="116" fill="${c.bg}">S</text>
+    <rect x="52" y="146" width="96" height="12" fill="${c.bOnA}"/>`;
+}
+
+/* ---------- N · símbolos para el logotipo con placa ---------- */
+
+function symFlange(c) {
+  const holes = Array.from({ length: 8 }, (_, i) => {
+    const t = (i * 45 - 90) * Math.PI / 180;
+    return `<circle cx="${(100 + 63 * Math.cos(t)).toFixed(2)}" cy="${(100 + 63 * Math.sin(t)).toFixed(2)}" r="9.5" fill="${c.bg}"/>`;
+  }).join('');
+  const bore = c.a === c.b ? c.a : c.bg;
+  return `<circle cx="100" cy="100" r="84" fill="${c.a}"/>${holes}
+    <circle cx="100" cy="100" r="40" fill="${c.bOnA}"/>
+    <circle cx="100" cy="100" r="19" fill="${bore}"/>`;
+}
+
+function symPipeS(c) {
+  const T = 34, H = 132, sw = 30, k = 26;
+  const r = (H - sw) / 4, W = k + 2 * r + sw, L = 100 - W / 2;
+  const yB = T + H - sw / 2, yT = T + sw / 2;
+  const fl = (x, y) => `<rect x="${x - 8}" y="${y - sw / 2 - 10}" width="16" height="${sw + 20}" rx="3" fill="${c.b}"/>`;
+  return `<path d="${sPath(L + 8, T, H, sw, k - 16)}" fill="none" stroke="${c.a}" stroke-width="${sw}"/>
+    ${fl(L + 8, yB)}${fl(L + W - 8, yT)}`;
+}
+
+function symValve(c) {
+  return `<line x1="100" y1="116" x2="100" y2="56" stroke="${c.a}" stroke-width="10"/>
+    <rect x="64" y="40" width="72" height="16" rx="3" fill="${c.b}"/>
+    <polygon points="30,80 30,152 100,116" fill="${c.a}"/>
+    <polygon points="170,80 170,152 100,116" fill="${c.a}"/>`;
+}
+
+function symCube(c) {
+  const top = '100,28 164,64 100,100 36,64', left = '36,64 100,100 100,172 36,136', right = '100,100 164,64 164,136 100,172';
+  return `<polygon points="${top}" fill="${c.b}"/>
+    <polygon points="${left}" fill="${c.a}"/>
+    <polygon points="${right}" fill="${c.a}" fill-opacity=".72"/>
+    <g stroke="${c.bg}" stroke-width="6" stroke-linejoin="round" fill="none">
+      <polyline points="36,64 100,100 164,64"/><line x1="100" y1="100" x2="100" y2="172"/>
+    </g>`;
+}
+
+function symDerrickPlate(c) {
+  const id = nid('dp');
+  const L = y => 91 - 13 * (y - 40) / 72, Rr = y => 109 + 13 * (y - 40) / 72;
+  return `<defs><clipPath id="${id}"><rect x="20" y="20" width="160" height="160" rx="26"/></clipPath></defs>
+    <rect x="20" y="20" width="160" height="160" rx="26" fill="${c.a}"/>
+    <g clip-path="url(#${id})">
+      <g stroke="${c.bg}" stroke-width="6" fill="none" stroke-linejoin="round" stroke-linecap="round">
+        <line x1="${L(40)}" y1="40" x2="${L(112)}" y2="112"/>
+        <line x1="${Rr(40)}" y1="40" x2="${Rr(112)}" y2="112"/>
+        <line x1="${L(76)}" y1="76" x2="${Rr(76)}" y2="76"/>
+        <path d="M${L(40)},40 L${Rr(76)},76 L${L(112)},112"/>
+      </g>
+      <rect x="86" y="32" width="28" height="9" rx="2" fill="${c.bg}"/>
+      <rect x="20" y="132" width="160" height="48" fill="${c.bOnA}"/>
+      <rect x="66" y="112" width="68" height="9" rx="1.5" fill="${c.bg}"/>
+      <g stroke="${c.bg}" stroke-width="6">
+        <line x1="76" y1="121" x2="76" y2="164"/><line x1="100" y1="121" x2="100" y2="164"/><line x1="124" y1="121" x2="124" y2="164"/>
+      </g>
+      <line x1="20" y1="132" x2="180" y2="132" stroke="${c.a === c.b ? c.bg : 'none'}" stroke-width="4"/>
+    </g>`;
+}
+
+const SYM = {
+  n1: symFlange, n2: symPipeS, n3: symValve, n4: symCube, n5: symDerrickPlate,
+  b1: symDerrick, b2: symGear, b3: symGauge,
+  m1: symLigature, m2: symShield, m3: symSquare,
+  x1: symHex, x2: symCorpGlobe, x3: symPlateIcon,
+};
+
+function svg(key, c, size, simple) {
+  return `<svg viewBox="0 0 200 200" width="${size}" height="${size}">${SYM[key](c, simple)}</svg>`;
+}
+
+function lockup(key, c, size) {
+  if (key === 'x3') return plate(c, size * 0.5);
+  const fs = size * 0.36;
+  return `<div class="lockup" style="gap:${size * 0.07}px">${svg(key, c, size)}
+    <div class="wm"><div class="name" style="font-size:${fs}px;color:${c.text}">SADACO</div>
+    <div class="sub" style="font-size:${fs * 0.3}px;color:${c.sub};margin-top:${fs * 0.22}px">${DESCRIPTOR}</div></div></div>`;
+}
+
+function plate(c, fs) {
+  return `<div class="plate"><div class="name" style="font-size:${fs}px;color:${c.text}">SADACO</div>
+    <div class="band" style="background:${c.plate};height:${fs * 0.42}px;margin-top:${fs * 0.14}px">
+    <span style="font-size:${fs * 0.2}px;color:${c.plateText}">${DESCRIPTOR}</span></div></div>`;
+}
+
+function fitLetterSpacing(el, target) {
+  el.style.letterSpacing = '0px';
+  let w = el.getBoundingClientRect().width;
+  if (w > target * 0.86) {
+    el.style.fontSize = (parseFloat(el.style.fontSize) * target * 0.86 / w) + 'px';
+    w = el.getBoundingClientRect().width;
+  }
+  const s = (target - w) / (el.textContent.length - 1);
+  el.style.letterSpacing = s + 'px';
+  el.style.marginRight = (-s) + 'px';
+}
+
+function fitWordmarks() {
+  document.querySelectorAll('.wm').forEach(wm => {
+    const name = wm.querySelector('.name');
+    const ls = parseFloat(getComputedStyle(name).letterSpacing) || 0;
+    fitLetterSpacing(wm.querySelector('.sub'), name.getBoundingClientRect().width - ls);
+  });
+  document.querySelectorAll('.plate').forEach(p => {
+    const name = p.querySelector('.name');
+    const ls = parseFloat(getComputedStyle(name).letterSpacing) || 0;
+    const w = name.getBoundingClientRect().width - ls;
+    const band = p.querySelector('.band');
+    band.style.width = w + 'px';
+    fitLetterSpacing(band.querySelector('span'), w * 0.88);
+  });
+}
+
+const DESCRIPTOR = 'SERVICIOS Y SUMINISTROS';
+
+/* ---------- content ---------- */
+
+const GROUPS = {
+  globo: {
+    title: 'Globo <span class="tag">industrial</span>',
+    lead: 'El horizonte de la matriz con un ícono del sector que atiende SADACO: petróleo, petroquímica, ingeniería e instrumentación.',
+    items: [
+      ['b1', 'B1 · Torre en el Lago', 'Las torres petroleras sobre el Lago de Maracaibo son la postal de la Costa Oriental del Lago, donde está SADACO. El horizonte se vuelve agua.'],
+      ['b2', 'B2 · Engranaje naciente', 'Ingeniería, mecánica, construcción y mantenimiento en un engranaje que sale como el sol. Cubre todos los servicios, no solo el petróleo.'],
+      ['b3', 'B3 · Instrumento de control', 'Un manómetro con la aguja verde hacia arriba: instrumentación, automatización y control, y la seguridad operativa que la empresa promete.'],
+    ],
+  },
+  sv: {
+    title: 'Monograma <span class="tag">SV</span>',
+    lead: 'S de SADACO y V de Venezuela: la sede nacional con un sello propio. Construcción geométrica y peso uniforme para un registro corporativo.',
+    items: [
+      ['m1', 'M1 · Ligadura SV', 'La S y la V en un solo trazo continuo: la barra superior de la S se convierte en la V. Tipográfico, limpio y fácil de reproducir.'],
+      ['m2', 'M2 · Emblema SV', 'Escudo con la S calada y una V verde que sigue la punta del escudo. El más institucional: transmite respaldo y trayectoria.'],
+      ['m3', 'M3 · Sello SV', 'S y V geométricas dentro de un cuadrado. Funciona muy bien como ícono: redes sociales, favicon, calcomanía en cascos y vehículos.'],
+    ],
+  },
+  corp: {
+    title: 'Opciones <span class="tag">corporativas</span>',
+    lead: 'Tres caminos sobrios, en el registro de empresas de energía, banca e industria pesada.',
+    items: [
+      ['x1', 'X1 · Tuerca SV', 'Hexágono de tuerca con la ligadura SV adentro. Habla de mecánica, montaje y construcción sin ser literal.'],
+      ['x2', 'X2 · Globo corporativo', 'El globo de la matriz reducido a lo esencial: horizonte verde y paralelos. Sobrio y atemporal, cercano a las marcas de energía.'],
+      ['x3', 'X3 · Logotipo con placa', 'Sin símbolo: el nombre es protagonista y "Servicios y Suministros" va en una placa verde. El ícono cuadrado queda para redes y favicon.'],
+    ],
+  },
+};
+
+function header(right) {
+  return `<div class="top"><div><span class="dot"></span>SADACO C.A. · Identidad visual · Exploración v3</div><div>${right}</div></div>`;
+}
+
+function variantBoard(gkey, idx) {
+  const g = GROUPS[gkey], evo = PAL.evo, con = PAL.con;
+  const col = ([key, title, desc]) => {
+    const simple = key.startsWith('b');
+    return `<div class="card vc">
+      <div class="pos"><div class="label" style="color:#8A94A1">Principal · Evolución</div>${lockup(key, scheme(evo), key === 'x3' ? 160 : 130)}</div>
+      <div class="neg" style="background:${evo.blue}">${lockup(key, scheme(evo, 'neg'), key === 'x3' ? 116 : 84)}</div>
+      <div class="minis">
+        <div><div class="label">Continuidad</div>${svg(key, scheme(con), 60)}</div>
+        <div><div class="label">Monocromo</div>${svg(key, scheme(evo, 'mono'), 60)}</div>
+        <div><div class="label">Tamaños</div><div class="sizes">${[48, 32, 16].map(s =>
+          `<div>${svg(key, scheme(evo), s, simple && s < 40)}${s}px</div>`).join('')}</div></div>
+      </div>
+      <div class="cap"><b>${title}</b><span>${desc}</span></div>
+    </div>`;
+  };
+  return `${header(`Lámina ${idx} / 5`)}
+    <h1>${g.title}</h1>
+    <div class="lead">${g.lead}</div>
+    <div class="vgrid">${g.items.map(col).join('')}</div>`;
+}
+
+function overviewBoard() {
+  const evo = PAL.evo;
+  const rows = [
+    ['globo', 'Globo industrial', 'El horizonte de la matriz con un ícono del sector.'],
+    ['sv', 'Monograma SV', 'Sadaco Venezuela en un sello propio.'],
+    ['corp', 'Corporativas', 'Registros más sobrios e institucionales.'],
+  ];
+  const cells = rows.map(([g, t, d]) => `<div class="rl"><b>${t}</b><span>${d}</span></div>` +
+    GROUPS[g].items.map(([key, title]) => {
+      const [no, name] = title.split(' · ');
+      return `<div class="card oc">${svg(key, scheme(evo), 132)}<div><div class="no">${no}</div><b>${name}</b></div></div>`;
+    }).join('')).join('');
+  return `${header('Resumen')}
+    <h1>Nueve direcciones para <span class="tag">SADACO C.A.</span></h1>
+    <div class="lead">Tercera ronda, ajustada con la presentación de la empresa: Ciudad Ojeda (Zulia), sector petrolero y petroquímico, servicios y suministros.</div>
+    <div class="ov">${cells}</div>`;
+}
+
+const PLATE_PICKS = [
+  ['b1', '01', 'Torre en el Lago', 'Petrolera y zuliana. Ya probada en rondas anteriores.'],
+  ['n5', '02', 'Torre con placa', 'La torre dentro de un bloque con base verde que repite la placa del logotipo.', 'nuevo'],
+  ['n1', '03', 'Brida de 8 pernos', 'Unión de tuberías, pieza clave del sector. Ocho pernos, como las ocho estrellas.', 'nuevo'],
+  ['n2', '04', 'S de tubería', 'La S de SADACO trazada como una línea de tubería con bridas verdes.', 'nuevo'],
+  ['n3', '05', 'Válvula', 'El símbolo de válvula de los planos de ingeniería (P&ID) con volante verde.', 'nuevo'],
+  ['x1', '06', 'Tuerca SV', 'Monograma SV dentro de una tuerca. Mecánica y montaje.'],
+  ['m1', '07', 'Ligadura SV', 'S y V en un solo trazo. El más tipográfico: dialoga con las letras.'],
+  ['b2', '08', 'Engranaje naciente', 'Ingeniería, mecánica y construcción sobre el horizonte de la matriz.'],
+  ['b3', '09', 'Instrumento de control', 'Manómetro: instrumentación, automatización y seguridad operativa.'],
+  ['n4', '10', 'Cubo de suministro', 'Un bloque isométrico: materiales, procura y suministro.', 'nuevo'],
+];
+
+function plateLockup(key, c, fs, layout) {
+  const gap = layout === 'v' ? fs * 0.34 : fs * 0.3;
+  const size = layout === 'v' ? fs * 2.9 : fs * 2.25;
+  return `<div class="pl ${layout}" style="gap:${gap}px">${svg(key, c, size)}${plate(c, fs)}</div>`;
+}
+
+function plateBoardV() {
+  const evo = PAL.evo;
+  return `${header('Placa + símbolo · 1 / 2')}
+    <h1>Un símbolo para el <span class="tag">logotipo con placa</span></h1>
+    <div class="lead">Diez combinaciones en versión vertical: cinco símbolos de rondas anteriores y cinco nuevos pensados para la placa.</div>
+    <div class="pgrid">${PLATE_PICKS.map(([key, no, name, , isNew]) => `<div class="card pc">
+      ${isNew ? '<div class="badge">Nuevo</div>' : ''}
+      <div class="pv">${plateLockup(key, scheme(evo), 44, 'v')}</div>
+      <div class="pcap"><span class="no">${no}</span><b>${name}</b></div>
+    </div>`).join('')}</div>`;
+}
+
+function plateBoardH() {
+  const evo = PAL.evo;
+  return `${header('Placa + símbolo · 2 / 2')}
+    <h1>Versión <span class="tag">horizontal</span> y en negativo</h1>
+    <div class="lead">La misma selección en el formato más usado: encabezados, facturas, web, vehículos y uniformes.</div>
+    <div class="hgrid">${PLATE_PICKS.map(([key, no, name, desc]) => `<div class="card hc">
+      <div class="hp">${plateLockup(key, scheme(evo), 30, 'h')}</div>
+      <div class="hn" style="background:${evo.blue}">${plateLockup(key, scheme(evo, 'neg'), 24, 'h')}</div>
+      <div class="hcap"><span class="no">${no}</span><div><b>${name}</b><span>${desc}</span></div></div>
+    </div>`).join('')}</div>`;
+}
+
+function selectionBoard() {
+  const evo = PAL.evo;
+  const picks = [
+    ['b1', 'B1', 'Torre en el Lago', 'Petrolera y zuliana: la postal de la Costa Oriental del Lago.', true],
+    ['b2', 'B2', 'Engranaje naciente', 'Ingeniería, mecánica y construcción, no solo petróleo.'],
+    ['b3', 'B3', 'Instrumento de control', 'Instrumentación, automatización y seguridad operativa.'],
+    ['m1', 'M1', 'Ligadura SV', 'S y V en un solo trazo continuo. Tipográfico y limpio.'],
+    ['x1', 'X1', 'Tuerca SV', 'Monograma SV en una tuerca: industrial y corporativo.', true],
+    ['x3', 'X3', 'Logotipo con placa', 'Sin símbolo: la opción más sobria e institucional.'],
+  ];
+  return `${header('Selección')}
+    <h1>Selección de <span class="tag">propuestas</span></h1>
+    <div class="lead">Los seis diseños más sólidos de las tres rondas, en la paleta Evolución: versión principal y versión en negativo.</div>
+    <div class="sel">${picks.map(([key, no, name, desc, rec]) => `<div class="card sc">
+      ${rec ? '<div class="badge">Recomendado</div>' : ''}
+      <div class="pos">${lockup(key, scheme(evo), key === 'x3' ? 118 : 96)}</div>
+      <div class="neg" style="background:${evo.blue}">${lockup(key, scheme(evo, 'neg'), key === 'x3' ? 80 : 58)}</div>
+      <div class="cap"><div class="no">${no}</div><div><b>${name}</b><span>${desc}</span></div></div>
+    </div>`).join('')}</div>`;
+}
+
+function contextBoard() {
+  const facts = [
+    ['Dónde está', 'Ciudad Ojeda, Costa Oriental del Lago de Maracaibo (Zulia).',
+      'La torre petrolera sobre el lago (B1) es la imagen más propia de esa región. Es nacional, zuliana y petrolera a la vez.'],
+    ['Qué hace', 'Procura y suministro, ingeniería, construcción, mantenimiento, instrumentación, automatización, control, mecánica y electricidad.',
+      'No es solo un proveedor de materiales. Por eso aparecen el engranaje (B2), el instrumento de control (B3) y la tuerca (X1), que abarcan más que el petróleo.'],
+    ['Cómo se presenta', '"SADACO C.A. · Servicios y Suministros".',
+      '"SERVICIOS Y SUMINISTROS" reemplaza a "VENEZUELA" como descriptor en todas las versiones. El monograma SV se mantiene, pero conviene confirmar que "SADACO Venezuela" se usará como nombre.'],
+    ['Qué promete', 'Calidad, seguridad industrial, confiabilidad y continuidad operativa, bajo normativas nacionales e internacionales.',
+      'Pide un registro sobrio: geometría firme, peso uniforme, paleta Evolución y nada decorativo. Refuerza las opciones corporativas.'],
+  ];
+  return `${header('Contexto')}
+    <h1>Lo que cambia con la <span class="tag">presentación</span></h1>
+    <div class="lead">Cuatro datos de la presentación de SADACO C.A. (septiembre 2026) y cómo se reflejan en los logos.</div>
+    <div class="ctx">${facts.map(([t, f, d]) => `<div class="card cx">
+      <h3>${t}</h3><p class="f">${f}</p><div class="arrow">En el diseño</div><p class="d">${d}</p></div>`).join('')}</div>`;
+}
+
+function rgb(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  return `RGB ${n >> 16} · ${(n >> 8) & 255} · ${n & 255}`;
+}
+
+function paletteBoard() {
+  const sw = (name, hex, fg, border) =>
+    `<div style="background:${hex};color:${fg};${border ? 'border:1px solid #E2E7ED' : ''}"><b>${name}</b>${hex}<br>${rgb(hex)}</div>`;
+  const row = (title, color, why, list) => `<div class="card prow"><h3 style="color:${color}">${title}</h3><div class="why">${why}</div>
+    <div class="sw">${list.map(s => sw(...s)).join('')}</div></div>`;
+  return `${header('Paleta y tipografía')}
+    <h1>Paleta <span class="tag">verde / azul / blanco</span></h1>
+    <div class="lead">Dos caminos: mantener los tonos exactos de la matriz, o madurarlos hacia un registro más industrial.</div>
+    <div class="pal">
+      <div style="display:flex;flex-direction:column;gap:24px">
+        ${row('Evolución · recomendada', '#2E9E5B', 'Azul más profundo y verde más sobrio. Se reconoce como familia de la matriz, pero se ve más sólido y corporativo. El gris acero aporta el lado metálico.', [
+          ['Azul SADACO', '#0A3A7A', '#fff'], ['Verde industrial', '#2E9E5B', '#fff'], ['Verde claro', '#5CCB8A', '#0A3A7A'], ['Gris acero', '#6B7785', '#fff'], ['Blanco', '#FFFFFF', '#1D2530', 1]])}
+        ${row('Continuidad', '#004AAD', 'Los mismos valores del logo de SADACO International. Coherencia total, pero el verde lima resulta poco industrial.', [
+          ['Azul matriz', '#004AAD', '#fff'], ['Verde matriz', '#7ED957', '#0A3A7A'], ['Azul oscuro', '#0A2A5C', '#fff'], ['Gris acero', '#6B7785', '#fff'], ['Blanco', '#FFFFFF', '#1D2530', 1]])}
+      </div>
+      <div class="side">
+        <div class="card ref"><img src="../../referencias/sadaco-international-logo.png" alt="">
+          <p><b style="color:#0A3A7A">Referencia: SADACO International</b><br>Azul <b>#004AAD</b> y verde <b>#7ED957</b>, medidos del logo original. Son valores predeterminados de Canva, lo que da margen para afinarlos.</p></div>
+        <div class="card type"><h3 style="font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#2E9E5B;font-weight:700">Tipografía propuesta · Montserrat</h3>
+          <div class="big">SADACO</div>
+          <div class="w"><span style="font-weight:800">ExtraBold</span><span style="font-weight:600">SemiBold</span><span style="font-weight:400">Regular</span></div>
+          <div class="alpha">ABCDEFGHIJKLMNÑOPQRSTUVWXYZ<br><span style="font-weight:400;color:#1D2530">abcdefghijklmnñopqrstuvwxyz<br>0123456789 &amp; @ %</span></div>
+          <p>Geométrica, robusta y gratuita (Google Fonts). ExtraBold para el nombre, SemiBold espaciada para el descriptor y Regular para textos. Alternativas: Manrope o Archivo.</p></div>
+      </div>
+    </div>`;
+}
+
+const b = new URLSearchParams(location.search).get('b') || 'overview';
+const app = document.getElementById('app');
+const IDX = { globo: 2, sv: 3, corp: 4 };
+app.innerHTML = b === 'overview' ? overviewBoard()
+  : b === 'context' ? contextBoard()
+  : b === 'selection' ? selectionBoard()
+  : b === 'plateV' ? plateBoardV()
+  : b === 'plateH' ? plateBoardH()
+  : b === 'palette' ? paletteBoard()
+  : variantBoard(b, IDX[b]);
+document.fonts.ready.then(fitWordmarks);
+</script>
+</body>
+</html>

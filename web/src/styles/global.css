@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+
+@theme {
+  /* Colores exactos del logo de SADACO International */
+  --color-sadaco-azul: #004aad;
+  --color-sadaco-verde: #7ed957;
+
+  /* Colores de los logotipos de SADACO C.A. */
+  --color-sadaco-marino: #0a2e6e;
+  --color-sadaco-verde-oscuro: #139058;
+
+  --color-venezuela-rojo: #cf142b;
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth antialiased;
+  }
+
+  body {
+    @apply bg-white font-sans text-slate-800;
+  }
+}

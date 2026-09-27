@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "astro-docs": {
+      "url": "https://mcp.docs.astro.build/mcp"
+    },
+    "google-design": {
+      "url": "https://design.googleapis.com/mcp"
+    },
+    "google-fonts": {
+      "command": "python",
+      "args": ["-m", "uv", "tool", "run", "google-fonts-mcp@1.4.1"]
+    }
+  }
+}

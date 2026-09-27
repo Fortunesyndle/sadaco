@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=block" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1600px; height: 1000px; overflow: hidden; }
+  body { font-family: 'Montserrat', 'Segoe UI', sans-serif; background: #F3F5F8; color: #1D2530; }
+  .page { width: 1600px; height: 1000px; padding: 44px 64px 48px; display: flex; flex-direction: column; }
+  .top { display: flex; justify-content: space-between; align-items: center; font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: #6B7785; font-weight: 600; }
+  .top .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #7ED957; margin-right: 10px; vertical-align: middle; }
+  .head { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 18px; }
+  h1 { font-size: 38px; font-weight: 800; letter-spacing: -.01em; color: #004AAD; }
+  h1 .tag { color: #3FAE3A; }
+  .lead { font-size: 16px; color: #4A5563; margin-top: 8px; font-weight: 500; max-width: 1100px; }
+  .ref { display: flex; align-items: center; gap: 12px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: #8A94A1; }
+  .ref img { width: 64px; height: 64px; }
+  .card { background: #fff; border-radius: 18px; box-shadow: 0 1px 2px rgba(16,24,40,.05), 0 8px 24px rgba(16,24,40,.06); position: relative; overflow: hidden; }
+  .grid { display: grid; gap: 18px; margin-top: 20px; flex: 1; }
+  .g5 { grid-template-columns: repeat(5, 1fr); grid-template-rows: 1fr 1fr; }
+  .g3 { grid-template-columns: repeat(5, 1fr); grid-template-rows: 1fr 1fr; }
+  .cell { display: flex; flex-direction: column; }
+  .cell .art { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .cell .art img { width: 250px; height: 250px; }
+  .cap { padding: 10px 16px 14px; border-top: 1px solid #EEF1F4; }
+  .cap .no { font-size: 11px; font-weight: 800; color: #3FAE3A; letter-spacing: .08em; margin-right: 6px; }
+  .cap b { font-size: 14px; font-weight: 800; color: #004AAD; }
+  .cap span { display: block; font-size: 11.5px; color: #4A5563; line-height: 1.35; margin-top: 3px; }
+  .crop { flex: 1; position: relative; overflow: hidden; background: #fff; }
+  .crop img { position: absolute; }
+  .note { margin-top: 14px; font-size: 12.5px; color: #6B7785; }
+  .g4 { grid-template-columns: repeat(4, 1fr); }
+  .cell .art.big img { width: 330px; height: 330px; }
+  .crop.fixed { flex: none; height: 230px; border-top: 1px solid #EEF1F4; }
+  .badge { position: absolute; top: 14px; right: 14px; z-index: 2; background: #3FAE3A; color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; }
+</style>
+</head>
+<body>
+<div class="page" id="app"></div>
+<script src="../globo/variants.js"></script>
+<script>
+const b = new URLSearchParams(location.search).get('b') || 'grid';
+const header = right => `<div class="top"><div><span class="dot"></span>SADACO C.A. · Globo SADACO International · América al centro</div><div>${right}</div></div>`;
+const head = (title, lead) => `<div class="head"><div><h1>${title}</h1><div class="lead">${lead}</div></div>
+  <div class="ref"><span>Referencia<br>original</span><img src="../../referencias/sadaco-international-logo.png"></div></div>`;
+const src = f => `../globo/svg/${f}.svg`;
+
+function gridBoard() {
+  return `${header('1 / 2')}
+    ${head('Venezuela en el <span class="tag">globo de la matriz</span>',
+      'Mismo globo, laurel y colores de SADACO International, girado para centrar América. Nueve maneras de marcar Venezuela.')}
+    <div class="grid g5">${VARIANTS.slice(0, 10).map((v, i) => `<div class="card cell">
+      <div class="art"><img src="${src(v.file)}"></div>
+      <div class="cap"><span class="no" style="display:inline">${String(i).padStart(2, '0')}</span><b>${v.title}</b></div>
+    </div>`).join('')}</div>`;
+}
+
+function detailBoard() {
+  const ZOOM = { '04-pin': [3, -14], '05-ondas': [3, 0], '06-lupa': [1.85, 10] };
+  const items = VARIANTS.slice(1, 10);
+  return `${header('2 / 2')}
+    ${head('Detalle: cómo se ve <span class="tag">Venezuela</span>',
+      'Acercamiento a la zona de Venezuela en cada variante, para evaluar el tratamiento. En el logo real se ven al tamaño de la lámina anterior.')}
+    <div class="grid g3">${items.map((v, i) => {
+      const [K, dy] = ZOOM[v.file] || [4.2, 0];
+      return `<div class="card cell">
+      <div class="crop" data-k="${K}" data-dy="${dy}"><img src="${src(v.file)}" style="width:${500 * K}px;height:${500 * K}px"></div>
+      <div class="cap"><span class="no" style="display:inline">${String(i + 1).padStart(2, '0')}</span><b>${v.title}</b><span>${v.desc}</span></div>
+    </div>`;
+    }).join('')}
+    <div class="card cell"><div class="art"><img src="${src('00-base')}" style="width:210px;height:210px"></div>
+      <div class="cap"><b>Nota sobre el mapa</b><span>Venezuela incluye la Guayana Esequiba hasta el río Esequibo, como en la cartografía oficial venezolana.</span></div></div>
+    </div>`;
+}
+
+function finalBoard() {
+  const picks = [['03-tricolor', '03', [3, 0]], ['04-pin', '04', [2.3, -22]], ['08-relieve', '08', [2.6, 0]], ['10-chincheta', '10', [2.1, -30]]];
+  return `${header('Finalistas')}
+    ${head('Cuatro <span class="tag">finalistas</span>',
+      'Las tres variantes elegidas y una nueva con chincheta. Arriba, el logo completo; abajo, el acercamiento a Venezuela.')}
+    <div class="grid g4">${picks.map(([file, no, [K, dy]]) => {
+      const v = VARIANTS.find(x => x.file === file);
+      return `<div class="card cell">
+        ${no === '10' ? '<div class="badge">Nuevo</div>' : ''}
+        <div class="art big"><img src="${src(file)}"></div>
+        <div class="crop fixed" data-k="${K}" data-dy="${dy}"><img src="${src(file)}" style="width:${500 * K}px;height:${500 * K}px"></div>
+        <div class="cap"><span class="no" style="display:inline">${no}</span><b>${v.title}</b><span>${v.desc}</span></div>
+      </div>`;
+    }).join('')}</div>`;
+}
+
+const BOARDS = { grid: gridBoard, detail: detailBoard, final: finalBoard };
+document.getElementById('app').innerHTML = (BOARDS[b] || gridBoard)();
+if (b !== 'grid') {
+  requestAnimationFrame(() => document.querySelectorAll('.crop').forEach(c => {
+    const K = +c.dataset.k, dy = +c.dataset.dy, img = c.querySelector('img');
+    img.style.left = (c.clientWidth / 2 - CENTROID[0] * K) + 'px';
+    img.style.top = (c.clientHeight / 2 - (CENTROID[1] + dy) * K) + 'px';
+  }));
+}
+</script>
+</body>
+</html>

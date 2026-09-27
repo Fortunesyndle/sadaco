@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=block" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1600px; height: 1000px; overflow: hidden; }
+  body { font-family: 'Montserrat', 'Segoe UI', sans-serif; background: #F3F5F8; color: #1D2530; }
+  .page { width: 1600px; height: 1000px; padding: 44px 64px 48px; display: flex; flex-direction: column; }
+  .top { display: flex; justify-content: space-between; align-items: center; font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: #6B7785; font-weight: 600; }
+  .top .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #2E9E5B; margin-right: 10px; vertical-align: middle; }
+  h1 { font-size: 40px; font-weight: 800; letter-spacing: -.01em; margin-top: 22px; color: #0A3A7A; }
+  h1 .tag { color: #2E9E5B; }
+  .lead { font-size: 17px; color: #4A5563; margin-top: 8px; font-weight: 500; }
+  .card { background: #fff; border-radius: 18px; box-shadow: 0 1px 2px rgba(16,24,40,.05), 0 8px 24px rgba(16,24,40,.06); }
+
+  .lockup { display: flex; align-items: center; }
+  .lockup.v { flex-direction: column; text-align: center; }
+  .wm { display: flex; flex-direction: column; }
+  .lockup.v .wm { align-items: center; }
+  .wm .name { font-weight: 800; letter-spacing: .06em; line-height: 1; width: max-content; }
+  .wm .sub { font-weight: 600; line-height: 1; white-space: nowrap; width: max-content; }
+
+  /* concept board */
+  .main { display: grid; grid-template-columns: 1fr 430px; gap: 28px; margin-top: 26px; height: 440px; }
+  .hero { display: flex; align-items: center; justify-content: center; position: relative; }
+  .hero .label, .tile .label { position: absolute; left: 20px; top: 16px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; }
+  .notes { padding: 30px 32px; display: flex; flex-direction: column; gap: 18px; }
+  .notes h3 { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #2E9E5B; font-weight: 700; margin-bottom: 6px; }
+  .notes p { font-size: 14.5px; line-height: 1.5; color: #333D4A; }
+  .notes .warn h3 { color: #B7791F; }
+  .row { display: grid; grid-template-columns: repeat(5, 1fr) 1.15fr; gap: 16px; margin-top: 24px; flex: 1; }
+  .tile { position: relative; border-radius: 14px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .sizes { display: flex; align-items: flex-end; gap: 22px; }
+  .sizes div { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 11px; color: #6B7785; font-weight: 600; }
+
+  /* overview */
+  .ov { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin-top: 28px; flex: 1; }
+  .ovc { display: flex; flex-direction: column; overflow: hidden; }
+  .ovc .w { flex: 1; display: flex; align-items: center; justify-content: center; padding-top: 10px; }
+  .ovc .d { height: 190px; display: flex; align-items: center; justify-content: center; }
+  .ovc .cap { padding: 18px 26px 22px; border-top: 1px solid #EEF1F4; }
+  .ovc .cap b { display: block; font-size: 18px; color: #0A3A7A; font-weight: 800; }
+  .ovc .cap span { font-size: 14px; color: #4A5563; line-height: 1.45; display: block; margin-top: 4px; }
+
+  /* palette */
+  .pal { display: grid; grid-template-columns: 1fr 470px; gap: 28px; margin-top: 26px; flex: 1; }
+  .prow { padding: 24px 28px; flex: 1; display: flex; flex-direction: column; }
+  .prow .sw { flex: 1; }
+  .sw > div { min-height: 150px; height: auto !important; }
+  .alpha { font-size: 19px; font-weight: 600; color: #0A3A7A; letter-spacing: .04em; line-height: 1.45; margin: 16px 0 14px; word-break: break-all; }
+  .prow h3 { font-size: 13px; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+  .prow .why { font-size: 14px; color: #4A5563; margin-bottom: 16px; }
+  .sw { display: grid; grid-template-columns: 1.6fr 1.6fr 1fr 1fr 1fr; gap: 12px; }
+  .sw > div { border-radius: 12px; height: 150px; padding: 14px; display: flex; flex-direction: column; justify-content: flex-end; font-size: 12px; font-weight: 600; line-height: 1.5; }
+  .sw b { font-size: 14px; font-weight: 800; }
+  .side { display: flex; flex-direction: column; gap: 24px; }
+  .ref { padding: 22px 26px; display: flex; gap: 20px; align-items: center; }
+  .ref img { width: 120px; height: 120px; }
+  .ref p { font-size: 13.5px; color: #4A5563; line-height: 1.5; }
+  .type { padding: 24px 28px; flex: 1; }
+  .type .big { font-size: 64px; font-weight: 800; color: #0A3A7A; letter-spacing: .04em; line-height: 1; margin: 10px 0 12px; }
+  .type .w { display: flex; gap: 18px; font-size: 20px; color: #1D2530; margin-bottom: 12px; }
+  .type p { font-size: 14px; color: #4A5563; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="page" id="app"></div>
+<script>
+const PAL = {
+  evo: { name: 'Evolución', blue: '#0A3A7A', green: '#2E9E5B', greenDark: '#5CCB8A', steel: '#6B7785' },
+  con: { name: 'Continuidad', blue: '#004AAD', green: '#7ED957', greenDark: '#7ED957', steel: '#6B7785' },
+};
+
+function scheme(p, mode) {
+  switch (mode) {
+    case 'neg':  return { a: '#FFFFFF', b: p.greenDark, bg: p.blue, text: '#FFFFFF', sub: 'rgba(255,255,255,.72)' };
+    case 'mono': return { a: '#1D2530', b: '#1D2530', bg: '#FFFFFF', text: '#1D2530', sub: '#1D2530' };
+    default:     return { a: p.blue, b: p.green, bg: '#FFFFFF', text: p.blue, sub: p.steel };
+  }
+}
+
+let uid = 0;
+
+function symA(c) {
+  const id = 'a' + (uid++);
+  const trap = (x1, x2, y, h = 20, i = 4) => `${x1 + i},${y} ${x2 - i},${y} ${x2},${y + h} ${x1},${y + h}`;
+  const bars = [
+    [30, 146, 46, c.b],
+    [28, 149, 72, c.a],
+    [26, 152, 98, c.a],
+    [16, 170, 124, c.a],
+    [4, 196, 150, c.a],
+  ];
+  return `<defs><mask id="${id}"><rect width="200" height="200" fill="#fff"/>
+      <rect x="120" y="66" width="6" height="58" fill="#000"/></mask></defs>
+    <g mask="url(#${id})">${bars.map(([x1, x2, y, f]) => `<polygon points="${trap(x1, x2, y)}" fill="${f}"/>`).join('')}</g>`;
+}
+
+function star(cx, cy, R, r2, ri) {
+  const pts = [];
+  for (let i = 0; i < 16; i++) {
+    const r = i % 4 === 0 ? R : i % 4 === 2 ? r2 : ri;
+    const t = (i * 22.5 - 90) * Math.PI / 180;
+    pts.push(`${(cx + r * Math.cos(t)).toFixed(2)},${(cy + r * Math.sin(t)).toFixed(2)}`);
+  }
+  return pts.join(' ');
+}
+
+function symB(c, simple = false) {
+  const id = 'b' + (uid++);
+  const cy = 262, R = 150;
+  const grid = simple ? '' : `<g fill="none" stroke="${c.bg}" stroke-width="3">
+      <line x1="100" y1="${cy - R}" x2="100" y2="200"/>
+      ${[52, 104].map(rx => `<ellipse cx="100" cy="${cy}" rx="${rx}" ry="${R}"/>`).join('')}
+      ${[132, 116].map(r => `<circle cx="100" cy="${cy}" r="${r}"/>`).join('')}
+    </g>`;
+  return `<defs><clipPath id="${id}"><circle cx="100" cy="100" r="86"/></clipPath></defs>
+    <circle cx="100" cy="100" r="86" fill="${c.a}"/>
+    <g clip-path="url(#${id})">
+      <circle cx="100" cy="${cy}" r="${R}" fill="${c.b}"/>${grid}
+    </g>
+    <polygon points="${star(100, 64, 31, 15, 6.5)}" fill="${c.bg}"/>`;
+}
+
+function symC(c) {
+  const leaf = 'M-21,0 C-11,-13 11,-13 21,0 C11,7 -11,7 -21,0Z';
+  const r = 38, up = [100, 66], lo = [100, 142];
+  const leaves = [];
+  [-50, -112, -174, 124].forEach(a => leaves.push([up, a, a - 90 - 12, c.b]));
+  [-56, 6, 68, 130].forEach(a => leaves.push([lo, a, a + 90 - 12, c.a]));
+  return leaves.map(([[cx, cy], a, rot, f]) => {
+    const t = a * Math.PI / 180;
+    const x = cx + r * Math.cos(t), y = cy + r * Math.sin(t) - 4;
+    return `<path d="${leaf}" fill="${f}" transform="translate(${x.toFixed(2)},${y.toFixed(2)}) rotate(${rot})"/>`;
+  }).join('');
+}
+
+const SYM = { a: symA, b: symB, c: symC };
+
+function svg(key, c, size, simple) {
+  return `<svg viewBox="0 0 200 200" width="${size}" height="${size}">${SYM[key](c, simple)}</svg>`;
+}
+
+function lockup(key, c, size, layout = 'h') {
+  const fs = layout === 'h' ? size * 0.36 : size * 0.3;
+  const gap = layout === 'h' ? size * 0.06 : size * 0.02;
+  return `<div class="lockup ${layout}" style="gap:${gap}px">${svg(key, c, size)}
+    <div class="wm"><div class="name" style="font-size:${fs}px;color:${c.text}">SADACO</div>
+    <div class="sub" style="font-size:${fs * 0.3}px;color:${c.sub};margin-top:${fs * 0.22}px">VENEZUELA</div></div></div>`;
+}
+
+function fitWordmarks() {
+  document.querySelectorAll('.wm').forEach(wm => {
+    const name = wm.querySelector('.name'), sub = wm.querySelector('.sub');
+    const ls = parseFloat(getComputedStyle(name).letterSpacing) || 0;
+    const target = name.getBoundingClientRect().width - ls;
+    sub.style.letterSpacing = '0px';
+    const w = sub.getBoundingClientRect().width;
+    const n = sub.textContent.length;
+    const s = (target - w) / (n - 1);
+    sub.style.letterSpacing = s + 'px';
+    sub.style.marginRight = (-s) + 'px';
+  });
+}
+
+const CONCEPTS = {
+  a: {
+    n: 'A', title: 'Tepuy de lingotes',
+    lead: 'Un tepuy construido con lingotes de metal apilados. Paisaje venezolano + materia prima en un solo gesto.',
+    notes: [
+      ['Qué comunica', 'Solidez, estabilidad y origen. El tepuy es un paisaje único de la Guayana venezolana. Los lingotes trapezoidales remiten a los metales y materiales que la empresa suministra. La ranura vertical alude al Salto Ángel.'],
+      ['Conexión con la matriz', 'Misma familia cromática: la cumbre verde evoca los continentes del globo de SADACO International sobre el azul corporativo.'],
+      ['A tener en cuenta', 'La lectura "lingote" lo ata algo a lo industrial. Si la diversificación es grande, las barras pueden simplificarse a franjas sin perder el tepuy.', 1],
+    ],
+  },
+  b: {
+    n: 'B', title: 'La octava estrella',
+    lead: 'El globo de la matriz visto desde Venezuela: un horizonte con meridianos y una estrella que amanece.',
+    notes: [
+      ['Qué comunica', 'La estrella de ocho puntas evoca las ocho estrellas de la bandera sin usar un símbolo patrio. También es una rosa de los vientos: comercio internacional, logística y rumbo.'],
+      ['Conexión con la matriz', 'La más directa de las tres: retoma la retícula de meridianos y el verde sobre azul del globo. Se lee como "la sede nacional de una red global".'],
+      ['A tener en cuenta', 'Tiene más detalle. En tamaños pequeños conviene una versión reducida sin retícula (ver prueba de tamaños).', 1],
+    ],
+  },
+  c: {
+    n: 'C', title: 'S de laurel',
+    lead: 'Ocho hojas del laurel de SADACO International dibujan la S de SADACO.',
+    notes: [
+      ['Qué comunica', 'Monograma propio: la S de SADACO. Ocho hojas = ocho estrellas. El laurel aporta prestigio y calidad. Es neutral respecto al rubro, ideal si la empresa se diversifica.'],
+      ['Conexión con la matriz', 'Hereda literalmente las hojas del laurel del símbolo matriz, reorganizadas en una forma nueva.'],
+      ['A tener en cuenta', 'Lo venezolano es más sutil: depende de contar la historia del número ocho. Es el más abstracto y flexible de los tres.', 1],
+    ],
+  },
+};
+
+function header(right) {
+  return `<div class="top"><div><span class="dot"></span>SADACO C.A. · Identidad visual · Exploración</div><div>${right}</div></div>`;
+}
+
+function conceptBoard(key) {
+  const k = CONCEPTS[key];
+  const evo = PAL.evo, con = PAL.con;
+  const tile = (label, c, bg, lc, inner) =>
+    `<div class="tile" style="background:${bg}"><div class="label" style="color:${lc}">${label}</div>${inner}</div>`;
+  const small = key === 'b';
+  return `${header(`Concepto ${k.n} / 3`)}
+    <h1><span class="tag">${k.n} ·</span> ${k.title}</h1>
+    <div class="lead">${k.lead}</div>
+    <div class="main">
+      <div class="card hero"><div class="label" style="color:#6B7785">Versión principal · Paleta Evolución</div>${lockup(key, scheme(evo), 250)}</div>
+      <div class="card notes">${k.notes.map(([h, p, w]) => `<div class="${w ? 'warn' : ''}"><h3>${h}</h3><p>${p}</p></div>`).join('')}</div>
+    </div>
+    <div class="row">
+      ${tile('Evolución', null, '#fff', '#6B7785', svg(key, scheme(evo), 150))}
+      ${tile('Evolución · negativo', null, evo.blue, 'rgba(255,255,255,.7)', svg(key, scheme(evo, 'neg'), 150))}
+      ${tile('Continuidad', null, '#fff', '#6B7785', svg(key, scheme(con), 150))}
+      ${tile('Continuidad · negativo', null, con.blue, 'rgba(255,255,255,.7)', svg(key, scheme(con, 'neg'), 150))}
+      ${tile('Monocromo', null, '#fff', '#6B7785', svg(key, scheme(evo, 'mono'), 150))}
+      ${tile('Prueba de tamaños', null, '#fff', '#6B7785', `<div class="sizes">${[64, 32, 16].map(s =>
+        `<div>${svg(key, scheme(evo), s, small && s < 40)}${s}px</div>`).join('')}</div>`)}
+    </div>`;
+}
+
+function overviewBoard() {
+  const evo = PAL.evo;
+  const col = key => {
+    const k = CONCEPTS[key];
+    return `<div class="card ovc">
+      <div class="w">${lockup(key, scheme(evo), 190, 'v')}</div>
+      <div class="d" style="background:${evo.blue}">${lockup(key, scheme(evo, 'neg'), 90, 'h')}</div>
+      <div class="cap"><b>${k.n} · ${k.title}</b><span>${k.lead}</span></div>
+    </div>`;
+  };
+  return `${header('Resumen')}
+    <h1>Tres direcciones para <span class="tag">SADACO Venezuela</span></h1>
+    <div class="lead">Símbolo propio con raíz venezolana, en la familia cromática verde / azul / blanco de SADACO International.</div>
+    <div class="ov">${['a', 'b', 'c'].map(col).join('')}</div>`;
+}
+
+function rgb(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  return `RGB ${n >> 16} · ${(n >> 8) & 255} · ${n & 255}`;
+}
+
+function paletteBoard() {
+  const sw = (name, hex, fg, border) =>
+    `<div style="background:${hex};color:${fg};${border ? 'border:1px solid #E2E7ED' : ''}"><b>${name}</b>${hex}<br>${rgb(hex)}</div>`;
+  const row = (title, color, why, list) => `<div class="card prow"><h3 style="color:${color}">${title}</h3><div class="why">${why}</div>
+    <div class="sw">${list.map(s => sw(...s)).join('')}</div></div>`;
+  return `${header('Paleta y tipografía')}
+    <h1>Paleta <span class="tag">verde / azul / blanco</span></h1>
+    <div class="lead">Dos caminos: mantener los tonos exactos de la matriz, o madurarlos hacia un registro más industrial.</div>
+    <div class="pal">
+      <div style="display:flex;flex-direction:column;gap:24px">
+        ${row('Evolución · recomendada', '#2E9E5B', 'Azul más profundo y verde más sobrio. Se reconoce como familia de la matriz, pero se ve más sólido y corporativo. El gris acero aporta el lado metálico.', [
+          ['Azul SADACO', '#0A3A7A', '#fff'], ['Verde Tepuy', '#2E9E5B', '#fff'], ['Verde claro', '#5CCB8A', '#0A3A7A'], ['Gris acero', '#6B7785', '#fff'], ['Blanco', '#FFFFFF', '#1D2530', 1]])}
+        ${row('Continuidad', '#004AAD', 'Los mismos valores del logo de SADACO International. Coherencia total, pero el verde lima resulta poco industrial.', [
+          ['Azul matriz', '#004AAD', '#fff'], ['Verde matriz', '#7ED957', '#0A3A7A'], ['Azul oscuro', '#0A2A5C', '#fff'], ['Gris acero', '#6B7785', '#fff'], ['Blanco', '#FFFFFF', '#1D2530', 1]])}
+      </div>
+      <div class="side">
+        <div class="card ref"><img src="../../referencias/sadaco-international-logo.png" alt="">
+          <p><b style="color:#0A3A7A">Referencia: SADACO International</b><br>Azul <b>#004AAD</b> y verde <b>#7ED957</b>, medidos del logo original. Son valores predeterminados de Canva, lo que da margen para afinarlos.</p></div>
+        <div class="card type"><h3 style="font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#2E9E5B;font-weight:700">Tipografía propuesta · Montserrat</h3>
+          <div class="big">SADACO</div>
+          <div class="w"><span style="font-weight:800">ExtraBold</span><span style="font-weight:600">SemiBold</span><span style="font-weight:400">Regular</span></div>
+          <div class="alpha">ABCDEFGHIJKLMNÑOPQRSTUVWXYZ<br><span style="font-weight:400;color:#1D2530">abcdefghijklmnñopqrstuvwxyz<br>0123456789 &amp; @ %</span></div>
+          <p>Geométrica, robusta y gratuita (Google Fonts). ExtraBold para el nombre, SemiBold espaciada para "VENEZUELA" y Regular para textos. Alternativas: Manrope o Archivo.</p></div>
+      </div>
+    </div>`;
+}
+
+const b = new URLSearchParams(location.search).get('b') || 'overview';
+const app = document.getElementById('app');
+app.innerHTML = b === 'overview' ? overviewBoard() : b === 'palette' ? paletteBoard() : conceptBoard(b);
+document.fonts.ready.then(fitWordmarks);
+</script>
+</body>
+</html>
