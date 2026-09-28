@@ -4,7 +4,7 @@ import { pilares } from '../data/empresa';
 import fotoExperiencia from '../assets/fotos/manometro-planta.jpg';
 import fotoCalidad from '../assets/fotos/tecnica-instrumentacion.jpg';
 import fotoIntegral from '../assets/fotos/regulador-gas.jpg';
-import fotoFlexibilidad from '../assets/fotos/servicio-proyectos.png';
+import fotoFlexibilidad from '../assets/fotos/pilar-flexibilidad.jpg';
 
 interface Props {
 	/** Color de los filetes según el fondo de la sección. */
@@ -76,12 +76,12 @@ const id = `pilares-${Math.random().toString(36).slice(2, 8)}`;
 
 	.pilar-foto {
 		opacity: 0;
-		transition: opacity 1s var(--ease-ui);
+		transition: opacity 0.5s var(--ease-ui);
 	}
 
 	.pilar-foto[data-activa] {
 		opacity: 1;
-		animation: acercar 1.8s var(--ease-asentamiento);
+		animation: acercar 1s var(--ease-asentamiento);
 	}
 
 	@keyframes acercar {

@@ -26,19 +26,19 @@ const { etiqueta, cita, credito, imagen, enlace } = Astro.props;
 		<figure class="cita-texto grid md:grid-cols-3" data-revelar>
 			<div class="md:col-span-2 md:pr-6">
 				<p class="etiqueta mascara">
-					<span class="revelar block" style="--retraso: 800ms">{etiqueta}</span>
+					<span class="revelar block" style="--retraso: 430ms">{etiqueta}</span>
 				</p>
 				<blockquote class="t-headline mascara mt-8 pb-[0.1em]">
-					<p class="revelar" style="--retraso: 950ms">{cita}</p>
+					<p class="revelar" style="--retraso: 520ms">{cita}</p>
 				</blockquote>
 				<figcaption class="mascara mt-10">
-					<span class="revelar block border-l-2 border-white pl-5 text-base text-white/75" style="--retraso: 1100ms">{credito}</span>
+					<span class="revelar block border-l-2 border-white pl-5 text-base text-white/75" style="--retraso: 610ms">{credito}</span>
 				</figcaption>
 			</div>
 			{
 				enlace && (
 					<div class="mascara mt-12 flex items-end p-1 md:mt-0 md:justify-end md:pl-6">
-						<div class="revelar" style="--retraso: 1250ms">
+						<div class="revelar" style="--retraso: 700ms">
 							<a href={enlace.href} class="btn btn-claro" {...(enlace.externo ? { target: '_blank', rel: 'noopener' } : {})}>
 								{enlace.texto}
 							</a>
@@ -81,7 +81,7 @@ const { etiqueta, cita, credito, imagen, enlace } = Astro.props;
 
 	:global(.js) .cita :global(.cita-foto) {
 		scale: 1.3;
-		transition: scale 2.2s var(--ease-asentamiento) 300ms;
+		transition: scale 1.2s var(--ease-asentamiento) 150ms;
 	}
 
 	:global(.js) .cita[data-visible] :global(.cita-foto) {

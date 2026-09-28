@@ -327,8 +327,8 @@
 
 .asentar {
   animation:
-    asentar 1.6s var(--ease-ui) var(--retraso, 0ms) backwards,
-    respirar 24s ease-in-out calc(var(--retraso, 0ms) + 1.6s) infinite alternate;
+    asentar 0.8s var(--ease-ui) var(--retraso, 0ms) backwards,
+    respirar 24s ease-in-out calc(var(--retraso, 0ms) + 0.8s) infinite alternate;
 }
 
 /* Filete de .linea-etiqueta: se dibuja de izquierda a derecha al aparecer. */
@@ -344,12 +344,12 @@
 /* Foto que se descubre de abajo hacia arriba mientras se aleja. */
 .js .revelar-foto {
   clip-path: inset(100% 0 0 0);
-  transition: clip-path 1.4s var(--ease-revelado) var(--retraso, 0ms);
+  transition: clip-path 0.75s var(--ease-revelado) var(--retraso, 0ms);
 }
 
 :where(.js .revelar-foto) img {
   scale: 1.3;
-  transition: scale 1.8s var(--ease-asentamiento) var(--retraso, 0ms);
+  transition: scale 1s var(--ease-asentamiento) var(--retraso, 0ms);
 }
 
 .js [data-visible] .revelar-foto,
@@ -410,7 +410,7 @@
   .js .revelar-foto {
     clip-path: none;
     opacity: 0;
-    transition: opacity 0.8s var(--ease-ui) var(--retraso, 0ms);
+    transition: opacity 0.4s var(--ease-ui) var(--retraso, 0ms);
   }
 
   .js [data-visible] .revelar-foto,

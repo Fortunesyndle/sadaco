@@ -44,14 +44,14 @@ const { etiqueta, titulo, imagen, boton, lado = 'izquierda', velo = 30, alto = '
 	<Reticula tono="oscuro" class="-z-10" />
 
 	<div class="contenedor flex flex-col items-center justify-center py-20 text-center" data-revelar>
-		<p class="etiqueta mascara"><span class="revelar block" style="--retraso: 900ms">{etiqueta}</span></p>
+		<p class="etiqueta mascara"><span class="revelar block" style="--retraso: 480ms">{etiqueta}</span></p>
 		<h2 class="t-headline mascara mt-6 max-w-[20ch] pb-[0.08em]">
-			<span class="revelar block" style="--retraso: 1050ms">{titulo}</span>
+			<span class="revelar block" style="--retraso: 580ms">{titulo}</span>
 		</h2>
 		{
 			boton && (
 				<div class="mascara mt-10 p-1">
-					<a href={boton.href} class="btn btn-claro revelar" style="--retraso: 1200ms">
+					<a href={boton.href} class="btn btn-claro revelar" style="--retraso: 680ms">
 						{boton.texto}
 					</a>
 				</div>
@@ -91,7 +91,7 @@ const { etiqueta, titulo, imagen, boton, lado = 'izquierda', velo = 30, alto = '
 
 	:global(.js) .banner :global(.banner-foto) {
 		scale: 1.2;
-		transition: scale 2.2s var(--ease-asentamiento) 300ms;
+		transition: scale 1.2s var(--ease-asentamiento) 150ms;
 	}
 
 	:global(.js) .banner[data-visible] :global(.banner-foto) {

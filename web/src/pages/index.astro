@@ -11,7 +11,7 @@ import { especialidades } from '../data/empresa';
 import { servicios } from '../data/servicios';
 import { productos } from '../data/productos';
 import fotoPortada from '../assets/fotos/hero-refineria.png';
-import fotoCita from '../assets/fotos/producto-valvulas.png';
+import fotoCita from '../assets/fotos/cita-inicio.jpg';
 import fotoBanner from '../assets/fotos/operadores-campo.jpg';
 
 const tarjetasServicios = servicios.map((s) => ({ titulo: s.titulo, texto: s.resumen, foto: s.foto, alt: s.alt, href: `/soluciones/${s.slug}` }));
@@ -28,7 +28,7 @@ const tarjetasProductos = productos.map((p) => ({ titulo: p.nombre, texto: p.res
 		imagen={fotoPortada}
 		velo={30}
 		alto="completo"
-		retrasoBase={700}
+		retrasoBase={400}
 		franjas={false}
 	>
 		<a href="/contacto" class="btn btn-claro">Solicitar cotización</a>

@@ -14,7 +14,7 @@ interface Props {
 }
 
 const { modo = 'visible', direccion = 'arriba', desde = 'izquierda', fijo = false, retrasoBase = 0 } = Astro.props;
-const orden = desde === 'izquierda' ? [300, 400, 500] : [500, 400, 300];
+const orden = desde === 'izquierda' ? [150, 200, 250] : [250, 200, 150];
 const retraso = (ms: number) => `--retraso: ${retrasoBase + ms}ms`;
 ---
 
@@ -70,7 +70,7 @@ const retraso = (ms: number) => `--retraso: ${retrasoBase + ms}ms`;
 	}
 
 	[data-modo='carga'] .franja {
-		animation: retirar 1.6s var(--ease-coleccion) var(--retraso, 0ms) forwards;
+		animation: retirar 0.8s var(--ease-coleccion) var(--retraso, 0ms) forwards;
 	}
 
 	@keyframes retirar {
@@ -82,8 +82,8 @@ const retraso = (ms: number) => `--retraso: ${retrasoBase + ms}ms`;
 
 	[data-modo='visible'] .franja {
 		transition:
-			transform 1.6s var(--ease-coleccion) var(--retraso, 0ms),
-			opacity 1.2s var(--ease-ui) var(--retraso, 0ms);
+			transform 0.8s var(--ease-coleccion) var(--retraso, 0ms),
+			opacity 0.6s var(--ease-ui) var(--retraso, 0ms);
 	}
 
 	:global([data-visible]) > .franjas[data-modo='visible'] .franja {

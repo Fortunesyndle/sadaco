@@ -23,7 +23,7 @@ interface Props {
 }
 
 const { etiqueta, lineas, pie, imagen, velo = 45, alto = 'normal', siguiente = '#siguiente', franjas = true } = Astro.props;
-const { retrasoBase = franjas ? 600 : 0 } = Astro.props;
+const { retrasoBase = franjas ? 300 : 0 } = Astro.props;
 const retraso = (ms: number) => `--retraso: ${retrasoBase + ms}ms`;
 const tieneBotones = Astro.slots.has('default');
 ---

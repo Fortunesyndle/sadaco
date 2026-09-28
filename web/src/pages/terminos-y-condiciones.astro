@@ -1,7 +1,7 @@
 ---
 import DocumentoLegal, { type SeccionLegal } from '../components/DocumentoLegal.astro';
 import { empresa } from '../data/empresa';
-import foto from '../assets/fotos/servicio-asistencia.png';
+import foto from '../assets/fotos/portada-terminos.jpg';
 
 const correo = empresa.correo && `<a href="mailto:${empresa.correo}">${empresa.correo}</a>`;
 const contacto = [correo, empresa.telefono].filter(Boolean).join(' · ');

@@ -8,7 +8,7 @@ import ListaFlecha from '../../components/ListaFlecha.astro';
 import Intro from '../../components/Intro.astro';
 import Banner from '../../components/Banner.astro';
 import { servicios, type Servicio } from '../../data/servicios';
-import fotoBanner from '../../assets/fotos/hero-refineria.png';
+import fotoBanner from '../../assets/fotos/banner-soluciones.jpg';
 
 export const getStaticPaths = (() =>
 	servicios.map((servicio) => ({ params: { slug: servicio.slug }, props: { servicio } }))) satisfies GetStaticPaths;
