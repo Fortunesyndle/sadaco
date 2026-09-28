@@ -1,0 +1,101 @@
+---
+// Paneles blancos que siguen la retícula (dos márgenes y tres columnas) y se retiran uno tras otro para armar la foto de fondo.
+
+interface Props {
+	/** "carga": al cargar la página. "visible": cuando la sección que lo contiene recibe data-visible. */
+	modo?: 'carga' | 'visible';
+	/** Hacia dónde se retiran los paneles. */
+	direccion?: 'arriba' | 'abajo';
+	/** Columna que se retira primero. */
+	desde?: 'izquierda' | 'derecha';
+	/** Cubre toda la ventana, encabezado incluido (precarga de Inicio). */
+	fijo?: boolean;
+	retrasoBase?: number;
+}
+
+const { modo = 'visible', direccion = 'arriba', desde = 'izquierda', fijo = false, retrasoBase = 0 } = Astro.props;
+const orden = desde === 'izquierda' ? [300, 400, 500] : [500, 400, 300];
+const retraso = (ms: number) => `--retraso: ${retrasoBase + ms}ms`;
+---
+
+<div
+	class:list={['franjas pointer-events-none inset-0', fijo ? 'fixed z-[60]' : 'absolute']}
+	data-modo={modo}
+	data-direccion={direccion}
+	aria-hidden="true"
+>
+	<div class="franja lado" style={retraso(0)}></div>
+	<div class="franjas-columnas">
+		<div class="franja" style={retraso(orden[0])}></div>
+		<div class="franja max-md:hidden" style={retraso(orden[1])}></div>
+		<div class="franja max-lg:hidden" style={retraso(orden[2])}></div>
+	</div>
+	<div class="franja lado" style={retraso(0)}></div>
+</div>
+
+<style>
+	.franjas {
+		--destino: -101%;
+		--opacidad-final: 1;
+		display: flex;
+	}
+
+	.franjas[data-direccion='abajo'] {
+		--destino: 101%;
+	}
+
+	.franjas[data-modo='visible'] {
+		display: none;
+	}
+
+	:global(.js) .franjas[data-modo='visible'] {
+		display: flex;
+	}
+
+	.lado {
+		flex: 1;
+	}
+
+	.franjas-columnas {
+		display: flex;
+		width: min(1400px, 90vw);
+	}
+
+	.franjas-columnas .franja {
+		flex: 1;
+	}
+
+	.franja {
+		background: #fff;
+	}
+
+	[data-modo='carga'] .franja {
+		animation: retirar 1.6s var(--ease-coleccion) var(--retraso, 0ms) forwards;
+	}
+
+	@keyframes retirar {
+		to {
+			transform: translateY(var(--destino));
+			opacity: var(--opacidad-final);
+		}
+	}
+
+	[data-modo='visible'] .franja {
+		transition:
+			transform 1.6s var(--ease-coleccion) var(--retraso, 0ms),
+			opacity 1.2s var(--ease-ui) var(--retraso, 0ms);
+	}
+
+	:global([data-visible]) > .franjas[data-modo='visible'] .franja {
+		transform: translateY(var(--destino));
+		opacity: var(--opacidad-final);
+	}
+
+	/* Movimiento reducido: los paneles no se desplazan, se desvanecen en el mismo orden. */
+	@media (prefers-reduced-motion: reduce) {
+		.franjas {
+			--destino: 0%;
+			--opacidad-final: 0;
+		}
+	}
+</style>

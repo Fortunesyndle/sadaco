@@ -1,0 +1,140 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import Reticula from './Reticula.astro';
+import EnlaceCircular from './EnlaceCircular.astro';
+import Franjas from './Franjas.astro';
+
+interface Props {
+	etiqueta: string;
+	/** Cada línea entra por separado detrás de su máscara. */
+	lineas: string[];
+	pie?: string;
+	imagen: ImageMetadata;
+	/** Velo de tinta sobre la foto en blanco y negro, en porcentaje. */
+	velo?: 30 | 45;
+	/** "pantalla": llena la primera pantalla y deja a la vista la cinta que va debajo. */
+	alto?: 'completo' | 'pantalla' | 'normal' | 'reducido';
+	/** En milisegundos; en Inicio espera a que termine la precarga. */
+	retrasoBase?: number;
+	siguiente?: string;
+	/** Paneles de la retícula que arman la foto al cargar. Inicio los desactiva porque ya tiene la precarga. */
+	franjas?: boolean;
+}
+
+const { etiqueta, lineas, pie, imagen, velo = 45, alto = 'normal', siguiente = '#siguiente', franjas = true } = Astro.props;
+const { retrasoBase = franjas ? 600 : 0 } = Astro.props;
+const retraso = (ms: number) => `--retraso: ${retrasoBase + ms}ms`;
+const tieneBotones = Astro.slots.has('default');
+---
+
+<section class="portada relative isolate flex overflow-hidden bg-tinta text-white" data-alto={alto} data-salida>
+	<div class="portada-fondo absolute inset-0 -z-20" aria-hidden="true">
+		<Image
+			src={imagen}
+			alt=""
+			widths={[640, 1024, 1600, 2400]}
+			sizes="100vw"
+			loading="eager"
+			fetchpriority="high"
+			class="foto-bn asentar size-full object-cover"
+			style={retraso(0)}
+		/>
+	</div>
+	<div class:list={['absolute inset-0 -z-10', velo === 30 ? 'bg-tinta/30' : 'bg-tinta/45']} aria-hidden="true"></div>
+	<Reticula tono="oscuro" class="-z-10" />
+
+	<div class="portada-contenido contenedor flex flex-col pt-[150px] pb-10 max-[479px]:pt-[118px]">
+		<p class="etiqueta mascara">
+			<span class="entrada block" style={retraso(0)}>{etiqueta}</span>
+		</p>
+
+		<div class="mt-auto pt-16">
+			<h1 class="t-display max-w-[14ch]">
+				{
+					lineas.map((linea, i) => (
+						<span class="mascara pb-[0.06em]">
+							<span class="entrada block" style={retraso(200 + i * 100)}>
+								{linea}
+							</span>
+						</span>
+					))
+				}
+			</h1>
+
+			{
+				tieneBotones && (
+					<div class="mascara mt-10">
+						<div class="entrada flex flex-wrap gap-3" style={retraso(400)}>
+							<slot />
+						</div>
+					</div>
+				)
+			}
+
+			<div class="mt-12 flex items-center gap-10 max-md:mt-10">
+				{pie && <p class="etiqueta linea-etiqueta flex-1 text-white" style={retraso(500)}>{pie}</p>}
+				{!pie && <span class="flex-1"></span>}
+				<div class="max-md:hidden">
+					<EnlaceCircular href={siguiente} etiquetaAccesible="Bajar al contenido" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{franjas && <Franjas modo="carga" direccion="abajo" />}
+</section>
+<div id={siguiente.slice(1)} class="scroll-mt-[90px]"></div>
+
+<style>
+	.portada {
+		min-height: 650px;
+	}
+
+	.portada-fondo {
+		translate: 0 calc(var(--salida, 0) * 30%);
+	}
+
+	.portada-contenido {
+		translate: 0 calc(var(--salida, 0) * -90px);
+		opacity: calc(1 - var(--salida, 0) * 1.6);
+	}
+
+	.portada[data-alto='completo'] {
+		min-height: max(100svh, 650px);
+	}
+
+	/* 120px (90px en móvil): alto de la cinta o de la cinta de anclas que sigue a la portada. */
+	.portada[data-alto='pantalla'] {
+		min-height: max(calc(100svh - 120px), 600px);
+	}
+
+	.portada[data-alto='reducido'] {
+		min-height: 550px;
+	}
+
+	@media (width < 992px) {
+		.portada {
+			min-height: 550px;
+		}
+
+		.portada[data-alto='reducido'] {
+			min-height: 480px;
+		}
+	}
+
+	@media (width < 768px) {
+		.portada,
+		.portada[data-alto='reducido'] {
+			min-height: 450px;
+		}
+
+		.portada[data-alto='completo'] {
+			min-height: max(100svh, 560px);
+		}
+
+		.portada[data-alto='pantalla'] {
+			min-height: max(calc(100svh - 90px), 500px);
+		}
+	}
+</style>

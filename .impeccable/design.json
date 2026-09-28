@@ -1,0 +1,436 @@
+{
+	"schemaVersion": 2,
+	"generatedAt": "2026-09-27T21:43:13.458Z",
+	"title": "Design System: SADACO Venezuela",
+	"extensions": {
+		"colorMeta": {
+			"tinta": {
+				"role": "primary",
+				"displayName": "Tinta Noche",
+				"canonical": "oklch(15.6% 0.030 276.1)",
+				"tonalRamp": [
+					"#080a18",
+					"#202333",
+					"#3b3f50",
+					"#595c6f",
+					"#7b7f93",
+					"#9fa3b8",
+					"#c5c9de",
+					"#e9edff"
+				]
+			},
+			"negro": {
+				"role": "neutral",
+				"displayName": "Negro Profundo",
+				"canonical": "oklch(15.9% 0.000 89.9)",
+				"tonalRamp": [
+					"#0b0b0b",
+					"#242424",
+					"#404040",
+					"#5d5d5d",
+					"#808080",
+					"#a4a4a4",
+					"#cacaca",
+					"#eeeeee"
+				]
+			},
+			"blanco": {
+				"role": "neutral",
+				"displayName": "Blanco Papel",
+				"canonical": "oklch(100.0% 0.000 89.9)",
+				"tonalRamp": [
+					"#0b0b0b",
+					"#242424",
+					"#404040",
+					"#5d5d5d",
+					"#808080",
+					"#a4a4a4",
+					"#cacaca",
+					"#eeeeee"
+				]
+			},
+			"niebla": {
+				"role": "neutral",
+				"displayName": "Niebla",
+				"canonical": "oklch(97.3% 0.009 264.5)",
+				"tonalRamp": [
+					"#090b0f",
+					"#222428",
+					"#3d4044",
+					"#5b5e63",
+					"#7e8086",
+					"#a2a5aa",
+					"#c8cad0",
+					"#ebeef4"
+				]
+			},
+			"contorno": {
+				"role": "neutral",
+				"displayName": "Contorno",
+				"canonical": "oklch(92.7% 0.015 264.5)",
+				"tonalRamp": [
+					"#080b11",
+					"#20242b",
+					"#3c4048",
+					"#595e66",
+					"#7c8089",
+					"#a0a5ae",
+					"#c6cbd4",
+					"#eaeff9"
+				]
+			},
+			"pizarra": {
+				"role": "neutral",
+				"displayName": "Pizarra",
+				"canonical": "oklch(56.1% 0.032 272.2)",
+				"tonalRamp": [
+					"#070a18",
+					"#1f2334",
+					"#3a3f51",
+					"#575d70",
+					"#797f94",
+					"#9da4b9",
+					"#c3cae0",
+					"#e7eeff"
+				]
+			},
+			"foco-campo": {
+				"role": "neutral",
+				"displayName": "Foco de Campo",
+				"canonical": "oklch(89.6% 0.025 263.3)",
+				"tonalRamp": [
+					"#060b16",
+					"#1e2430",
+					"#39404d",
+					"#565e6c",
+					"#788090",
+					"#9ca5b5",
+					"#c2cbdc",
+					"#e6efff"
+				]
+			},
+			"logo-azul": {
+				"role": "brand-logo",
+				"displayName": "Azul Globo",
+				"canonical": "oklch(43.7% 0.171 259.2)",
+				"tonalRamp": [
+					"#000045",
+					"#00126f",
+					"#003597",
+					"#1357bb",
+					"#3f7de0",
+					"#6da4fd",
+					"#9accff",
+					"#c5f1ff"
+				]
+			},
+			"logo-verde": {
+				"role": "brand-logo",
+				"displayName": "Verde Continente",
+				"canonical": "oklch(80.1% 0.188 137.5)",
+				"tonalRamp": [
+					"#001200",
+					"#012e00",
+					"#164e00",
+					"#2d6f00",
+					"#47961c",
+					"#64be3a",
+					"#8ae664",
+					"#b1ff8e"
+				]
+			},
+			"logo-rojo": {
+				"role": "brand-logo",
+				"displayName": "Rojo Venezuela",
+				"canonical": "oklch(54.5% 0.212 23.9)",
+				"tonalRamp": [
+					"#340000",
+					"#5e0000",
+					"#8b0000",
+					"#b80016",
+					"#e3323c",
+					"#ff6866",
+					"#ff9a94",
+					"#ffc6bf"
+				]
+			}
+		},
+		"typographyMeta": {
+			"display": {
+				"displayName": "Display",
+				"purpose": "Titular de portada en dos líneas enmascaradas. 78/64/54/48px según ancho."
+			},
+			"headline": {
+				"displayName": "Headline",
+				"purpose": "Títulos de sección y de banner; frases cortas con punto final."
+			},
+			"title-lg": {
+				"displayName": "Title Large",
+				"purpose": "Subtítulos de contenido: Detalles, Materiales disponibles, Misión."
+			},
+			"title": {
+				"displayName": "Title",
+				"purpose": "Nombres en tarjetas de equipo y mensajes de confirmación."
+			},
+			"title-sm": {
+				"displayName": "Title Small",
+				"purpose": "Títulos de tarjeta de servicio en dos líneas; encabezados del footer."
+			},
+			"list": {
+				"displayName": "List",
+				"purpose": "Filas de lista con flecha: footer, megamenú, enlaces rápidos."
+			},
+			"body-lg": {
+				"displayName": "Body Large",
+				"purpose": "Párrafos generales en Open Sans."
+			},
+			"body": {
+				"displayName": "Body",
+				"purpose": "Descripciones en pizarra; ancho de una columna."
+			},
+			"label": {
+				"displayName": "Label",
+				"purpose": "Etiquetas en mayúsculas sobre cada titular, rótulos de campo, cintas, cargos y fechas."
+			},
+			"nav": {
+				"displayName": "Nav",
+				"purpose": "Enlaces de la barra superior."
+			},
+			"button": {
+				"displayName": "Button",
+				"purpose": "Texto de botones píldora; 9px en pequeños, 12px en envío."
+			}
+		},
+		"shadows": [],
+		"overlays": [
+			{
+				"name": "velo-claro",
+				"value": "rgb(9 11 25 / .15)",
+				"purpose": "Retratos del equipo."
+			},
+			{
+				"name": "velo",
+				"value": "rgb(9 11 25 / .30)",
+				"purpose": "Portada de inicio y banners de categoría."
+			},
+			{
+				"name": "velo-oscuro",
+				"value": "rgb(9 11 25 / .45)",
+				"purpose": "Portadas internas y sección de cita."
+			},
+			{
+				"name": "velo-menu",
+				"value": "rgb(9 11 25 / .50)",
+				"purpose": "Detrás del megamenú."
+			},
+			{
+				"name": "reticula-oscura",
+				"value": "rgb(255 255 255 / .12)",
+				"purpose": "Líneas de retícula sobre fotos y footer."
+			}
+		],
+		"motion": [
+			{
+				"name": "ease-ui",
+				"value": "400ms cubic-bezier(.25,.46,.45,.94)",
+				"purpose": "Botones, ítems de lista, campos."
+			},
+			{
+				"name": "ease-revelado",
+				"value": "1300-1600ms cubic-bezier(.87,0,.13,1)",
+				"purpose": "Entradas con máscara, banners, megamenú, desplegables."
+			},
+			{
+				"name": "ease-coleccion",
+				"value": "800-1300ms cubic-bezier(.83,0,.17,1)",
+				"purpose": "Tarjetas de colección y precarga."
+			},
+			{
+				"name": "ease-asentamiento",
+				"value": "1600-2000ms cubic-bezier(.16,1,.3,1)",
+				"purpose": "Cortinas de sección y contenido de tarjeta."
+			},
+			{
+				"name": "ease-hover",
+				"value": "500-700ms cubic-bezier(.25,.46,.45,.94)",
+				"purpose": "Círculos que crecen y escalas al pasar el cursor."
+			},
+			{
+				"name": "entrada-mascara",
+				"value": "translateY(100%) skewY(10deg) opacity 0 -> 0; etiqueta 0ms, titular 200ms, botón 300ms",
+				"purpose": "Todo texto que entra en pantalla."
+			},
+			{
+				"name": "entrada-coleccion",
+				"value": "translateY(15vh) scale(.9) skewY(5deg) opacity 0 -> 0; escala +500ms",
+				"purpose": "Tarjetas de equipo y noticias."
+			},
+			{
+				"name": "magnetismo",
+				"value": "enlace circular ±24px, texto de botón ±6px",
+				"purpose": "Elementos que siguen al cursor."
+			}
+		],
+		"breakpoints": [
+			{
+				"name": "movil",
+				"value": "479px"
+			},
+			{
+				"name": "movil-horizontal",
+				"value": "767px"
+			},
+			{
+				"name": "tablet",
+				"value": "991px"
+			},
+			{
+				"name": "escritorio-amplio",
+				"value": "1440px"
+			}
+		]
+	},
+	"components": [
+		{
+			"name": "Botón primario",
+			"kind": "button",
+			"refersTo": "button-primary",
+			"description": "Píldora tinta con texto diminuto espaciado; al pasar el cursor se aclara a contorno.",
+			"html": "<a class=\"ds-btn\" href=\"#\">Conocer SADACO</a>",
+			"css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;padding:16px 28px;border:1px solid var(--color-tinta,#090b19);border-radius:100px;background:var(--color-tinta,#090b19);color:#fff;font:400 11px/1.25 Inter,sans-serif;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:all .4s cubic-bezier(.25,.46,.45,.94)}.ds-btn:hover{background:#e2e7f1;border-color:#e2e7f1;color:#090b19}.ds-btn:focus-visible{outline:1px solid #090b19;outline-offset:3px}"
+		},
+		{
+			"name": "Botón contorno claro",
+			"kind": "button",
+			"refersTo": "button-outline-light",
+			"description": "Sobre fotos: borde blanco translúcido; se rellena de tinta.",
+			"html": "<div style=\"background:#1b1e2c;padding:24px\"><a class=\"ds-btn-claro\" href=\"#\">Solicitar cotización</a></div>",
+			"css": ".ds-btn-claro{display:inline-flex;padding:16px 28px;border:1px solid rgb(255 255 255/.75);border-radius:100px;background:transparent;color:#fff;font:400 11px/1.25 Inter,sans-serif;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:all .4s cubic-bezier(.25,.46,.45,.94)}.ds-btn-claro:hover{background:#090b19;border-color:#090b19}.ds-btn-claro:focus-visible{outline:1px solid #fff;outline-offset:3px}"
+		},
+		{
+			"name": "Botón contorno pequeño",
+			"kind": "button",
+			"refersTo": "button-outline",
+			"description": "Sobre blanco o niebla: borde contorno, 9px; se rellena de tinta.",
+			"html": "<a class=\"ds-btn-contorno\" href=\"#\">Ver todo</a>",
+			"css": ".ds-btn-contorno{display:inline-flex;padding:9px 18px;border:1px solid #e2e7f1;border-radius:100px;color:#090b19;font:400 9px/1.25 Inter,sans-serif;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:all .4s cubic-bezier(.25,.46,.45,.94)}.ds-btn-contorno:hover{background:#090b19;border-color:#090b19;color:#fff}.ds-btn-contorno:focus-visible{outline:1px solid #090b19;outline-offset:3px}"
+		},
+		{
+			"name": "Campo de formulario",
+			"kind": "input",
+			"refersTo": "input-field",
+			"description": "Rótulo en Label, campo de 54px con esquina de 2px; foco sin anillo de color.",
+			"html": "<label class=\"ds-campo\"><span>Correo electrónico</span><input type=\"email\" placeholder=\"Su correo\"></label>",
+			"css": ".ds-campo{display:grid;gap:12px;font:400 12px Inter,sans-serif;letter-spacing:4px;text-transform:uppercase;color:#090b19}.ds-campo input{min-height:54px;padding:18px;border:1px solid #e2e7f1;border-radius:2px;background:rgb(255 255 255/.65);font:400 14px 'Open Sans',sans-serif;letter-spacing:0;text-transform:none;color:#090b19;transition:all .4s cubic-bezier(.25,.46,.45,.94)}.ds-campo input::placeholder{color:#6e7488}.ds-campo input:focus{outline:none;background:#fff;border-color:#d4ddee}"
+		},
+		{
+			"name": "Barra de navegación",
+			"kind": "nav",
+			"refersTo": "navbar",
+			"description": "Caja blanca de un tercio con logo y botón de menú; enlaces en mayúsculas a la derecha.",
+			"html": "<nav class=\"ds-nav\"><div class=\"ds-nav-caja\"><span class=\"ds-nav-logo\"></span><button class=\"ds-nav-menu\" aria-label=\"Menú\"><i></i><i></i><i></i></button></div><div class=\"ds-nav-enlaces\"><a href=\"#\">Soluciones</a><a href=\"#\">Productos</a><a href=\"#\">Contacto</a></div></nav>",
+			"css": ".ds-nav{display:flex;justify-content:space-between;height:75px;background:#1b1e2c;padding:0 5%}.ds-nav-caja{display:flex;justify-content:space-between;width:33.33%;min-width:275px;background:#fff}.ds-nav-logo{width:48px;height:48px;margin:13px 24px;border-radius:50%;background:radial-gradient(circle,#7ed957 30%,#004aad 32%)}.ds-nav-menu{display:grid;place-content:center;gap:6px;width:80px;border:0;border-inline:1px solid #f3f6fc;background:none;cursor:pointer}.ds-nav-menu i{display:block;width:22px;height:1px;background:#090b19}.ds-nav-enlaces{display:flex;align-items:center}.ds-nav-enlaces a{position:relative;padding:12px 20px;color:#fff;font:400 14px Inter,sans-serif;letter-spacing:3px;text-transform:uppercase;text-decoration:none}.ds-nav-enlaces a::after{content:'';position:absolute;inset:0;border:1px solid rgb(255 255 255/.12);border-radius:100px;transform:scale(0);opacity:0;transition:all .5s cubic-bezier(.25,.46,.45,.94)}.ds-nav-enlaces a:hover::after{transform:scale(1);opacity:1}"
+		},
+		{
+			"name": "Ítem de lista con flecha",
+			"kind": "custom",
+			"refersTo": "list-item",
+			"description": "Fila de 24px con separador niebla; al pasar el cursor el texto avanza 12px y aparece la flecha.",
+			"html": "<div class=\"ds-lista\"><a href=\"#\"><span>Procura y suministro</span><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></a><a href=\"#\"><span>Asistencia técnica</span><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></a></div>",
+			"css": ".ds-lista{display:grid;border-top:1px solid #f3f6fc}.ds-lista a{display:flex;justify-content:space-between;align-items:center;padding:24px;border-bottom:1px solid #f3f6fc;color:#6e7488;font:400 18px/1.25 Inter,sans-serif;letter-spacing:-.03em;text-decoration:none;transition:color .4s cubic-bezier(.25,.46,.45,.94)}.ds-lista span{transition:transform .6s cubic-bezier(.25,.46,.45,.94)}.ds-lista svg{opacity:0;transform:translateX(-18px);transition:all .4s cubic-bezier(.25,.46,.45,.94) .2s}.ds-lista a:hover{color:#090b19}.ds-lista a:hover span{transform:translateX(12px)}.ds-lista a:hover svg{opacity:1;transform:none}"
+		},
+		{
+			"name": "Tarjeta de servicio",
+			"kind": "card",
+			"refersTo": "card-servicio",
+			"description": "Al pasar el cursor, un círculo niebla crece desde la esquina, el contenido sube 60px y aparece el botón.",
+			"html": "<div class=\"ds-tarjeta\"><span class=\"ds-circulo\"></span><div class=\"ds-tarjeta-cuerpo\"><h3>Procura y<br>suministro</h3><div class=\"ds-foto\"></div><a class=\"ds-btn-contorno\" href=\"#\">Solicitar cotización</a></div></div>",
+			"css": ".ds-tarjeta{position:relative;overflow:hidden;width:300px;padding:36px;background:#fff;border:1px solid #f3f6fc;transition:transform .6s cubic-bezier(.25,.46,.45,.94)}.ds-circulo{position:absolute;top:-40px;right:-40px;width:40px;height:40px;border-radius:50%;background:#f3f6fc;transition:all .7s cubic-bezier(.25,.46,.45,.94)}.ds-tarjeta-cuerpo{position:relative;display:grid;gap:18px;transform:translateY(60px);transition:transform 1.6s cubic-bezier(.16,1,.3,1)}.ds-tarjeta h3{margin:0;font:700 18px/1.33 Inter,sans-serif;color:#090b19}.ds-foto{aspect-ratio:1;background:linear-gradient(135deg,#1b1e2c,#4a4f63)}.ds-tarjeta .ds-btn-contorno{justify-self:start;opacity:0;transform:translateY(100%) skewY(10deg);transition:all .6s cubic-bezier(.25,.46,.45,.94) .3s;display:inline-flex;padding:9px 18px;border:1px solid #e2e7f1;border-radius:100px;color:#090b19;font:400 9px Inter,sans-serif;letter-spacing:3px;text-transform:uppercase;text-decoration:none}.ds-tarjeta:hover{transform:scale(1.05)}.ds-tarjeta:hover .ds-circulo{width:900px;height:900px;top:-300px;right:-300px}.ds-tarjeta:hover .ds-tarjeta-cuerpo{transform:none}.ds-tarjeta:hover .ds-btn-contorno{opacity:1;transform:none}"
+		},
+		{
+			"name": "Enlace circular",
+			"kind": "custom",
+			"refersTo": "hover-link",
+			"description": "Círculo de 148px con borde blanco; se rellena de blanco y escala 1.1. Sigue al cursor ±24px.",
+			"html": "<div style=\"background:#1b1e2c;padding:36px;display:inline-block\"><a class=\"ds-circular\" href=\"#\" aria-label=\"Bajar\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M12 5v14M6 13l6 6 6-6\"/></svg></a></div>",
+			"css": ".ds-circular{display:grid;place-items:center;width:148px;height:148px;border:1px solid #fff;border-radius:50%;color:#fff;opacity:.8;transition:background-color .4s cubic-bezier(.25,.46,.45,.94),color .4s cubic-bezier(.25,.46,.45,.94),opacity .3s,transform .7s cubic-bezier(.25,.46,.45,.94)}.ds-circular:hover{background:#fff;color:#090b19;opacity:1;transform:scale(1.1)}.ds-circular:focus-visible{outline:1px solid #fff;outline-offset:4px}"
+		}
+	],
+	"narrative": {
+		"northStar": "La Retícula del Puerto",
+		"overview": "SADACO Venezuela es una sede de SADACO International, no una marca aparte. Por eso este sistema copia el lenguaje visual de sadacointernational.com: el mismo sitio Webflow, sus mismas proporciones, curvas de movimiento y reglas de color. Solo cambian el idioma (español), el contenido (soluciones y productos de la sede) y el logo (el globo con laureles de International, con Venezuela en rojo). Si una decisión no está descrita aquí, la respuesta correcta es \"lo que haga International\".\n\nLa metáfora es un plano de muelle. Una retícula de tres columnas queda visible como líneas verticales de 1px que recorren toda la página, incluso sobre las fotos. El contenido se amarra a esas líneas: encabezados en la primera columna, botones en la tercera y paneles pálidos que ocupan dos tercios. La interfaz es casi monocromática (tinta casi negra, blanco y un gris azulado muy tenue). Las fotos grandes van en blanco y negro con un velo de tinta, y el único color de marca de toda la página es el logo.\n\nEl movimiento es la personalidad del sitio. Casi todo entra \"desde debajo de una máscara\": el texto sube desde un recorte con una ligera inclinación que se endereza, con curvas exponenciales largas (1,3 a 1,6 s). Los botones y enlaces circulares siguen al cursor como un imán. Las tarjetas se llenan con un círculo que crece desde la esquina. El efecto es sobrio pero caro, como una firma de comercio internacional.",
+		"keyCharacteristics": [
+			"Retícula de 3 columnas con líneas verticales visibles (1px) en toda la página.",
+			"Monocromo: tinta `#090b19`, blanco y niebla `#f3f6fc`. El color vive solo en el logo.",
+			"Fotos de fondo desaturadas con velo de tinta; fotos pequeñas a color y de estudio.",
+			"Títulos Inter semibold con tracking negativo, frases cortas que terminan en punto.",
+			"Etiquetas y botones en mayúsculas con tracking muy abierto (3–4px).",
+			"Formas binarias: rectángulos de esquina viva o píldoras y círculos perfectos. Nada intermedio.",
+			"Plano, sin sombras. La profundidad sale de velos, escalas y cortinas.",
+			"Entradas con máscara, inclinación y curvas `inOutExpo` largas; hovers magnéticos."
+		],
+		"rules": [
+			{
+				"name": "The Logo Is The Only Color Rule",
+				"body": "La interfaz es monocroma. Azul, verde y rojo existen solo dentro del emblema. No hay botones azules, íconos verdes ni acentos rojos. Si algo necesita destacar, se hace con tamaño, con tinta sólida o con un velo, nunca con color.",
+				"section": "colors"
+			},
+			{
+				"name": "The Veil Rule",
+				"body": "Toda foto a sangre lleva encima un velo de tinta (15, 30 o 45%). El texto blanco nunca va directamente sobre una foto sin velo.",
+				"section": "colors"
+			},
+			{
+				"name": "The Full Stop Rule",
+				"body": "Los titulares son frases cortas y afirmativas que terminan en punto: \"Lo hacemos mejor.\", \"Detrás de cada entrega.\", \"Hablemos.\". Nada de preguntas, signos de exclamación ni titulares de más de dos líneas en Display.",
+				"section": "typography"
+			},
+			{
+				"name": "The Label Above Rule",
+				"body": "Todo titular de sección lleva encima una etiqueta en mayúsculas espaciadas (Label), a 18px de separación. Es la firma tipográfica de International y aquí es obligatoria, aunque en otros contextos se considere un recurso gastado.",
+				"section": "typography"
+			},
+			{
+				"name": "The Flat Rule",
+				"body": "Prohibidas las sombras. Una tarjeta se separa del fondo con un filete de 1px en niebla o contorno, o con un cambio de fondo a niebla. Nunca con sombra ni con difuminado.",
+				"section": "elevation"
+			},
+			{
+				"name": "The Curtain Rule",
+				"body": "Una sección oscura o fotográfica no aparece por opacidad: la descubre una cortina blanca que se retira mientras la foto baja de escala.",
+				"section": "elevation"
+			},
+			{
+				"name": "The Masked Entrance Rule",
+				"body": "Ningún texto aparece desvaneciéndose en su lugar. Todo titular, etiqueta o botón entra subiendo desde una máscara, con la inclinación enderezándose.",
+				"section": "components"
+			},
+			{
+				"name": "The Magnet Rule",
+				"body": "Lo circular sigue al cursor: el enlace de 148px se mueve ±24px y el texto de los botones ±6px. En pantallas táctiles no hay magnetismo.",
+				"section": "components"
+			}
+		],
+		"dos": [
+			"Do mantener la retícula de tres columnas visible en todas las secciones y alinear titulares, botones y paneles a sus líneas.",
+			"Do usar solo tinta, blanco, niebla, contorno y pizarra en la interfaz, y dejar el azul, el verde y el rojo dentro del logo.",
+			"Do desaturar las fotos de portada, de banners y de la sección de cita, y cubrirlas con un velo de tinta del 30% (45% en portadas internas).",
+			"Do usar fotos a color solo en tamaños pequeños: productos de estudio sobre fondo oscuro, retratos del equipo y noticias.",
+			"Do poner una etiqueta en Label sobre cada titular de sección y escribir los titulares como frases cortas con punto final.",
+			"Do hacer entrar todo texto con la entrada con máscara y las curvas `inOutExpo` de 1,3–1,6 s.",
+			"Do respetar `prefers-reduced-motion`: sin precarga, sin parallax ni magnetismo, y entradas reducidas a un fundido corto. International no lo hace; la sede sí.",
+			"Do limitar la precarga a la página de inicio y no retrasar el contenido más de ~2 s.",
+			"Do usar el logo 08 (globo con laureles y Venezuela en rojo) en la caja blanca de la barra, a 65px de alto como máximo, y \"SADACO\" como palabra en el footer."
+		],
+		"donts": [
+			"Don't usar sombras, degradados de color, desenfoques ni efectos de vidrio (la barra no lleva `backdrop-filter`).",
+			"Don't redondear fotos, tarjetas ni paneles. Solo los botones son píldoras y solo los círculos son círculos.",
+			"Don't usar botones de color (verde, azul o rojo). El único botón sólido es tinta, o blanco sobre fotos.",
+			"Don't usar Montserrat ni otras familias: solo Inter y Open Sans.",
+			"Don't usar mosaicos tipo bento, tarjetas con esquinas redondeadas ni fondos de color saturado. No existen en el sistema.",
+			"Don't poner texto blanco sobre una foto sin velo de tinta.",
+			"Don't animar texto con simples fundidos, rebotes o curvas elásticas.",
+			"Don't usar más de tres enlaces visibles en la barra. El resto va al megamenú."
+		]
+	}
+}

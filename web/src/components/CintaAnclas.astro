@@ -1,0 +1,108 @@
+---
+interface Props {
+	etiqueta: string;
+	items: { texto: string; href: string }[];
+}
+
+const { etiqueta, items } = Astro.props;
+---
+
+<div class="anclas-centinela" aria-hidden="true"></div>
+<nav class="anclas sticky z-30 border-b border-niebla bg-white" aria-label={etiqueta} data-anclas>
+	<div class="anclas-contenido contenedor flex h-full items-center gap-8">
+		<p class="etiqueta shrink-0 text-pizarra max-lg:hidden">{etiqueta}</p>
+		<ul class="anclas-lista flex h-full min-w-0 flex-1 items-center gap-1 overflow-x-auto">
+			{
+				items.map((i, n) => (
+					<li class:list={['shrink-0', n === 0 && 'ml-auto']}>
+						<a href={i.href} class="anclas-enlace etiqueta">
+							{i.texto}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</nav>
+
+<style>
+	/* Mide siempre 120px; al fijarse, los 72px superiores quedan bajo el menú (90px) y solo se ven 48px. */
+	.anclas {
+		top: 18px;
+		height: 120px;
+	}
+
+	.anclas-contenido {
+		transition: translate 0.6s var(--ease-ui);
+	}
+
+	.anclas[data-fijo] .anclas-contenido {
+		translate: 0 36px;
+	}
+
+	@media (width < 768px) {
+		.anclas {
+			top: 90px;
+			height: 72px;
+		}
+
+		.anclas[data-fijo] .anclas-contenido {
+			translate: none;
+		}
+	}
+
+	@media (width < 480px) {
+		.anclas {
+			top: 72px;
+		}
+	}
+
+	.anclas-lista {
+		scrollbar-width: none;
+	}
+
+	.anclas-enlace {
+		display: block;
+		padding: 8px 14px;
+		border: 1px solid transparent;
+		border-radius: 100px;
+		color: var(--color-pizarra);
+		font-size: 10px;
+		letter-spacing: 2px;
+		transition:
+			border-color 0.4s var(--ease-ui),
+			color 0.4s var(--ease-ui);
+	}
+
+	.anclas-enlace:hover,
+	.anclas-enlace:focus-visible,
+	.anclas-enlace[aria-current='true'] {
+		border-color: var(--color-contorno);
+		color: var(--color-tinta);
+	}
+</style>
+
+<script>
+	document.querySelectorAll<HTMLElement>('[data-anclas]').forEach((barra) => {
+		const centinela = barra.previousElementSibling!;
+		const enlaces = [...barra.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')];
+		new IntersectionObserver(([e]) => {
+			const fijo = !e.isIntersecting && e.boundingClientRect.top < 0;
+			barra.toggleAttribute('data-fijo', fijo);
+			if (!fijo) enlaces.forEach((a) => a.removeAttribute('aria-current'));
+		}).observe(centinela);
+
+		const destinos = new Map(enlaces.map((a) => [document.querySelector(a.hash), a]));
+		const observador = new IntersectionObserver(
+			(entradas) => {
+				for (const e of entradas) {
+					if (!e.isIntersecting) continue;
+					enlaces.forEach((a) => a.removeAttribute('aria-current'));
+					destinos.get(e.target)?.setAttribute('aria-current', 'true');
+				}
+			},
+			{ rootMargin: '-40% 0px -55% 0px' },
+		);
+		destinos.forEach((_, destino) => destino && observador.observe(destino));
+	});
+</script>

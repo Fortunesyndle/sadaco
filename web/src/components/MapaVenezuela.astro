@@ -1,0 +1,135 @@
+---
+import mapa from '../data/mapa-venezuela.json';
+
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+const { x, y } = mapa.ojeda;
+---
+
+<svg
+	viewBox={`0 0 ${mapa.width} ${mapa.height}`}
+	class:list={['mapa h-auto w-full', className]}
+	role="img"
+	aria-labelledby="mapa-titulo"
+>
+	<title id="mapa-titulo">Mapa de Venezuela con la sede de SADACO en Ciudad Ojeda, estado Zulia</title>
+	<defs>
+		<pattern id="rayado" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+			<line x1="0" y1="0" x2="0" y2="7" stroke="#ffffff" stroke-opacity=".35" stroke-width="2" />
+		</pattern>
+		<radialGradient id="desvanecer" cx="46%" cy="50%" r="62%">
+			<stop offset=".45" stop-color="#ffffff" />
+			<stop offset="1" stop-color="#000000" />
+		</radialGradient>
+		<mask id="borde">
+			<rect width={mapa.width} height={mapa.height} fill="url(#desvanecer)" />
+		</mask>
+		<radialGradient id="halo">
+			<stop offset="0" stop-color="#ffffff" stop-opacity=".22" />
+			<stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+		</radialGradient>
+	</defs>
+
+	<g mask="url(#borde)">
+		<path d={mapa.graticule} fill="none" stroke="#ffffff" stroke-opacity=".08" stroke-width="1" />
+		<path d={mapa.land} fill="#ffffff" fill-opacity=".06" stroke="#ffffff" stroke-opacity=".2" stroke-width=".8" />
+	</g>
+
+	<g class="mapa-pais">
+		<path d={mapa.venezuela} fill="#ffffff" fill-opacity=".14" />
+		<path d={mapa.esequibo} fill="#ffffff" fill-opacity=".14" />
+		<path d={mapa.esequibo} fill="url(#rayado)" />
+	</g>
+	<g class="mapa-contorno" fill="none" stroke="#ffffff" stroke-opacity=".75" stroke-width="1.1" stroke-linejoin="round">
+		<path d={mapa.venezuela} pathLength="1" />
+		<path d={mapa.esequibo} pathLength="1" />
+	</g>
+
+	<g transform={`translate(${x} ${y})`}>
+		<circle r="46" fill="url(#halo)" class="mapa-halo" />
+		<g class="mapa-pin">
+			<path
+				d="M0 0 C-3 -7 -11 -12 -11 -21 A11 11 0 1 1 11 -21 C11 -12 3 -7 0 0 Z"
+				fill="#ffffff"
+			/>
+			<circle cy="-21" r="4.2" fill="#090b19" />
+		</g>
+	</g>
+
+	<g class="mapa-etiqueta" transform={`translate(${x + 22} ${y - 62})`} font-family="var(--font-display)">
+		<line x1="-8" y1="30" x2="-20" y2="42" stroke="#ffffff" stroke-opacity=".6" stroke-width="1" />
+		<rect x="-8" y="0" width="150" height="40" fill="#ffffff" />
+		<text x="4" y="17" font-size="13" font-weight="600" fill="#090b19">Ciudad Ojeda</text>
+		<text x="4" y="32" font-size="8.5" letter-spacing="2" fill="#6e7488">SEDE · ZULIA</text>
+	</g>
+</svg>
+
+<style>
+	.mapa-contorno path {
+		stroke-dasharray: 1;
+		stroke-dashoffset: 1;
+		animation: trazar 1.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+	}
+
+	.mapa-pais {
+		opacity: 0;
+		animation: aparecer 0.9s ease-out 0.9s forwards;
+	}
+
+	.mapa-pin {
+		opacity: 0;
+		transform: translateY(-18px);
+		animation: caer 1s var(--ease-asentamiento) 1.6s forwards;
+	}
+
+	.mapa-halo,
+	.mapa-etiqueta {
+		opacity: 0;
+		animation: aparecer 0.6s ease-out 2s forwards;
+	}
+
+	.mapa :global(*) {
+		animation-play-state: paused;
+	}
+
+	.mapa[data-visible] :global(*) {
+		animation-play-state: running;
+	}
+
+	@keyframes trazar {
+		to {
+			stroke-dashoffset: 0;
+		}
+	}
+
+	@keyframes aparecer {
+		to {
+			opacity: 1;
+		}
+	}
+
+	@keyframes caer {
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+</style>
+
+<script>
+	const observador = new IntersectionObserver(
+		(entradas) => {
+			for (const entrada of entradas) {
+				if (entrada.isIntersecting) {
+					entrada.target.setAttribute('data-visible', '');
+					observador.unobserve(entrada.target);
+				}
+			}
+		},
+		{ threshold: 0.35 },
+	);
+	document.querySelectorAll('svg.mapa').forEach((mapa) => observador.observe(mapa));
+</script>

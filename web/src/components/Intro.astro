@@ -1,0 +1,39 @@
+---
+interface Props {
+	etiqueta: string;
+	titulo: string;
+	texto?: string;
+	boton?: { texto: string; href: string };
+	id?: string;
+	class?: string;
+}
+
+const { etiqueta, titulo, texto, boton, id, class: className } = Astro.props;
+---
+
+<div id={id} class:list={['grid gap-y-8 md:grid-cols-3', className]} data-revelar>
+	<div class="md:col-span-2 md:pr-6">
+		<p class="etiqueta mascara"><span class="revelar block">{etiqueta}</span></p>
+		<h2 class="t-headline mascara mt-6 pb-[0.08em]">
+			<span class="revelar block" style="--retraso: 200ms">{titulo}</span>
+		</h2>
+		{
+			texto && (
+				<p class="t-cuerpo mascara mt-6 max-w-[56ch]">
+					<span class="revelar block" style="--retraso: 300ms">
+						{texto}
+					</span>
+				</p>
+			)
+		}
+	</div>
+	{
+		boton && (
+			<div class="mascara flex items-end md:justify-end md:pl-6">
+				<a href={boton.href} class="btn btn-contorno revelar" style="--retraso: 500ms">
+					{boton.texto}
+				</a>
+			</div>
+		)
+	}
+</div>

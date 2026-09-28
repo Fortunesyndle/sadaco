@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PortadaInterna from '../components/PortadaInterna.astro';
+import ListaFlecha from '../components/ListaFlecha.astro';
+import fotoPortada from '../assets/fotos/regulador-gas.jpg';
+---
+
+<BaseLayout title="Página no encontrada">
+	<PortadaInterna etiqueta="Error 404" lineas={['Esta página', 'no existe.']} pie="Revise la dirección" imagen={fotoPortada} alto="reducido">
+		<a href="/" class="btn btn-claro">Ir al inicio</a>
+	</PortadaInterna>
+
+	<section class="seccion">
+		<div class="contenedor grid gap-y-12 md:grid-cols-3">
+			<p class="t-title md:col-span-2 md:pr-6" data-coleccion>
+				Es posible que la dirección esté mal escrita o que la página se haya movido.
+			</p>
+			<div class="md:pl-6" data-coleccion style="--retraso: 150ms">
+				<p class="etiqueta linea-etiqueta">Puede continuar en</p>
+				<ListaFlecha
+					class="mt-8"
+					items={[
+						{ texto: 'Soluciones', href: '/soluciones' },
+						{ texto: 'Productos', href: '/productos' },
+						{ texto: 'Contacto y cotización', href: '/contacto' },
+					]}
+				/>
+			</div>
+		</div>
+	</section>
+</BaseLayout>

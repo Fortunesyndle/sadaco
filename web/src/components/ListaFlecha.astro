@@ -1,0 +1,138 @@
+---
+import Flecha from './Flecha.astro';
+
+export interface ItemLista {
+	texto: string;
+	href?: string;
+	externo?: boolean;
+	actual?: boolean;
+}
+
+interface Props {
+	items: ItemLista[];
+	tono?: 'claro' | 'oscuro';
+	/** Marca cada ítem con un círculo de verificación en lugar de la flecha. */
+	verificacion?: boolean;
+	class?: string;
+}
+
+const { items, tono = 'claro', verificacion = false, class: className } = Astro.props;
+---
+
+<ul class:list={['lista', className]} data-tono={tono} data-lista>
+	{
+		items.map((item, i) => {
+			const Etiqueta = item.href ? 'a' : 'span';
+			return (
+				<li style={`--i: ${i}`}>
+					<Etiqueta
+						class="lista-item"
+						href={item.href}
+						aria-current={item.actual ? 'page' : undefined}
+						{...(item.externo ? { target: '_blank', rel: 'noopener' } : {})}
+					>
+						{verificacion && (
+							<span class="lista-check" aria-hidden="true">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+									<path d="m6 12.5 4 4 8-9" />
+								</svg>
+							</span>
+						)}
+						<span class="lista-texto">{item.texto}</span>
+						{item.href && <Flecha class="lista-flecha" />}
+					</Etiqueta>
+				</li>
+			);
+		})
+	}
+</ul>
+
+<style>
+	.lista {
+		border-top: 1px solid var(--color-niebla);
+	}
+
+	.lista-item {
+		display: flex;
+		align-items: center;
+		gap: 18px;
+		padding: 24px;
+		border-bottom: 1px solid var(--color-niebla);
+		color: var(--color-pizarra);
+		font-family: var(--font-display);
+		font-size: 18px;
+		line-height: 1.25;
+		letter-spacing: -0.03em;
+		transition:
+			color 0.4s var(--ease-ui),
+			padding 0.4s var(--ease-ui);
+	}
+
+	.lista-texto {
+		flex: 1;
+		transition: translate 0.6s var(--ease-ui);
+	}
+
+	.lista-item :global(.lista-flecha) {
+		width: 18px;
+		flex-shrink: 0;
+		opacity: 0;
+		translate: -18px 0;
+		transition:
+			opacity 0.4s var(--ease-ui) 0.2s,
+			translate 0.4s var(--ease-ui) 0.2s;
+	}
+
+	a.lista-item:hover,
+	a.lista-item:focus-visible {
+		color: var(--color-tinta);
+	}
+
+	a.lista-item:hover .lista-texto,
+	a.lista-item:focus-visible .lista-texto {
+		translate: 12px 0;
+	}
+
+	a.lista-item:hover :global(.lista-flecha),
+	a.lista-item:focus-visible :global(.lista-flecha) {
+		opacity: 1;
+		translate: 0 0;
+	}
+
+	.lista-item[aria-current='page'] {
+		padding-left: 36px;
+		color: var(--color-tinta);
+	}
+
+	.lista-check {
+		display: grid;
+		place-items: center;
+		flex-shrink: 0;
+		width: 36px;
+		height: 36px;
+		border: 1px solid var(--color-contorno);
+		border-radius: 50%;
+		background: #fff;
+		color: var(--color-tinta);
+	}
+
+	.lista-check svg {
+		width: 18px;
+	}
+
+	.lista[data-tono='oscuro'] {
+		border-top-color: rgb(255 255 255 / 0.15);
+	}
+
+	[data-tono='oscuro'] .lista-item {
+		padding-block: 19px;
+		border-bottom-color: rgb(255 255 255 / 0.15);
+		color: #fff;
+		font-size: 16px;
+	}
+
+	[data-tono='oscuro'] a.lista-item:hover,
+	[data-tono='oscuro'] a.lista-item:focus-visible {
+		color: #fff;
+	}
+</style>

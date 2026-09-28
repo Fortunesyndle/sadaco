@@ -1,0 +1,142 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+export interface Tarjeta {
+	titulo: string;
+	texto?: string;
+	foto: ImageMetadata;
+	alt: string;
+	href: string;
+}
+
+interface Props {
+	items: Tarjeta[];
+	boton?: string;
+}
+
+const { items, boton = 'Ver más' } = Astro.props;
+---
+
+<ul class="rejilla grid border border-niebla bg-niebla sm:grid-cols-2 lg:grid-cols-3">
+	{
+		items.map((t, i) => (
+			<li class="flex bg-white" data-tarjeta style={`--retraso: ${(i % 3) * 150}ms`}>
+				<a href={t.href} class="tarjeta">
+					<span class="tarjeta-circulo" aria-hidden="true" />
+					<span class="tarjeta-foto revelar-foto">
+						<Image src={t.foto} alt={t.alt} widths={[400, 700, 1000]} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw" class="foto-color size-full object-cover" />
+					</span>
+					<span class="tarjeta-cuerpo">
+						<span class="t-title block">{t.titulo}</span>
+						{t.texto && <span class="t-cuerpo mt-3 block">{t.texto}</span>}
+					</span>
+					<span class="tarjeta-boton btn btn-sm" aria-hidden="true">
+						{boton}
+					</span>
+				</a>
+			</li>
+		))
+	}
+	{
+		Astro.slots.has('default') && (
+			<li class="flex bg-white" data-tarjeta style={`--retraso: ${(items.length % 3) * 150}ms`}>
+				<slot />
+			</li>
+		)
+	}
+</ul>
+
+<style>
+	.rejilla {
+		gap: 1px;
+	}
+
+	.tarjeta {
+		position: relative;
+		isolation: isolate;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		padding: 24px 24px 30px;
+		overflow: hidden;
+	}
+
+	.tarjeta-circulo {
+		position: absolute;
+		top: 0;
+		right: 0;
+		z-index: -1;
+		width: 6vw;
+		aspect-ratio: 1;
+		border-radius: 50%;
+		background: var(--color-niebla);
+		translate: 50% -50%;
+		scale: 0;
+		transition: scale 1.6s var(--ease-asentamiento);
+	}
+
+	.tarjeta-foto {
+		display: block;
+		aspect-ratio: 1;
+		overflow: hidden;
+		background: var(--color-niebla);
+	}
+
+	.tarjeta-foto :global(img) {
+		transition:
+			scale 1.6s var(--ease-asentamiento),
+			filter 1.6s var(--ease-asentamiento);
+	}
+
+	.tarjeta-cuerpo {
+		display: block;
+		padding-top: 30px;
+		transition: translate 1.6s var(--ease-asentamiento);
+	}
+
+	.tarjeta-boton {
+		align-self: flex-start;
+		margin-top: auto;
+		translate: 0 0;
+	}
+
+	.tarjeta-cuerpo + .tarjeta-boton {
+		margin-top: 30px;
+	}
+
+	@media (hover: hover) {
+		.tarjeta-boton {
+			opacity: 0;
+			translate: 0 24px;
+			transition:
+				opacity 0.6s var(--ease-asentamiento),
+				translate 1.6s var(--ease-asentamiento),
+				background-color 0.4s var(--ease-ui),
+				color 0.4s var(--ease-ui);
+		}
+
+		.tarjeta:hover .tarjeta-circulo,
+		.tarjeta:focus-visible .tarjeta-circulo {
+			scale: 20;
+		}
+
+		.tarjeta:hover .tarjeta-foto :global(img),
+		.tarjeta:focus-visible .tarjeta-foto :global(img) {
+			scale: 1.05;
+			filter: none;
+		}
+
+		.tarjeta:hover .tarjeta-cuerpo,
+		.tarjeta:focus-visible .tarjeta-cuerpo {
+			translate: 0 -12px;
+		}
+
+		.tarjeta:hover .tarjeta-boton,
+		.tarjeta:focus-visible .tarjeta-boton {
+			opacity: 1;
+			translate: 0 0;
+			transition-delay: 0.3s, 0.3s, 0s, 0s;
+		}
+	}
+</style>

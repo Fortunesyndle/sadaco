@@ -1,0 +1,106 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import Reticula from './Reticula.astro';
+import Franjas from './Franjas.astro';
+
+interface Props {
+	etiqueta: string;
+	titulo: string;
+	imagen: ImageMetadata;
+	boton?: { texto: string; href: string };
+	/** Lado de la primera columna que se retira al armar la foto. */
+	lado?: 'izquierda' | 'derecha';
+	/** 45 para fotos con el centro cargado, donde va el texto. */
+	velo?: 30 | 45;
+	alto?: 'normal' | 'grande';
+	/** Punto de la foto que se conserva al recortar, como object-position. */
+	encuadre?: string;
+	id?: string;
+}
+
+const { etiqueta, titulo, imagen, boton, lado = 'izquierda', velo = 30, alto = 'normal', encuadre = 'center', id } = Astro.props;
+---
+
+<section
+	id={id}
+	class="banner relative isolate flex scroll-mt-[138px] overflow-hidden bg-tinta text-white"
+	data-cortina
+	data-lado={lado}
+	data-alto={alto}
+	data-progreso
+>
+	<div class="banner-fondo absolute inset-x-0 -z-20" aria-hidden="true">
+		<Image
+			src={imagen}
+			alt=""
+			widths={[640, 1024, 1600, 2400]}
+			sizes="100vw"
+			class="banner-foto foto-bn size-full object-cover"
+			style={`object-position: ${encuadre}`}
+		/>
+	</div>
+	<div class:list={['absolute inset-0 -z-10', velo === 45 ? 'bg-tinta/45' : 'bg-tinta/30']} aria-hidden="true"></div>
+	<Reticula tono="oscuro" class="-z-10" />
+
+	<div class="contenedor flex flex-col items-center justify-center py-20 text-center" data-revelar>
+		<p class="etiqueta mascara"><span class="revelar block" style="--retraso: 900ms">{etiqueta}</span></p>
+		<h2 class="t-headline mascara mt-6 max-w-[20ch] pb-[0.08em]">
+			<span class="revelar block" style="--retraso: 1050ms">{titulo}</span>
+		</h2>
+		{
+			boton && (
+				<div class="mascara mt-10 p-1">
+					<a href={boton.href} class="btn btn-claro revelar" style="--retraso: 1200ms">
+						{boton.texto}
+					</a>
+				</div>
+			)
+		}
+	</div>
+
+	<Franjas desde={lado} />
+</section>
+
+<style>
+	.banner {
+		min-height: 400px;
+	}
+
+	.banner[data-alto='grande'] {
+		min-height: 640px;
+	}
+
+	@media (width < 992px) {
+		.banner[data-alto='grande'] {
+			min-height: 520px;
+		}
+	}
+
+	@media (width < 768px) {
+		.banner[data-alto='grande'] {
+			min-height: 440px;
+		}
+	}
+
+	.banner-fondo {
+		top: -8%;
+		bottom: -8%;
+		translate: 0 calc((var(--progreso, 0.5) - 0.5) * -12%);
+	}
+
+	:global(.js) .banner :global(.banner-foto) {
+		scale: 1.2;
+		transition: scale 2.2s var(--ease-asentamiento) 300ms;
+	}
+
+	:global(.js) .banner[data-visible] :global(.banner-foto) {
+		scale: 1;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.js) .banner :global(.banner-foto) {
+			scale: 1;
+		}
+	}
+</style>

@@ -1,0 +1,105 @@
+---
+import DocumentoLegal, { type SeccionLegal } from '../components/DocumentoLegal.astro';
+import { empresa } from '../data/empresa';
+import foto from '../assets/fotos/servicio-asistencia.png';
+
+const correo = empresa.correo && `<a href="mailto:${empresa.correo}">${empresa.correo}</a>`;
+const contacto = [correo, empresa.telefono].filter(Boolean).join(' · ');
+
+const secciones: SeccionLegal[] = [
+	{
+		titulo: 'Aceptación',
+		parrafos: [
+			'Al acceder a este sitio web y utilizarlo, usted acepta estos términos y condiciones. Si no está de acuerdo con ellos, le pedimos que no utilice el sitio.',
+		],
+	},
+	{
+		titulo: 'Identificación de la empresa',
+		parrafos: ['Este sitio web pertenece a:'],
+		lista: [
+			`<strong>Razón social:</strong> ${empresa.nombre}`,
+			...(empresa.rif ? [`<strong>RIF:</strong> ${empresa.rif}`] : []),
+			`<strong>Domicilio:</strong> ${empresa.direccion}, ${empresa.ciudad}`,
+			...(contacto ? [`<strong>Contacto:</strong> ${contacto}`] : []),
+		],
+	},
+	{
+		titulo: 'Uso del sitio',
+		parrafos: ['El usuario se compromete a utilizar el sitio de forma lícita y de buena fe. En particular, se compromete a no:'],
+		lista: [
+			'Intentar acceder sin autorización a sistemas, datos o áreas restringidas del sitio.',
+			'Introducir programas maliciosos o realizar acciones que afecten su funcionamiento o seguridad.',
+			'Enviar a través del formulario información falsa, de terceros sin su autorización o contenido ilícito.',
+			'Usar el contenido del sitio con fines distintos a conocer los servicios y productos de la empresa.',
+		],
+	},
+	{
+		titulo: 'Información publicada',
+		parrafos: [
+			'La información sobre soluciones, productos, marcas y especificaciones técnicas tiene carácter referencial y puede cambiar sin previo aviso. Las fotografías son ilustrativas y no representan necesariamente el equipo o material exacto que se suministra.',
+			'Nada de lo publicado en el sitio constituye una oferta comercial vinculante. Las características, disponibilidad, precios y plazos se confirman en cada propuesta.',
+		],
+	},
+	{
+		titulo: 'Solicitudes de cotización',
+		parrafos: [
+			'Enviar una solicitud a través del sitio no genera ninguna obligación contractual para el usuario ni para la empresa. Toda relación comercial se rige por la propuesta técnica y comercial aceptada, la orden de compra o el contrato que las partes suscriban.',
+		],
+	},
+	{
+		titulo: 'Propiedad intelectual',
+		parrafos: [
+			`Los textos, el diseño, la organización del contenido, el logotipo y demás signos distintivos de ${empresa.nombre} están protegidos por la Ley sobre el Derecho de Autor y la Ley de Propiedad Industrial. No se permite su reproducción, distribución o modificación sin autorización previa y por escrito.`,
+			'Las marcas y nombres de fabricantes que se mencionan pertenecen a sus respectivos titulares y se citan solo con fines informativos.',
+		],
+	},
+	{
+		titulo: 'Enlaces a sitios de terceros',
+		parrafos: [
+			'El sitio incluye enlaces y contenido de terceros, como mapas de OpenStreetMap o el sitio de SADACO International. La empresa no controla esos sitios ni se hace responsable de su contenido ni de sus políticas.',
+		],
+	},
+	{
+		titulo: 'Limitación de responsabilidad',
+		parrafos: [
+			'La empresa procura que la información del sitio sea exacta y esté actualizada, y que el sitio funcione sin interrupciones. Sin embargo, no garantiza la ausencia de errores ni se hace responsable de los daños que puedan derivarse del uso de la información publicada, de interrupciones del servicio o de fallas técnicas ajenas a su control.',
+		],
+	},
+	{
+		titulo: 'Protección de datos personales',
+		parrafos: [
+			'El tratamiento de los datos que usted envía a través del sitio se describe en nuestra <a href="/politica-de-privacidad">política de privacidad</a>.',
+		],
+	},
+	{
+		titulo: 'Modificaciones',
+		parrafos: [
+			'La empresa puede modificar estos términos en cualquier momento. La versión vigente es la publicada en esta página, con su fecha de última actualización.',
+		],
+	},
+	{
+		titulo: 'Ley aplicable y jurisdicción',
+		parrafos: [
+			'Estos términos se rigen por las leyes de la República Bolivariana de Venezuela. Cualquier controversia se someterá a los tribunales competentes de la Circunscripción Judicial del estado Zulia, salvo que la ley disponga otra cosa.',
+		],
+	},
+	{
+		titulo: 'Contacto',
+		parrafos: [
+			correo
+				? `Para cualquier consulta sobre estos términos puede escribirnos a ${correo}${empresa.telefono ? ` o llamarnos al ${empresa.telefono}` : ''}.`
+				: 'Para cualquier consulta sobre estos términos puede escribirnos a través del <a href="/contacto">formulario de contacto</a>.',
+		],
+	},
+];
+---
+
+<DocumentoLegal
+	titulo="Términos y condiciones"
+	descripcion={`Términos y condiciones de uso del sitio web de ${empresa.nombre}.`}
+	lineas={['Términos', 'y condiciones.']}
+	imagen={foto}
+	actualizado="27 de septiembre de 2026"
+	introduccion="Estas condiciones regulan el uso de este sitio web y la información que en él publicamos."
+	secciones={secciones}
+/>

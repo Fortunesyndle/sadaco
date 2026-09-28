@@ -1,0 +1,37 @@
+---
+interface Props {
+	items: string[];
+}
+
+const { items } = Astro.props;
+const repetidos = Array.from({ length: Math.max(4, Math.ceil(16 / items.length)) }, () => items).flat();
+---
+
+<div class="cinta overflow-hidden bg-niebla" data-progreso aria-hidden="true">
+	<div class="cinta-pista flex h-full w-max items-center">
+		{
+			repetidos.map((texto) => (
+				<span class="etiqueta flex items-center whitespace-nowrap">
+					<span class="px-9">{texto}</span>
+					<i class="size-1 rounded-full bg-tinta" />
+				</span>
+			))
+		}
+	</div>
+</div>
+
+<style>
+	.cinta {
+		height: 120px;
+	}
+
+	.cinta-pista {
+		translate: calc(var(--progreso, 0) * -40%) 0;
+	}
+
+	@media (width < 768px) {
+		.cinta {
+			height: 90px;
+		}
+	}
+</style>

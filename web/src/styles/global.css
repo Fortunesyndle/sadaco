@@ -1,27 +1,428 @@
 @import "tailwindcss";
 
+/* Sistema espejo de sadacointernational.com: ver DESIGN.md en la raíz del proyecto. */
+
 @theme inline {
-  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
 @theme {
-  /* Colores exactos del logo de SADACO International */
-  --color-sadaco-azul: #004aad;
-  --color-sadaco-verde: #7ed957;
+  --color-tinta: #090b19;
+  --color-negro: #0d0d0d;
+  --color-niebla: #f3f6fc;
+  --color-contorno: #e2e7f1;
+  --color-pizarra: #6e7488;
+  --color-foco-campo: #d4ddee;
 
-  /* Colores de los logotipos de SADACO C.A. */
-  --color-sadaco-marino: #0a2e6e;
-  --color-sadaco-verde-oscuro: #139058;
+  --ease-ui: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-revelado: cubic-bezier(0.87, 0, 0.13, 1);
+  --ease-coleccion: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-asentamiento: cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-  --color-venezuela-rojo: #cf142b;
+@utility contenedor {
+  width: 100%;
+  max-width: calc(1400px + 10vw);
+  margin-inline: auto;
+  padding-inline: 5vw;
+}
+
+@utility seccion {
+  padding-block: 120px;
+
+  @media (width < 992px) {
+    padding-block: 80px;
+  }
+
+  @media (width < 768px) {
+    padding-block: 60px;
+  }
+}
+
+@utility seccion-compacta {
+  padding-block: 60px;
 }
 
 @layer base {
   html {
-    @apply scroll-smooth antialiased;
+    @apply antialiased;
   }
 
   body {
-    @apply bg-white font-sans text-slate-800;
+    @apply bg-white font-sans text-tinta;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display text-balance;
+    margin: 0;
+  }
+
+  p {
+    @apply text-pretty;
+  }
+
+  :focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  .etiqueta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .t-display {
+    font-family: var(--font-display);
+    font-size: 78px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
+
+    @media (width < 992px) { font-size: 64px; }
+    @media (width < 768px) { font-size: 54px; }
+    @media (width < 480px) { font-size: 44px; }
+  }
+
+  .t-headline {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+
+    @media (width < 768px) { font-size: 42px; }
+    @media (width < 480px) { font-size: 34px; }
+  }
+
+  .t-title-lg {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.25;
+
+    @media (width < 480px) { font-size: 28px; }
+  }
+
+  .t-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.03em;
+  }
+
+  .t-title-sm {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.33;
+  }
+
+  .t-cuerpo {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-pizarra);
+  }
+
+  /* Botones píldora; el texto va en .btn-texto para el efecto imán. Al pasar el cursor, --relleno sube desde abajo. */
+  .btn {
+    --relleno: var(--color-contorno);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 28px;
+    border: 1px solid var(--color-tinta);
+    border-radius: 100px;
+    background: var(--color-tinta);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 11px;
+    line-height: 1.25;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-align: center;
+    white-space: nowrap;
+    transition:
+      color 0.5s var(--ease-ui),
+      border-color 0.5s var(--ease-ui);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      z-index: -1;
+      border-radius: inherit;
+      background: var(--relleno);
+      transform: translateY(101%);
+      transition: transform 0.7s var(--ease-asentamiento);
+    }
+
+    &:hover {
+      border-color: var(--color-contorno);
+      color: var(--color-tinta);
+    }
+
+    &:hover::before {
+      transform: none;
+    }
+  }
+
+  .btn-claro {
+    --relleno: #fff;
+    border-color: rgb(255 255 255 / 0.75);
+    background: transparent;
+    color: #fff;
+
+    &:hover {
+      border-color: #fff;
+      color: var(--color-tinta);
+    }
+  }
+
+  .btn-contorno {
+    --relleno: var(--color-tinta);
+    border-color: var(--color-contorno);
+    background: transparent;
+    color: var(--color-tinta);
+
+    &:hover {
+      border-color: var(--color-tinta);
+      color: #fff;
+    }
+  }
+
+  .btn-blanco {
+    border-color: #fff;
+    background: #fff;
+    color: var(--color-tinta);
+
+    &:hover {
+      border-color: var(--color-contorno);
+    }
+  }
+
+  .btn-sm {
+    padding: 9px 18px;
+    font-size: 9px;
+  }
+
+  .btn-texto {
+    display: block;
+    translate: var(--iman-x, 0) var(--iman-y, 0);
+    transition: translate 0.4s var(--ease-ui);
+  }
+
+  /* Fotos grandes de fondo: blanco y negro. */
+  .foto-bn {
+    filter: grayscale(1) contrast(1.05);
+  }
+
+  /* Fotos pequeñas: color contenido para que ningún tono compita con el logo. */
+  .foto-color {
+    filter: saturate(0.45) contrast(1.02);
+    transition: filter 1.6s var(--ease-asentamiento);
+  }
+
+  .mascara {
+    display: block;
+    overflow: hidden;
+  }
+
+  /* Filete inferior de una etiqueta con línea horizontal. */
+  .linea-etiqueta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    &::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.2;
+    }
+  }
+}
+
+/* Entradas con máscara: solo se ocultan si hay JavaScript para revelarlas. */
+.js [data-revelar] .revelar {
+  transform: translateY(100%) skewY(10deg);
+  opacity: 0;
+  transition:
+    transform 1.6s var(--ease-revelado),
+    opacity 1.6s var(--ease-revelado);
+  transition-delay: var(--retraso, 0ms);
+}
+
+.js [data-revelar][data-visible] .revelar {
+  transform: none;
+  opacity: 1;
+}
+
+.js [data-coleccion] {
+  transform: translateY(15vh) skewY(5deg);
+  scale: 0.9;
+  opacity: 0;
+  transition:
+    transform 1s var(--ease-coleccion) var(--retraso, 0ms),
+    opacity 1.3s var(--ease-coleccion) var(--retraso, 0ms),
+    scale 1.3s var(--ease-coleccion) calc(var(--retraso, 0ms) + 500ms);
+}
+
+.js [data-coleccion][data-visible] {
+  transform: none;
+  scale: 1;
+  opacity: 1;
+}
+
+.js [data-tarjeta] {
+  transform: translateY(80px) skewY(10deg);
+  opacity: 0;
+  transition:
+    transform 1.6s var(--ease-revelado) var(--retraso, 0ms),
+    opacity 1s var(--ease-revelado) var(--retraso, 0ms);
+}
+
+.js [data-tarjeta][data-visible] {
+  transform: none;
+  opacity: 1;
+}
+
+/* Entrada de portada al cargar la página. */
+@keyframes entrada {
+  from {
+    transform: translateY(100%) skewY(10deg);
+    opacity: 0;
+  }
+}
+
+.entrada {
+  animation: entrada 1.6s var(--ease-revelado) var(--retraso, 0ms) backwards;
+}
+
+@keyframes asentar {
+  from {
+    scale: 1.2;
+  }
+}
+
+/* Acercamiento lento y continuo de las fotos de portada después de asentarse. */
+@keyframes respirar {
+  to {
+    scale: 1.08;
+  }
+}
+
+.asentar {
+  animation:
+    asentar 1.6s var(--ease-ui) var(--retraso, 0ms) backwards,
+    respirar 24s ease-in-out calc(var(--retraso, 0ms) + 1.6s) infinite alternate;
+}
+
+/* Filete de .linea-etiqueta: se dibuja de izquierda a derecha al aparecer. */
+.js .linea-etiqueta::after {
+  transform-origin: left;
+  transition: transform 1.4s var(--ease-revelado) calc(var(--retraso, 0ms) + 200ms);
+}
+
+.js .linea-etiqueta:not([data-visible])::after {
+  transform: scaleX(0);
+}
+
+/* Foto que se descubre de abajo hacia arriba mientras se aleja. */
+.js .revelar-foto {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.4s var(--ease-revelado) var(--retraso, 0ms);
+}
+
+:where(.js .revelar-foto) img {
+  scale: 1.3;
+  transition: scale 1.8s var(--ease-asentamiento) var(--retraso, 0ms);
+}
+
+.js [data-visible] .revelar-foto,
+.js .revelar-foto[data-visible] {
+  clip-path: inset(0);
+}
+
+.js [data-visible] .revelar-foto img,
+.js .revelar-foto[data-visible] img {
+  scale: 1;
+}
+
+/* Listas con data-lista: cada ítem entra un poco después del anterior (--i lo pone el componente). */
+.js [data-lista] > li {
+  opacity: 0;
+  translate: 0 16px;
+  transition:
+    opacity 0.8s var(--ease-ui),
+    translate 1s var(--ease-asentamiento);
+  transition-delay: calc(var(--retraso, 0ms) + var(--i, 0) * 70ms);
+}
+
+.js [data-lista][data-visible] > li {
+  opacity: 1;
+  translate: 0 0;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Movimiento reducido: sin desplazamientos, escalas ni parallax; se conservan los fundidos. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .js [data-revelar] .revelar,
+  .js [data-coleccion],
+  .js [data-tarjeta],
+  .js [data-lista] > li {
+    transform: none !important;
+    translate: none !important;
+    scale: none !important;
+    transition: opacity 0.8s var(--ease-ui) var(--retraso, 0ms);
+  }
+
+  .entrada {
+    animation-name: aparecer;
+  }
+
+  .asentar {
+    animation: none;
+  }
+
+  .js .revelar-foto {
+    clip-path: none;
+    opacity: 0;
+    transition: opacity 0.8s var(--ease-ui) var(--retraso, 0ms);
+  }
+
+  .js [data-visible] .revelar-foto,
+  .js .revelar-foto[data-visible] {
+    opacity: 1;
+  }
+
+  .js .revelar-foto img {
+    scale: none;
+  }
+
+  .btn-texto {
+    translate: none;
   }
 }

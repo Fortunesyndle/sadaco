@@ -1,0 +1,125 @@
+---
+import type { ImageMetadata } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PortadaInterna from './PortadaInterna.astro';
+
+export interface SeccionLegal {
+	titulo: string;
+	/** Admiten HTML en línea (enlaces, negritas). */
+	parrafos: string[];
+	lista?: string[];
+}
+
+interface Props {
+	titulo: string;
+	descripcion: string;
+	lineas: string[];
+	imagen: ImageMetadata;
+	actualizado: string;
+	introduccion: string;
+	secciones: SeccionLegal[];
+}
+
+const { titulo, descripcion, lineas, imagen, actualizado, introduccion, secciones } = Astro.props;
+const ancla = (i: number) => `seccion-${i + 1}`;
+---
+
+<BaseLayout title={titulo} description={descripcion}>
+	<PortadaInterna etiqueta="Información legal" lineas={lineas} pie={`Última actualización: ${actualizado}`} imagen={imagen} alto="reducido" />
+
+	<section class="seccion">
+		<div class="contenedor grid gap-y-14 lg:grid-cols-3">
+			<nav aria-label="Contenido del documento" class="max-lg:hidden lg:pr-6">
+				<div class="lg:sticky lg:top-[138px]" data-coleccion>
+					<p class="etiqueta linea-etiqueta">Contenido</p>
+					<ol class="indice mt-8 border-t border-niebla">
+						{
+							secciones.map((s, i) => (
+								<li>
+									<a href={`#${ancla(i)}`} class="indice-enlace">
+										<span class="etiqueta w-6 shrink-0 text-pizarra">{String(i + 1).padStart(2, '0')}</span>
+										<span>{s.titulo}</span>
+									</a>
+								</li>
+							))
+						}
+					</ol>
+				</div>
+			</nav>
+
+			<article class="documento lg:col-span-2 lg:pl-6">
+				<p class="t-title max-w-[40ch]" data-coleccion set:html={introduccion} />
+				{
+					secciones.map((s, i) => (
+						<section id={ancla(i)} class="scroll-mt-[120px] border-t border-niebla pt-10" data-coleccion>
+							<h2 class="t-title-lg">
+								<span class="etiqueta mr-4 align-middle text-pizarra">{String(i + 1).padStart(2, '0')}</span>
+								{s.titulo}.
+							</h2>
+							{s.parrafos.map((p) => (
+								<p class="t-cuerpo mt-5 max-w-[68ch]" set:html={p} />
+							))}
+							{s.lista && (
+								<ul class="mt-5 max-w-[68ch] space-y-3">
+									{s.lista.map((item) => (
+										<li class="t-cuerpo flex gap-4">
+											<i class="vineta" aria-hidden="true" />
+											<span set:html={item} />
+										</li>
+									))}
+								</ul>
+							)}
+						</section>
+					))
+				}
+			</article>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.documento {
+		display: grid;
+		gap: 56px;
+	}
+
+	.documento :global(a) {
+		color: var(--color-tinta);
+		text-decoration: underline;
+		text-underline-offset: 4px;
+	}
+
+	.documento :global(strong) {
+		color: var(--color-tinta);
+		font-weight: 600;
+	}
+
+	.vineta {
+		width: 4px;
+		height: 4px;
+		flex-shrink: 0;
+		margin-top: 12px;
+		border-radius: 50%;
+		background: var(--color-tinta);
+	}
+
+	.indice-enlace {
+		display: flex;
+		gap: 12px;
+		padding-block: 14px;
+		border-bottom: 1px solid var(--color-niebla);
+		color: var(--color-pizarra);
+		font-family: var(--font-display);
+		font-size: 15px;
+		line-height: 1.35;
+		transition:
+			color 0.4s var(--ease-ui),
+			padding 0.5s var(--ease-asentamiento);
+	}
+
+	.indice-enlace:hover,
+	.indice-enlace:focus-visible {
+		padding-left: 8px;
+		color: var(--color-tinta);
+	}
+</style>

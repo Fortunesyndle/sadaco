@@ -12,9 +12,17 @@ export default defineConfig({
   fonts: [
     {
       provider: fontProviders.fontsource(),
-      name: 'Montserrat',
-      cssVariable: '--font-montserrat',
-      weights: ['100 900'],
+      name: 'Inter',
+      cssVariable: '--font-inter',
+      weights: ['300 700'],
+      styles: ['normal'],
+      subsets: ['latin'],
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: 'Open Sans',
+      cssVariable: '--font-open-sans',
+      weights: ['300 800'],
       styles: ['normal'],
       subsets: ['latin'],
     },
@@ -24,5 +32,5 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
-  integrations: [sitemap()]
+  integrations: [sitemap({ filter: (page) => !page.includes('/contacto/gracias') })]
 });

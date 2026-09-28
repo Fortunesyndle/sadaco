@@ -1,0 +1,86 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PortadaInterna from '../../components/PortadaInterna.astro';
+import Cinta from '../../components/Cinta.astro';
+import Detalles from '../../components/Detalles.astro';
+import ListaFlecha from '../../components/ListaFlecha.astro';
+import Intro from '../../components/Intro.astro';
+import Banner from '../../components/Banner.astro';
+import { servicios, type Servicio } from '../../data/servicios';
+import fotoBanner from '../../assets/fotos/hero-refineria.png';
+
+export const getStaticPaths = (() =>
+	servicios.map((servicio) => ({ params: { slug: servicio.slug }, props: { servicio } }))) satisfies GetStaticPaths;
+
+interface Props {
+	servicio: Servicio;
+}
+
+const { servicio } = Astro.props;
+const cotizar = `/contacto?servicio=${servicio.slug}`;
+---
+
+<BaseLayout title={servicio.titulo} description={servicio.resumen}>
+	<PortadaInterna etiqueta="Soluciones" lineas={[`${servicio.titulo}.`]} pie={servicio.resumen} imagen={servicio.foto} alto="pantalla">
+		<a href={cotizar} class="btn btn-claro">Solicitar cotización</a>
+	</PortadaInterna>
+
+	<Cinta items={servicio.incluye} />
+
+	<section class="seccion">
+		<div class="contenedor">
+			<Detalles>
+				<Fragment slot="a">
+					<p class="etiqueta linea-etiqueta">Detalles</p>
+					<p class="t-title mt-8">{servicio.resumen}</p>
+					<p class="t-cuerpo mt-5">{servicio.descripcion}</p>
+					<p class="t-cuerpo mt-5">
+						Podemos participar bajo distintos esquemas de asistencia y contratación, según los requerimientos técnicos,
+						operativos y contractuales de su proyecto.
+					</p>
+				</Fragment>
+				<Fragment slot="b">
+					<p class="etiqueta linea-etiqueta">Qué incluye</p>
+					<ListaFlecha class="mt-8" items={servicio.incluye.map((texto) => ({ texto }))} verificacion />
+				</Fragment>
+				<Fragment slot="lateral">
+					<p class="etiqueta linea-etiqueta">Otras soluciones</p>
+					<nav aria-label="Otras soluciones">
+						<ListaFlecha
+							class="mt-8"
+							items={servicios.map((s) => ({ texto: s.titulo, href: `/soluciones/${s.slug}`, actual: s.slug === servicio.slug }))}
+						/>
+					</nav>
+					<a href={cotizar} class="btn mt-10">Solicitar cotización</a>
+				</Fragment>
+			</Detalles>
+		</div>
+	</section>
+
+	{
+		servicio.etapas && (
+			<section class="seccion bg-niebla">
+				<div class="contenedor">
+					<Intro etiqueta="Etapas" titulo="De la ingeniería a la operación." />
+					<ol class="mt-16 grid gap-px border border-contorno bg-contorno sm:grid-cols-2 lg:grid-cols-4">
+						{servicio.etapas.map((e, i) => (
+							<li class="bg-white p-6 pb-[30px]" data-tarjeta style={`--retraso: ${i * 150}ms`}>
+								<p class="etiqueta">Etapa 0{i + 1}</p>
+								<h3 class="t-title mt-20">{e.titulo}</h3>
+								<p class="t-cuerpo mt-3">{e.texto}</p>
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	<Banner
+		etiqueta="Cotización"
+		titulo="¿Necesita esta solución?"
+		imagen={fotoBanner}
+		boton={{ texto: 'Solicitar cotización', href: cotizar }}
+	/>
+</BaseLayout>

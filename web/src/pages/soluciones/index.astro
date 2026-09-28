@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PortadaInterna from '../../components/PortadaInterna.astro';
+import CintaAnclas from '../../components/CintaAnclas.astro';
+import Banner from '../../components/Banner.astro';
+import Cinta from '../../components/Cinta.astro';
+import Detalles from '../../components/Detalles.astro';
+import ListaFlecha from '../../components/ListaFlecha.astro';
+import { servicios } from '../../data/servicios';
+import fotoPortada from '../../assets/fotos/servicio-proyectos.png';
+---
+
+<BaseLayout
+	title="Soluciones"
+	description="Procura y suministro, ingeniería, instrumentación y control, proyectos integrales, asistencia técnica y personal especializado para la industria venezolana."
+>
+	<PortadaInterna
+		etiqueta="Soluciones"
+		lineas={['Soluciones para', 'su operación.']}
+		pie="Cinco líneas de servicio"
+		imagen={fotoPortada}
+		alto="pantalla"
+		siguiente="#lista"
+	/>
+
+	<CintaAnclas etiqueta="Soluciones" items={servicios.map((s) => ({ texto: s.titulo, href: `#${s.slug}` }))} />
+
+	{
+		servicios.map((s, i) => (
+			<>
+				<Banner
+					id={s.slug}
+					etiqueta={`Solución 0${i + 1}`}
+					titulo={`${s.titulo}.`}
+					imagen={s.foto}
+					boton={{ texto: 'Ver solución', href: `/soluciones/${s.slug}` }}
+					lado={i % 2 ? 'derecha' : 'izquierda'}
+				/>
+				<Cinta items={[s.titulo]} />
+				<section class="seccion">
+					<div class="contenedor">
+						<Detalles invertir={i % 2 === 1}>
+							<Fragment slot="a">
+								<p class="etiqueta linea-etiqueta">Detalles</p>
+								<p class="t-title mt-8">{s.resumen}</p>
+								<p class="t-cuerpo mt-5">{s.descripcion}</p>
+							</Fragment>
+							<Fragment slot="b">
+								<p class="etiqueta linea-etiqueta">Qué incluye</p>
+								<ListaFlecha class="mt-8" items={s.incluye.map((texto) => ({ texto }))} verificacion />
+							</Fragment>
+							<Fragment slot="lateral">
+								<p class="etiqueta linea-etiqueta">Qué ofrecemos</p>
+								<ListaFlecha
+									class="mt-8"
+									items={[
+										{ texto: 'Ver la solución completa', href: `/soluciones/${s.slug}` },
+										{ texto: 'Solicitar cotización', href: `/contacto?servicio=${s.slug}` },
+									]}
+								/>
+							</Fragment>
+						</Detalles>
+					</div>
+				</section>
+			</>
+		))
+	}
+</BaseLayout>

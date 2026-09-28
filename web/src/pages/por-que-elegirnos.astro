@@ -1,0 +1,252 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PortadaInterna from '../components/PortadaInterna.astro';
+import Cinta from '../components/Cinta.astro';
+import Intro from '../components/Intro.astro';
+import Reticula from '../components/Reticula.astro';
+import MapaVenezuela from '../components/MapaVenezuela.astro';
+import SeccionCita from '../components/SeccionCita.astro';
+import Pilares from '../components/Pilares.astro';
+import { etapas, pilares, razones, sectores } from '../data/empresa';
+import fotoPortada from '../assets/fotos/servicio-ingenieria.png';
+import fotoPetrolero from '../assets/fotos/hero-refineria.png';
+import fotoPetroquimico from '../assets/fotos/operadores-campo.jpg';
+import fotoIndustria from '../assets/fotos/servicio-procura.png';
+import fotoCita from '../assets/fotos/producto-mecanico.png';
+
+const fotosSectores = [fotoPetrolero, fotoPetroquimico, fotoIndustria];
+---
+
+<BaseLayout
+	title="¿Por qué elegirnos?"
+	description="Experiencia en la industria, calidad y seguridad industrial, enfoque integral y flexibilidad contractual: lo que SADACO C.A. aporta a la industria petrolera, petroquímica e industrial venezolana."
+>
+	<PortadaInterna
+		etiqueta="¿Por qué elegirnos?"
+		lineas={['Experiencia que', 'no se detiene.']}
+		pie="Lo que nos distingue"
+		imagen={fotoPortada}
+	/>
+
+	<Cinta items={pilares.map((p) => p.titulo)} />
+
+	<section class="seccion">
+		<div class="contenedor">
+			<Intro
+				etiqueta="Nuestros pilares"
+				titulo="Valor en cada etapa de su proyecto."
+				texto="Combinamos experiencia, tecnología y un enfoque orientado a resultados para sectores con altos estándares técnicos, operativos y normativos."
+			/>
+			<div class="mt-16">
+				<Pilares />
+			</div>
+		</div>
+	</section>
+
+	<section class="seccion bg-niebla">
+		<div class="contenedor">
+			<Intro
+				etiqueta="Lo que recibe"
+				titulo="Más que un proveedor."
+				texto="Un equipo que se integra a su operación y responde por cada entrega, desde el pedido hasta el sitio."
+			/>
+
+			<div class="mt-16 grid gap-y-12 lg:grid-cols-3">
+				<ul class="grid gap-px border border-contorno bg-contorno sm:grid-cols-2 lg:col-span-2 lg:mr-6">
+					{
+						razones.map((r, i) => (
+							<li class="razon bg-white p-6 pb-[30px]" data-tarjeta style={`--retraso: ${(i % 2) * 150}ms`}>
+								<span class="razon-icono grid size-[60px] place-items-center rounded-full bg-niebla" aria-hidden="true">
+									<svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+										<path d={r.icono} />
+									</svg>
+								</span>
+								<h3 class="t-title mt-12">{r.titulo}.</h3>
+								<p class="t-cuerpo mt-3">{r.texto}</p>
+							</li>
+						))
+					}
+				</ul>
+
+				<aside class="lg:pl-6" data-coleccion style="--retraso: 300ms">
+					<div class="relative isolate overflow-hidden bg-tinta p-6 pb-[30px] text-white lg:sticky lg:top-[138px]">
+						<Reticula tono="oscuro" class="-z-10" />
+						<p class="etiqueta">Cobertura nacional</p>
+						<MapaVenezuela class="mt-6" />
+						<p class="mt-6 text-base text-white/70">
+							Desde Ciudad Ojeda, estado Zulia, atendemos proyectos en todo el territorio venezolano.
+						</p>
+					</div>
+				</aside>
+			</div>
+		</div>
+	</section>
+
+	<section class="seccion relative isolate overflow-hidden bg-tinta text-white">
+		<Reticula tono="oscuro" class="-z-10" />
+		<div class="contenedor grid gap-y-14 lg:grid-cols-3">
+			<div class="lg:pr-6">
+				<div class="lg:sticky lg:top-[138px]" data-revelar>
+					<p class="etiqueta mascara"><span class="revelar block">Enfoque integral</span></p>
+					<h2 class="t-headline mascara mt-8 pb-[0.08em]">
+						<span class="revelar block" style="--retraso: 150ms">De la planificación a la puesta en marcha.</span>
+					</h2>
+					<p class="mascara mt-8">
+						<span class="revelar block max-w-[34ch] text-base text-white/70" style="--retraso: 300ms">
+							Actuamos de forma coordinada en todas las etapas, con soluciones coherentes y adaptadas a la complejidad de cada
+							entorno industrial.
+						</span>
+					</p>
+				</div>
+			</div>
+
+			<div class="etapas relative lg:col-span-2 lg:pl-6" data-progreso>
+				<span class="etapas-linea" aria-hidden="true"><span class="etapas-avance"></span></span>
+				<ol class="relative">
+				{
+					etapas.map((e, i) => (
+						<li class="etapa relative flex gap-8 pb-16 last:pb-0 max-sm:gap-5" data-tarjeta style={`--retraso: ${i * 120}ms`}>
+							<span class="etapa-numero etiqueta grid size-[60px] shrink-0 place-items-center rounded-full border border-white/30 bg-tinta text-white">
+								0{i + 1}
+							</span>
+							<div class="pt-3">
+								<h3 class="t-title-lg">{e.titulo}.</h3>
+								<p class="mt-4 max-w-[46ch] text-base text-white/70">{e.texto}</p>
+							</div>
+						</li>
+					))
+				}
+				</ol>
+			</div>
+		</div>
+	</section>
+
+	<section class="seccion">
+		<div class="contenedor">
+			<Intro
+				etiqueta="Sectores"
+				titulo="Sectores que atendemos."
+				texto="Trabajamos en entornos donde la continuidad de la operación no se negocia."
+			/>
+			<ul class="mt-16 grid gap-y-10 md:grid-cols-3">
+				{
+					sectores.map((s, i) => (
+						<li class:list={['sector md:px-3', i === 0 && 'md:pl-0', i === 2 && 'md:pr-0']} style={`--escalon: ${i * 80}px; --retraso: ${i * 150}ms`} data-tarjeta>
+							<div class="sector-marco relative isolate flex aspect-[3/4] flex-col justify-end overflow-hidden p-6 text-white">
+								<Image
+									src={fotosSectores[i]}
+									alt=""
+									widths={[400, 700, 1000]}
+									sizes="(min-width: 768px) 30vw, 90vw"
+									class="sector-foto foto-bn absolute inset-0 -z-20 size-full object-cover"
+								/>
+								<div class="absolute inset-0 -z-10 bg-tinta/15" aria-hidden="true" />
+								<div class="absolute inset-x-0 bottom-0 -z-10 h-2/3 bg-linear-to-t from-tinta/70 to-transparent" aria-hidden="true" />
+								<h3 class="t-title">{s.nombre}.</h3>
+							</div>
+							<p class="t-cuerpo mt-5">{s.texto}</p>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+
+	<SeccionCita
+		etiqueta="Valores que sustentan cada operación"
+		cita="Calidad, seguridad y responsabilidad operativa en cada suministro y en cada obra."
+		credito="SADACO C.A., Ciudad Ojeda, estado Zulia"
+		imagen={fotoCita}
+		enlace={{ texto: 'Solicitar cotización', href: '/contacto' }}
+	/>
+</BaseLayout>
+
+<style>
+	@media (width >= 768px) {
+		.sector {
+			margin-top: var(--escalon);
+		}
+	}
+
+	.sector-marco {
+		transition: scale 1.3s var(--ease-asentamiento);
+	}
+
+	.sector-marco :global(.sector-foto) {
+		transition:
+			scale 1.3s var(--ease-asentamiento),
+			filter 1.3s var(--ease-asentamiento);
+	}
+
+	.razon-icono {
+		transition:
+			background-color 0.5s var(--ease-ui),
+			color 0.5s var(--ease-ui),
+			scale 0.8s var(--ease-asentamiento);
+	}
+
+	.razon-icono svg {
+		transition: rotate 0.8s var(--ease-asentamiento);
+	}
+
+	@media (hover: hover) {
+		.sector:hover .sector-marco {
+			scale: 0.95;
+		}
+
+		.sector:hover .sector-marco :global(.sector-foto) {
+			scale: 1.05;
+			filter: grayscale(0.4) contrast(1.05);
+		}
+
+		.razon:hover .razon-icono {
+			background: var(--color-tinta);
+			color: #fff;
+			scale: 1.08;
+		}
+
+		.razon:hover .razon-icono svg {
+			rotate: -8deg;
+		}
+	}
+
+	/* Línea vertical que une las etapas; se llena al avanzar por la sección. */
+	.etapas-linea {
+		position: absolute;
+		top: 30px;
+		bottom: 30px;
+		left: 30px;
+		width: 1px;
+		background: rgb(255 255 255 / 0.15);
+	}
+
+	@media (width >= 992px) {
+		.etapas-linea {
+			left: calc(24px + 30px);
+		}
+	}
+
+	.etapas-avance {
+		position: absolute;
+		inset: 0;
+		background: #fff;
+		transform: scaleY(clamp(0, calc((var(--progreso, 1) - 0.2) * 2.4), 1));
+		transform-origin: top;
+	}
+
+	.etapa-numero {
+		transition:
+			background-color 0.6s var(--ease-ui),
+			color 0.6s var(--ease-ui),
+			border-color 0.6s var(--ease-ui);
+	}
+
+	@media (hover: hover) {
+		.etapa:hover .etapa-numero {
+			border-color: #fff;
+			background: #fff;
+			color: var(--color-tinta);
+		}
+	}
+</style>

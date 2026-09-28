@@ -1,0 +1,45 @@
+---
+interface Props {
+	/** Pone la columna lateral fija a la izquierda. */
+	invertir?: boolean;
+	class?: string;
+}
+
+const { invertir = false, class: className } = Astro.props;
+---
+
+<div class:list={['detalles grid gap-y-14 lg:grid-cols-3', invertir && 'detalles-invertido', className]}>
+	<div class="detalles-a lg:pr-6" data-coleccion>
+		<slot name="a" />
+	</div>
+	<div class="detalles-b lg:px-6" data-coleccion style="--retraso: 150ms">
+		<slot name="b" />
+	</div>
+	<aside class="detalles-lateral" data-coleccion style="--retraso: 300ms">
+		<div class="lg:sticky lg:top-[138px]">
+			<slot name="lateral" />
+		</div>
+	</aside>
+</div>
+
+<style>
+	@media (width >= 1024px) {
+		.detalles-lateral {
+			padding-left: 24px;
+		}
+
+		.detalles-invertido .detalles-lateral {
+			order: -1;
+			padding-left: 0;
+			padding-right: 24px;
+		}
+
+		.detalles-invertido .detalles-a {
+			padding-inline: 24px;
+		}
+
+		.detalles-invertido .detalles-b {
+			padding-inline: 24px 0;
+		}
+	}
+</style>

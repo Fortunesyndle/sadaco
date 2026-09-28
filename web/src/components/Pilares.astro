@@ -1,0 +1,214 @@
+---
+import { Image } from 'astro:assets';
+import { pilares } from '../data/empresa';
+import fotoExperiencia from '../assets/fotos/manometro-planta.jpg';
+import fotoCalidad from '../assets/fotos/tecnica-instrumentacion.jpg';
+import fotoIntegral from '../assets/fotos/regulador-gas.jpg';
+import fotoFlexibilidad from '../assets/fotos/servicio-proyectos.png';
+
+interface Props {
+	/** Color de los filetes según el fondo de la sección. */
+	borde?: 'niebla' | 'contorno';
+}
+
+const { borde = 'niebla' } = Astro.props;
+const fotos = [fotoExperiencia, fotoCalidad, fotoIntegral, fotoFlexibilidad];
+const id = `pilares-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class="pilares grid lg:grid-cols-3" data-pilares data-borde={borde}>
+	<div class="pilares-fotos revelar-foto relative isolate overflow-hidden bg-tinta max-lg:aspect-[4/3] lg:order-2 lg:col-span-2" aria-hidden="true">
+		{
+			fotos.map((f, i) => (
+				<Image
+					src={f}
+					alt=""
+					widths={[640, 1024, 1600]}
+					sizes="(min-width: 992px) 62vw, 100vw"
+					class="pilar-foto foto-bn absolute inset-0 -z-20 size-full object-cover"
+					data-foto={i}
+					data-activa={i === 0 ? '' : undefined}
+				/>
+			))
+		}
+		<div class="absolute inset-0 -z-10 bg-tinta/30"></div>
+		<p class="etiqueta absolute bottom-6 left-6 text-white">
+			<span data-contador>01</span> / 0{pilares.length}
+		</p>
+	</div>
+
+	<ol class="pilares-lista lg:order-1 lg:pr-6" data-lista>
+		{
+			pilares.map((p, i) => (
+				<li class="pilar" style={`--i: ${i}`} data-activo={i === 0 ? '' : undefined}>
+					<h3>
+						<button type="button" class="pilar-boton" aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`${id}-${i}`}>
+							<span class="etiqueta pilar-numero">0{i + 1}</span>
+							<span class="t-title pilar-titulo">{p.titulo}.</span>
+						</button>
+					</h3>
+					<div class="pilar-panel" id={`${id}-${i}`}>
+						<div class="pilar-panel-interior">
+							<p class="t-cuerpo pb-7 pl-[42px]">{p.texto}</p>
+						</div>
+					</div>
+					<span class="pilar-progreso" aria-hidden="true" />
+				</li>
+			))
+		}
+	</ol>
+</div>
+
+<style>
+	.pilares {
+		--filete: var(--color-niebla);
+	}
+
+	.pilares[data-borde='contorno'] {
+		--filete: var(--color-contorno);
+	}
+
+	@media (width >= 992px) {
+		.pilares-fotos {
+			min-height: 560px;
+		}
+	}
+
+	.pilar-foto {
+		opacity: 0;
+		transition: opacity 1s var(--ease-ui);
+	}
+
+	.pilar-foto[data-activa] {
+		opacity: 1;
+		animation: acercar 1.8s var(--ease-asentamiento);
+	}
+
+	@keyframes acercar {
+		from {
+			scale: 1.08;
+		}
+	}
+
+	.pilares-lista {
+		border-top: 1px solid var(--filete);
+	}
+
+	.pilar {
+		position: relative;
+		border-bottom: 1px solid var(--filete);
+	}
+
+	.pilar-boton {
+		display: flex;
+		align-items: baseline;
+		gap: 24px;
+		width: 100%;
+		padding-block: 28px;
+		text-align: left;
+		cursor: pointer;
+	}
+
+	.pilar-numero {
+		width: 18px;
+		flex-shrink: 0;
+		color: var(--color-pizarra);
+	}
+
+	.pilar-titulo {
+		color: var(--color-pizarra);
+		transition:
+			color 0.5s var(--ease-ui),
+			translate 0.6s var(--ease-asentamiento);
+	}
+
+	.pilar-boton:hover .pilar-titulo,
+	[data-activo] .pilar-titulo {
+		color: var(--color-tinta);
+	}
+
+	.pilar-boton:hover .pilar-titulo {
+		translate: 6px 0;
+	}
+
+	.pilar-panel {
+		display: grid;
+		grid-template-rows: 0fr;
+		transition: grid-template-rows 0.8s var(--ease-revelado);
+	}
+
+	[data-activo] .pilar-panel {
+		grid-template-rows: 1fr;
+	}
+
+	.pilar-panel-interior {
+		min-height: 0;
+		overflow: hidden;
+		opacity: 0;
+		transition: opacity 0.5s var(--ease-ui);
+	}
+
+	[data-activo] .pilar-panel-interior {
+		opacity: 1;
+		transition-delay: 0.25s;
+	}
+
+	/* Línea que se llena mientras el pilar está activo; al terminar pasa al siguiente. */
+	.pilar-progreso {
+		position: absolute;
+		inset-inline: 0;
+		bottom: -1px;
+		height: 1px;
+		background: var(--color-tinta);
+		transform: scaleX(0);
+		transform-origin: left;
+	}
+
+	[data-visible] [data-activo] .pilar-progreso {
+		animation: llenar 8s linear forwards;
+	}
+
+	.pilares:hover .pilar-progreso,
+	.pilares:has(:focus-visible) .pilar-progreso {
+		animation-play-state: paused;
+	}
+
+	@keyframes llenar {
+		to {
+			transform: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.pilar-foto[data-activa] {
+			animation: none;
+		}
+
+		[data-visible] [data-activo] .pilar-progreso {
+			animation: none;
+			transform: none;
+		}
+	}
+</style>
+
+<script>
+	document.querySelectorAll<HTMLElement>('[data-pilares]').forEach((raiz) => {
+		const items = [...raiz.querySelectorAll<HTMLElement>('.pilar')];
+		const fotos = [...raiz.querySelectorAll<HTMLElement>('[data-foto]')];
+		const contador = raiz.querySelector<HTMLElement>('[data-contador]')!;
+
+		const activar = (n: number) => {
+			items.forEach((li, i) => {
+				li.toggleAttribute('data-activo', i === n);
+				li.querySelector('button')!.setAttribute('aria-expanded', String(i === n));
+			});
+			fotos.forEach((f, i) => f.toggleAttribute('data-activa', i === n));
+			contador.textContent = String(n + 1).padStart(2, '0');
+		};
+
+		items.forEach((li, i) => {
+			li.querySelector('button')!.addEventListener('click', () => activar(i));
+			li.querySelector('.pilar-progreso')!.addEventListener('animationend', () => activar((i + 1) % items.length));
+		});
+	});
+</script>

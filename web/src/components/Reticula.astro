@@ -1,0 +1,29 @@
+---
+interface Props {
+	/** "claro": líneas niebla sobre blanco. "oscuro": líneas blancas al 12% sobre fotos o tinta. */
+	tono?: 'claro' | 'oscuro';
+	class?: string;
+}
+
+const { tono = 'claro', class: className } = Astro.props;
+---
+
+<div class:list={['reticula pointer-events-none absolute inset-0', className]} data-tono={tono} aria-hidden="true">
+	<div class="contenedor flex h-full justify-between">
+		<span class="max-md:hidden"></span>
+		<span class="max-lg:hidden"></span>
+		<span></span>
+		<span></span>
+	</div>
+</div>
+
+<style>
+	span {
+		width: 1px;
+		background: var(--color-niebla);
+	}
+
+	[data-tono='oscuro'] span {
+		background: rgb(255 255 255 / 0.12);
+	}
+</style>

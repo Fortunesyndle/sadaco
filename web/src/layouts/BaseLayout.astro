@@ -1,5 +1,8 @@
 ---
 import { Font } from 'astro:assets';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Reticula from '../components/Reticula.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -9,10 +12,10 @@ interface Props {
 
 const {
 	title,
-	description = 'SADACO C.A. — Servicios y suministros para la industria en Venezuela.',
+	description = 'SADACO C.A.: procura, suministro de equipos y materiales, ingeniería y proyectos para la industria petrolera, petroquímica e industrial venezolana. Ciudad Ojeda, Zulia.',
 } = Astro.props;
 
-const fullTitle = title ? `${title} | SADACO C.A.` : 'SADACO C.A.';
+const fullTitle = title ? `${title} | SADACO C.A.` : 'SADACO C.A. | Procura, suministro e ingeniería industrial';
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -21,11 +24,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<script is:inline>
+			document.documentElement.classList.add('js');
+		</script>
+		<link rel="icon" type="image/png" href="/favicon.png" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<link rel="canonical" href={canonical} />
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content="#090b19" />
 
 		<title>{fullTitle}</title>
 		<meta name="description" content={description} />
@@ -37,9 +44,105 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonical} />
 
-		<Font cssVariable="--font-montserrat" preload />
+		<Font cssVariable="--font-inter" preload />
+		<Font cssVariable="--font-open-sans" />
 	</head>
-	<body>
-		<slot />
+	<body class="flex min-h-svh flex-col">
+		<a
+			href="#contenido"
+			class="etiqueta sr-only z-50 bg-tinta px-5 py-3 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+		>
+			Saltar al contenido
+		</a>
+		<slot name="antes" />
+		<Header />
+		<main id="contenido" class="relative isolate flex-1">
+			<Reticula class="-z-10" />
+			<slot />
+		</main>
+		<Footer />
 	</body>
 </html>
+
+<script>
+	const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	// Entradas al hacer scroll: el CSS anima al aparecer data-visible.
+	const observador = new IntersectionObserver(
+		(entradas) => {
+			for (const e of entradas) {
+				if (e.isIntersecting) {
+					e.target.setAttribute('data-visible', '');
+					observador.unobserve(e.target);
+				}
+			}
+		},
+		{ rootMargin: '0px 0px -12% 0px' },
+	);
+	document
+		.querySelectorAll('[data-revelar], [data-coleccion], [data-tarjeta], [data-cortina], [data-lista], .linea-etiqueta, .revelar-foto')
+		.forEach((el) => observador.observe(el));
+
+	// Imán: el elemento sigue al cursor hasta data-iman píxeles. En los botones se mueve solo el texto.
+	if (!reducido && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+		document.querySelectorAll<HTMLElement>('.btn').forEach((boton) => {
+			if (!boton.querySelector('.btn-texto')) {
+				const texto = document.createElement('span');
+				texto.className = 'btn-texto';
+				texto.append(...boton.childNodes);
+				boton.append(texto);
+			}
+			boton.dataset.iman ??= '6';
+		});
+		document.querySelectorAll<HTMLElement>('[data-iman]').forEach((el) => {
+			const fuerza = Number(el.dataset.iman) || 6;
+			el.addEventListener('pointermove', (e) => {
+				const r = el.getBoundingClientRect();
+				const x = ((e.clientX - r.left) / r.width - 0.5) * 2 * fuerza;
+				const y = ((e.clientY - r.top) / r.height - 0.5) * 2 * fuerza;
+				el.style.setProperty('--iman-x', `${x.toFixed(1)}px`);
+				el.style.setProperty('--iman-y', `${y.toFixed(1)}px`);
+			});
+			el.addEventListener('pointerleave', () => {
+				el.style.setProperty('--iman-x', '0px');
+				el.style.setProperty('--iman-y', '0px');
+			});
+		});
+	}
+
+	// Progreso de scroll (0 al entrar por abajo, 1 al salir por arriba) para cintas y parallax.
+	// Salida (0 con la portada completa en pantalla, 1 cuando ya salió por arriba).
+	const progresivos = [...document.querySelectorAll<HTMLElement>('[data-progreso]')];
+	const salientes = [...document.querySelectorAll<HTMLElement>('[data-salida]')];
+	if (!reducido && (progresivos.length || salientes.length)) {
+		let pendiente = false;
+		const actualizar = () => {
+			const alto = window.innerHeight;
+			for (const el of progresivos) {
+				const r = el.getBoundingClientRect();
+				if (r.bottom < 0 || r.top > alto) continue;
+				const p = Math.min(Math.max((alto - r.top) / (alto + r.height), 0), 1);
+				el.style.setProperty('--progreso', p.toFixed(4));
+			}
+			for (const el of salientes) {
+				const r = el.getBoundingClientRect();
+				if (r.bottom < -alto) continue;
+				const s = Math.min(Math.max(-r.top / r.height, 0), 1);
+				el.style.setProperty('--salida', s.toFixed(4));
+			}
+			pendiente = false;
+		};
+		window.addEventListener(
+			'scroll',
+			() => {
+				if (!pendiente) {
+					pendiente = true;
+					requestAnimationFrame(actualizar);
+				}
+			},
+			{ passive: true },
+		);
+		window.addEventListener('resize', actualizar);
+		actualizar();
+	}
+</script>

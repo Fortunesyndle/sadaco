@@ -1,0 +1,120 @@
+---
+import DocumentoLegal, { type SeccionLegal } from '../components/DocumentoLegal.astro';
+import { empresa } from '../data/empresa';
+import foto from '../assets/fotos/producto-automatizacion.png';
+
+const canal = empresa.correo
+	? `del correo <a href="mailto:${empresa.correo}">${empresa.correo}</a>`
+	: 'del <a href="/contacto">formulario de contacto</a>';
+
+const secciones: SeccionLegal[] = [
+	{
+		titulo: 'Responsable del tratamiento',
+		parrafos: [
+			`El responsable de los datos personales recogidos a través de este sitio es ${empresa.nombre}${empresa.rif ? `, RIF ${empresa.rif}` : ''}, con domicilio en ${empresa.direccion}, ${empresa.ciudad}. Puede contactarnos a través ${canal}${empresa.telefono ? ` o del teléfono ${empresa.telefono}` : ''}.`,
+		],
+	},
+	{
+		titulo: 'Marco legal',
+		parrafos: [
+			'Tratamos sus datos conforme a la Constitución de la República Bolivariana de Venezuela, en especial su artículo 28, que reconoce el derecho de toda persona a acceder a la información que sobre ella conste y a solicitar su actualización, rectificación o destrucción, y su artículo 60, que protege la vida privada y la confidencialidad. También aplicamos la Ley sobre Mensajes de Datos y Firmas Electrónicas y la Ley Especial contra los Delitos Informáticos.',
+		],
+	},
+	{
+		titulo: 'Datos que recogemos',
+		parrafos: ['Solo recogemos los datos que usted nos envía al completar el formulario de cotización:'],
+		lista: [
+			'Nombre y apellido.',
+			'Empresa, correo electrónico y teléfono.',
+			'El tipo de solución o producto que le interesa, la ubicación del proyecto y la descripción de su requerimiento.',
+		],
+	},
+	{
+		titulo: 'Para qué los usamos',
+		parrafos: ['Usamos sus datos únicamente para:'],
+		lista: [
+			'Responder su solicitud y preparar una propuesta técnica y comercial.',
+			'Contactarle para aclarar detalles de su requerimiento.',
+			'Dar seguimiento a la relación comercial que se derive de esa solicitud.',
+			'Cumplir las obligaciones legales que correspondan.',
+		],
+	},
+	{
+		titulo: 'Base del tratamiento',
+		parrafos: [
+			'Tratamos sus datos con su consentimiento, que usted otorga al marcar la casilla de aceptación y enviar el formulario. Puede retirarlo en cualquier momento escribiéndonos, sin que ello afecte el tratamiento realizado antes.',
+		],
+	},
+	{
+		titulo: 'Con quién los compartimos',
+		parrafos: [
+			'No vendemos, alquilamos ni cedemos sus datos a terceros con fines comerciales. Para que el sitio funcione, intervienen algunos proveedores de servicios que tratan los datos por cuenta nuestra:',
+		],
+		lista: [
+			'<strong>Web3Forms</strong>, que recibe el formulario y nos lo reenvía por correo electrónico.',
+			'Nuestro proveedor de alojamiento web y nuestro proveedor de correo electrónico.',
+		],
+	},
+	{
+		titulo: 'Transferencias internacionales',
+		parrafos: [
+			'Algunos de estos proveedores pueden almacenar la información en servidores ubicados fuera de Venezuela. En esos casos procuramos que ofrezcan medidas de seguridad adecuadas.',
+		],
+	},
+	{
+		titulo: 'Cookies y datos de navegación',
+		parrafos: [
+			'Este sitio no utiliza cookies de publicidad ni herramientas de analítica o seguimiento. El servidor de alojamiento puede registrar datos técnicos como la dirección IP, el navegador y la fecha de acceso, por razones de seguridad y funcionamiento.',
+			'La página de contacto muestra un mapa de OpenStreetMap, que puede recibir su dirección IP al cargarse. Ese servicio se rige por sus propias políticas.',
+		],
+	},
+	{
+		titulo: 'Cuánto tiempo los conservamos',
+		parrafos: [
+			'Conservamos sus datos durante el tiempo necesario para atender su solicitud y la relación comercial que de ella se derive. Después los conservamos solo durante los plazos que exija la ley, y luego los eliminamos.',
+		],
+	},
+	{
+		titulo: 'Seguridad',
+		parrafos: [
+			'Aplicamos medidas técnicas y organizativas razonables para proteger sus datos contra pérdida, uso indebido o acceso no autorizado, como la transmisión cifrada mediante HTTPS y el acceso restringido al personal que los necesita.',
+		],
+	},
+	{
+		titulo: 'Sus derechos',
+		parrafos: ['En cualquier momento usted puede:'],
+		lista: [
+			'Conocer qué datos suyos tenemos y para qué los usamos.',
+			'Solicitar que se actualicen o corrijan.',
+			'Solicitar que se eliminen, cuando ya no sean necesarios o retire su consentimiento.',
+			'Oponerse a un uso determinado de sus datos.',
+		],
+	},
+	{
+		titulo: 'Cómo ejercerlos',
+		parrafos: [
+			`Escríbanos a través ${canal} indicando su nombre, el derecho que desea ejercer y un medio para responderle. Atenderemos su solicitud en un plazo máximo de quince días hábiles.`,
+		],
+	},
+	{
+		titulo: 'Menores de edad',
+		parrafos: ['Este sitio está dirigido a empresas y profesionales. No recogemos a sabiendas datos de menores de edad.'],
+	},
+	{
+		titulo: 'Cambios en esta política',
+		parrafos: [
+			'Podemos actualizar esta política para reflejar cambios legales o en nuestros servicios. La versión vigente es la publicada en esta página, con su fecha de última actualización.',
+		],
+	},
+];
+---
+
+<DocumentoLegal
+	titulo="Política de privacidad"
+	descripcion={`Cómo ${empresa.nombre} recoge, usa y protege los datos personales enviados a través de su sitio web.`}
+	lineas={['Política', 'de privacidad.']}
+	imagen={foto}
+	actualizado="27 de septiembre de 2026"
+	introduccion="Esta política explica qué datos personales recogemos a través de este sitio, para qué los usamos y cómo puede ejercer sus derechos."
+	secciones={secciones}
+/>

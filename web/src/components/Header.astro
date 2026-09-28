@@ -1,0 +1,500 @@
+---
+import { Image } from 'astro:assets';
+import globo from '../assets/logo/globo.png';
+import Flecha from './Flecha.astro';
+import { servicios } from '../data/servicios';
+import { productos } from '../data/productos';
+import { empresa } from '../data/empresa';
+
+const actual = Astro.url.pathname.replace(/\/$/, '') || '/';
+const activo = (href: string) => (href === '/' ? actual === '/' : actual.startsWith(href));
+
+const enlaces = [
+	{ texto: 'Soluciones', href: '/soluciones' },
+	{ texto: 'Productos', href: '/productos' },
+	{ texto: 'Contacto', href: '/contacto' },
+];
+
+const grupos = [
+	{ titulo: 'Soluciones', todo: '/soluciones', items: servicios.map((s) => ({ texto: s.titulo, href: `/soluciones/${s.slug}` })) },
+	{ titulo: 'Productos', todo: '/productos', items: productos.map((p) => ({ texto: p.nombre, href: `/productos/${p.slug}` })) },
+	{
+		titulo: 'Empresa',
+		todo: null,
+		items: [
+			{ texto: 'Inicio', href: '/' },
+			{ texto: 'Nosotros', href: '/nosotros' },
+			{ texto: '¿Por qué elegirnos?', href: '/por-que-elegirnos' },
+			{ texto: 'Contacto y cotización', href: '/contacto' },
+		],
+	},
+];
+---
+
+<header class="encabezado fixed inset-x-0 top-0 z-40" data-encabezado>
+	<div class="menu-velo fixed inset-0 bg-tinta/50" data-menu-velo aria-hidden="true"></div>
+	<div class="cubierta absolute inset-x-0 top-0" aria-hidden="true">
+		<div class="avance" data-avance></div>
+	</div>
+
+	<div id="megamenu" class="megamenu absolute inset-x-0 top-0" data-megamenu>
+		<div class="megamenu-interior">
+			<div class="megamenu-contenido contenedor">
+				<div class="megamenu-grupos">
+					{
+						grupos.map((g, n) => (
+							<div class="grupo" style={`--retraso: ${300 + n * 100}ms`}>
+								<div class="grupo-cabecera">
+									<p class="etiqueta">{g.titulo}</p>
+									{g.todo && (
+										<a href={g.todo} class="btn btn-contorno btn-sm">
+											Ver todo
+										</a>
+									)}
+								</div>
+								<ul class="grupo-lista">
+									{g.items.map((i) => (
+										<li>
+											<a href={i.href} aria-current={actual === i.href ? 'page' : undefined}>
+												<span>{i.texto}</span>
+												<Flecha class="grupo-flecha" />
+											</a>
+										</li>
+									))}
+								</ul>
+							</div>
+						))
+					}
+				</div>
+				<div class="megamenu-pie grupo" style="--retraso: 600ms">
+					<p class="etiqueta text-pizarra">{empresa.nombre}</p>
+					<a href="/contacto" class="btn">Solicitar cotización</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="contenedor relative">
+		<div class="barra flex items-center justify-between">
+			<div class="flex items-center gap-5 max-[479px]:gap-3">
+				<a href="/" class="logo" aria-label="SADACO, inicio">
+					<Image src={globo} alt="" width={160} height={160} class="size-full" loading="eager" />
+				</a>
+				<button type="button" class="menu-boton" aria-expanded="false" aria-controls="megamenu" data-menu-boton>
+					<span class="sr-only">Abrir menú</span>
+					<span class="menu-icono" aria-hidden="true"><i></i><i></i><i></i></span>
+				</button>
+			</div>
+
+			<nav aria-label="Principal" class="hidden h-full min-[992px]:flex">
+				<ul class="flex h-full">
+					{
+						enlaces.map((e) => (
+							<li class="flex">
+								<a href={e.href} class="enlace" aria-current={activo(e.href) ? 'page' : undefined}>
+									<span class="relative z-10">{e.texto}</span>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+		</div>
+	</div>
+</header>
+
+<style>
+	.barra,
+	.cubierta {
+		height: 90px;
+	}
+
+	@media (width < 480px) {
+		.barra,
+		.cubierta {
+			height: 72px;
+		}
+	}
+
+	/* Fondo blanco que aparece al bajar: fundido de opacidad (también con movimiento reducido) más un leve descenso. */
+	.cubierta {
+		background: #fff;
+		border-bottom: 1px solid var(--color-niebla);
+		opacity: 0;
+		transform: translateY(-24px);
+		transition:
+			opacity 0.7s var(--ease-ui),
+			transform 0.9s var(--ease-asentamiento);
+	}
+
+	[data-cubierto] .cubierta {
+		opacity: 1;
+		transform: none;
+	}
+
+	/* Progreso de lectura sobre el filete inferior de la cubierta. */
+	.avance {
+		position: absolute;
+		inset-inline: 0;
+		bottom: -1px;
+		height: 1px;
+		background: var(--color-tinta);
+		transform: scaleX(var(--avance, 0));
+		transform-origin: left;
+	}
+
+	.logo {
+		display: block;
+		width: 68px;
+		height: 68px;
+		transition: scale 0.7s var(--ease-asentamiento);
+	}
+
+	.logo:hover {
+		scale: 1.06;
+	}
+
+	[data-cubierto] .logo {
+		scale: 0.9;
+	}
+
+	[data-cubierto] .logo:hover {
+		scale: 0.96;
+	}
+
+	@media (width < 480px) {
+		.logo {
+			width: 54px;
+			height: 54px;
+		}
+	}
+
+	.menu-boton {
+		--trazo: #fff;
+		display: grid;
+		place-items: center;
+		width: 48px;
+		height: 48px;
+		border: 1px solid rgb(255 255 255 / 0.35);
+		border-radius: 50%;
+		cursor: pointer;
+		transition:
+			border-color 0.7s var(--ease-ui),
+			background-color 0.4s var(--ease-ui),
+			scale 0.5s var(--ease-asentamiento);
+	}
+
+	.menu-boton:hover {
+		background: rgb(255 255 255 / 0.12);
+		scale: 1.06;
+	}
+
+	[data-cubierto] .menu-boton,
+	[data-abierto] .menu-boton {
+		--trazo: var(--color-tinta);
+		border-color: var(--color-contorno);
+	}
+
+	[data-cubierto] .menu-boton:hover,
+	[data-abierto] .menu-boton:hover {
+		background: var(--color-niebla);
+	}
+
+	.menu-icono {
+		display: grid;
+		gap: 5px;
+		width: 18px;
+	}
+
+	.menu-icono i {
+		display: block;
+		height: 1px;
+		background: var(--trazo);
+		transition:
+			transform 0.6s var(--ease-revelado),
+			opacity 0.3s,
+			width 0.4s var(--ease-ui),
+			background-color 0.7s var(--ease-ui);
+	}
+
+	.menu-icono i:nth-child(2) {
+		width: 70%;
+		justify-self: end;
+	}
+
+	.menu-boton:hover .menu-icono i:nth-child(2) {
+		width: 100%;
+	}
+
+	[data-abierto] .menu-icono i:nth-child(1) {
+		transform: translateY(6px) rotate(45deg);
+	}
+
+	[data-abierto] .menu-icono i:nth-child(2) {
+		opacity: 0;
+	}
+
+	[data-abierto] .menu-icono i:nth-child(3) {
+		transform: translateY(-6px) rotate(-45deg);
+	}
+
+	.enlace {
+		position: relative;
+		display: flex;
+		align-items: center;
+		padding-inline: 20px;
+		color: #fff;
+		font-family: var(--font-display);
+		font-size: 14px;
+		letter-spacing: 3px;
+		text-transform: uppercase;
+		white-space: nowrap;
+		transition: color 0.7s var(--ease-ui);
+	}
+
+	[data-cubierto] .enlace,
+	[data-abierto] .enlace {
+		color: var(--color-tinta);
+	}
+
+	.enlace::after {
+		content: '';
+		position: absolute;
+		inset-inline: 0;
+		top: 50%;
+		height: 46px;
+		margin-top: -23px;
+		border: 1px solid rgb(255 255 255 / 0.35);
+		border-radius: 100px;
+		scale: 0;
+		opacity: 0;
+		transition:
+			scale 0.5s var(--ease-ui),
+			opacity 0.6s var(--ease-ui),
+			border-color 0.7s var(--ease-ui);
+	}
+
+	[data-cubierto] .enlace::after,
+	[data-abierto] .enlace::after {
+		border-color: var(--color-contorno);
+	}
+
+	.enlace:hover::after,
+	.enlace:focus-visible::after,
+	.enlace[aria-current='page']::after {
+		scale: 1;
+		opacity: 1;
+	}
+
+	.menu-velo {
+		opacity: 0;
+		visibility: hidden;
+		transition:
+			opacity 0.4s ease 0.3s,
+			visibility 0s 0.7s;
+	}
+
+	[data-abierto] .menu-velo {
+		opacity: 1;
+		visibility: visible;
+		transition: opacity 0.4s ease 0.3s;
+	}
+
+	.megamenu {
+		display: grid;
+		grid-template-rows: 0fr;
+		visibility: hidden;
+		transform: translateY(-36px);
+		transition:
+			grid-template-rows 1.3s var(--ease-revelado),
+			transform 1.3s var(--ease-revelado),
+			visibility 0s 1.3s;
+	}
+
+	[data-abierto] .megamenu {
+		grid-template-rows: 1fr;
+		visibility: visible;
+		transform: none;
+		transition:
+			grid-template-rows 1.3s var(--ease-revelado),
+			transform 1.3s var(--ease-revelado);
+	}
+
+	.megamenu-interior {
+		min-height: 0;
+		overflow: hidden;
+		background: var(--color-niebla);
+	}
+
+	.megamenu-contenido {
+		max-height: 100svh;
+		overflow-y: auto;
+		padding-top: 120px;
+		padding-bottom: 36px;
+	}
+
+	.megamenu-grupos {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 36px 0;
+	}
+
+	.grupo {
+		padding-inline: 24px;
+		opacity: 0;
+		translate: 0 24px;
+		transition:
+			opacity 0.6s var(--ease-ui),
+			translate 0.8s var(--ease-asentamiento);
+	}
+
+	[data-abierto] .grupo {
+		opacity: 1;
+		translate: 0 0;
+		transition-delay: var(--retraso, 0ms);
+	}
+
+	.grupo-cabecera {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		min-height: 34px;
+		margin-bottom: 18px;
+	}
+
+	.grupo-lista {
+		border-top: 1px solid var(--color-contorno);
+	}
+
+	.grupo-lista a {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		min-height: 64px;
+		border-bottom: 1px solid var(--color-contorno);
+		color: var(--color-tinta);
+		font-family: var(--font-display);
+		font-size: 17px;
+		line-height: 1.25;
+	}
+
+	.grupo-lista span {
+		flex: 1;
+		transition: translate 0.6s var(--ease-ui);
+	}
+
+	.grupo-lista :global(.grupo-flecha) {
+		width: 18px;
+		opacity: 0;
+		translate: -18px 0;
+		transition:
+			opacity 0.4s var(--ease-ui) 0.2s,
+			translate 0.4s var(--ease-ui) 0.2s;
+	}
+
+	.grupo-lista a:hover span,
+	.grupo-lista a:focus-visible span,
+	.grupo-lista a[aria-current='page'] span {
+		translate: 12px 0;
+	}
+
+	.grupo-lista a:hover :global(.grupo-flecha),
+	.grupo-lista a:focus-visible :global(.grupo-flecha) {
+		opacity: 1;
+		translate: 0 0;
+	}
+
+	.megamenu-pie {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 18px;
+		margin-top: 48px;
+		padding-top: 30px;
+		border-top: 1px solid var(--color-contorno);
+	}
+
+	@media (width < 992px) {
+		.megamenu-grupos {
+			grid-template-columns: 1fr;
+		}
+
+		.grupo {
+			padding-inline: 0;
+		}
+
+		.grupo-lista a {
+			min-height: 56px;
+			font-size: 16px;
+		}
+	}
+
+	@media (width < 480px) {
+		.megamenu-contenido {
+			padding-top: 96px;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.cubierta,
+		.megamenu,
+		.grupo {
+			transform: none;
+			translate: none;
+		}
+
+		.megamenu {
+			grid-template-rows: 1fr;
+			opacity: 0;
+			transition:
+				opacity 0.5s var(--ease-ui),
+				visibility 0s 0.5s;
+		}
+
+		[data-abierto] .megamenu {
+			opacity: 1;
+			transition: opacity 0.5s var(--ease-ui);
+		}
+	}
+</style>
+
+<script>
+	const encabezado = document.querySelector<HTMLElement>('[data-encabezado]')!;
+	const boton = encabezado.querySelector<HTMLButtonElement>('[data-menu-boton]')!;
+	const velo = encabezado.querySelector<HTMLElement>('[data-menu-velo]')!;
+	const avance = encabezado.querySelector<HTMLElement>('[data-avance]')!;
+
+	let pendiente = false;
+	const actualizar = () => {
+		encabezado.toggleAttribute('data-cubierto', window.scrollY > 40);
+		const recorrido = document.documentElement.scrollHeight - window.innerHeight;
+		avance.style.setProperty('--avance', recorrido > 0 ? (window.scrollY / recorrido).toFixed(4) : '0');
+		pendiente = false;
+	};
+	window.addEventListener(
+		'scroll',
+		() => {
+			if (!pendiente) {
+				pendiente = true;
+				requestAnimationFrame(actualizar);
+			}
+		},
+		{ passive: true },
+	);
+	actualizar();
+
+	const alternar = (abrir: boolean) => {
+		boton.setAttribute('aria-expanded', String(abrir));
+		boton.querySelector('.sr-only')!.textContent = abrir ? 'Cerrar menú' : 'Abrir menú';
+		encabezado.toggleAttribute('data-abierto', abrir);
+	};
+	boton.addEventListener('click', () => alternar(boton.getAttribute('aria-expanded') !== 'true'));
+	velo.addEventListener('click', () => alternar(false));
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape' && encabezado.hasAttribute('data-abierto')) {
+			alternar(false);
+			boton.focus();
+		}
+	});
+</script>

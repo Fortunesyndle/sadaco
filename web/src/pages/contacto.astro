@@ -1,0 +1,262 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PortadaInterna from '../components/PortadaInterna.astro';
+import Cinta from '../components/Cinta.astro';
+import ListaFlecha from '../components/ListaFlecha.astro';
+import { contactoDirecto, empresa } from '../data/empresa';
+import { servicios } from '../data/servicios';
+import { productos } from '../data/productos';
+import fotoPortada from '../assets/fotos/manometro-planta.jpg';
+
+const claveFormulario = import.meta.env.PUBLIC_WEB3FORMS_KEY;
+const gracias = new URL('/contacto/gracias', Astro.site).href;
+
+const pasos = [
+	{ titulo: 'Recibimos su solicitud', texto: 'Su requerimiento llega directamente a nuestro equipo comercial.' },
+	{ titulo: 'Lo revisa un especialista', texto: 'Si hace falta algún detalle técnico, le contactamos para aclararlo.' },
+	{ titulo: 'Recibe su propuesta', texto: 'Le enviamos una propuesta técnica y comercial ajustada a su proyecto.' },
+];
+
+const enlacesContacto = [...contactoDirecto, { texto: 'Cómo llegar', href: empresa.mapa, externo: true }];
+---
+
+<BaseLayout
+	title="Contacto y cotización"
+	description="Solicite una cotización a SADACO C.A. Procura, suministro, ingeniería y proyectos industriales desde Ciudad Ojeda, estado Zulia."
+>
+	<PortadaInterna
+		etiqueta="Contacto y cotización"
+		lineas={['Hablemos', 'de su proyecto.']}
+		pie="Complete el formulario"
+		imagen={fotoPortada}
+		siguiente="#formulario"
+	/>
+
+	<Cinta items={['Inicie la conversación']} />
+
+	<section class="seccion">
+		<div class="contenedor grid gap-y-14 lg:grid-cols-3">
+			<div class="formulario-panel bg-niebla lg:col-span-2 lg:mr-6" data-coleccion>
+				<p class="etiqueta">Solicitud de cotización</p>
+				<h2 class="t-headline mt-6">Cuéntenos qué necesita.</h2>
+				<p class="t-cuerpo mt-4">
+					Los campos marcados con * son obligatorios.
+					{
+						(empresa.telefono || empresa.correo) && (
+							<>
+								{' '}Si lo prefiere, llámenos al{' '}
+								{empresa.telefono && (
+									<a class="text-tinta underline underline-offset-4" href={`tel:${empresa.telefono.replace(/\s/g, '')}`}>
+										{empresa.telefono}
+									</a>
+								)}
+								{empresa.telefono && empresa.correo && ' o escríbanos a '}
+								{empresa.correo && (
+									<a class="text-tinta underline underline-offset-4" href={`mailto:${empresa.correo}`}>
+										{empresa.correo}
+									</a>
+								)}
+								.
+							</>
+						)
+					}
+				</p>
+
+				<form action="https://api.web3forms.com/submit" method="POST" class="mt-12 grid gap-x-6 gap-y-8 sm:grid-cols-2">
+					<input type="hidden" name="access_key" value={claveFormulario} />
+					<input type="hidden" name="subject" value="Nueva solicitud desde el sitio web de SADACO" />
+					<input type="hidden" name="from_name" value="Sitio web SADACO" />
+					<input type="hidden" name="redirect" value={gracias} />
+					<input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
+
+					<label class="campo">
+						<span class="etiqueta">Nombre y apellido *</span>
+						<input type="text" name="nombre" autocomplete="name" required />
+					</label>
+					<label class="campo">
+						<span class="etiqueta">Empresa</span>
+						<input type="text" name="empresa" autocomplete="organization" />
+					</label>
+					<label class="campo">
+						<span class="etiqueta">Correo electrónico *</span>
+						<input type="email" name="email" autocomplete="email" required />
+					</label>
+					<label class="campo">
+						<span class="etiqueta">Teléfono</span>
+						<input type="tel" name="telefono" autocomplete="tel" placeholder="0412 000 0000" />
+					</label>
+					<label class="campo">
+						<span class="etiqueta">¿Qué necesita? *</span>
+						<select name="interes" required data-interes>
+							<option value="">Seleccione una opción</option>
+							<optgroup label="Soluciones">
+								{servicios.map((s) => <option value={`Solución: ${s.titulo}`} data-clave={`servicio:${s.slug}`}>{s.titulo}</option>)}
+							</optgroup>
+							<optgroup label="Productos">
+								{productos.map((p) => <option value={`Producto: ${p.nombre}`} data-clave={`producto:${p.slug}`}>{p.nombre}</option>)}
+							</optgroup>
+							<option value="Otro requerimiento">Otro requerimiento</option>
+						</select>
+					</label>
+					<label class="campo">
+						<span class="etiqueta">Ubicación del proyecto</span>
+						<input type="text" name="ubicacion" placeholder="Ciudad o estado" />
+					</label>
+					<label class="campo sm:col-span-2">
+						<span class="etiqueta">Descripción del requerimiento *</span>
+						<textarea name="mensaje" rows="6" required placeholder="Equipos o materiales, cantidades, especificaciones y fecha estimada"
+						></textarea>
+					</label>
+
+					<div class="flex flex-col gap-6 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
+						<label class="consentimiento t-cuerpo flex max-w-[46ch] items-start gap-3">
+							<input type="checkbox" name="acepta_privacidad" value="Sí" required />
+							<span>
+								Acepto que SADACO C.A. use mis datos para responder esta solicitud, según la{' '}
+								<a class="text-tinta underline underline-offset-4" href="/politica-de-privacidad" target="_blank">política de privacidad</a>. *
+							</span>
+						</label>
+						<button type="submit" class="btn shrink-0 px-10 py-5 max-sm:w-full">Enviar solicitud</button>
+					</div>
+					{
+						import.meta.env.DEV && !claveFormulario && (
+							<p class="border border-contorno bg-white p-4 text-sm sm:col-span-2">
+								Falta PUBLIC_WEB3FORMS_KEY en web/.env: el formulario no enviará mensajes hasta configurarla.
+							</p>
+						)
+					}
+				</form>
+			</div>
+
+			<aside class="lg:pl-6">
+				<div class="space-y-14 lg:sticky lg:top-[138px]">
+					<div data-coleccion style="--retraso: 150ms">
+						<p class="etiqueta linea-etiqueta">Contacto directo</p>
+						<ListaFlecha class="mt-8" items={enlacesContacto} />
+						<p class="t-cuerpo mt-6">
+							<span class="t-title-sm block text-tinta">Horario de atención</span>
+							{empresa.horario}
+						</p>
+					</div>
+
+					<div data-coleccion style="--retraso: 300ms">
+						<p class="etiqueta linea-etiqueta">Oficina</p>
+						<address class="t-cuerpo mt-8 not-italic">
+							<span class="t-title-sm block text-tinta">SADACO C.A.</span>
+							{empresa.direccion}<br />{empresa.ciudad}
+						</address>
+						<iframe
+							title="Ubicación de SADACO en Ciudad Ojeda"
+							src="https://www.openstreetmap.org/export/embed.html?bbox=-71.345%2C10.180%2C-71.275%2C10.220&layer=mapnik&marker=10.2%2C-71.31"
+							class="foto-bn mt-6 aspect-[4/3] w-full"
+							loading="lazy"></iframe>
+					</div>
+
+					<div data-coleccion style="--retraso: 450ms">
+						<p class="etiqueta linea-etiqueta">Qué sucede después</p>
+						<ol class="mt-8 border-t border-niebla">
+							{
+								pasos.map((p, i) => (
+									<li class="flex gap-5 border-b border-niebla py-6">
+										<span class="etiqueta grid size-9 shrink-0 place-items-center rounded-full border border-contorno" aria-hidden="true">
+											{i + 1}
+										</span>
+										<div>
+											<h3 class="t-title-sm">{p.titulo}</h3>
+											<p class="t-cuerpo mt-1">{p.texto}</p>
+										</div>
+									</li>
+								))
+							}
+						</ol>
+					</div>
+				</div>
+			</aside>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.formulario-panel {
+		padding: 80px 60px;
+		border-top: 1px solid var(--color-contorno);
+	}
+
+	@media (width < 768px) {
+		.formulario-panel {
+			padding: 48px 24px;
+		}
+	}
+
+	.campo {
+		display: grid;
+		gap: 12px;
+	}
+
+	.campo input,
+	.campo select,
+	.campo textarea {
+		width: 100%;
+		min-height: 54px;
+		padding: 14px 18px;
+		border: 1px solid var(--color-contorno);
+		border-radius: 2px;
+		background: #fff;
+		color: var(--color-tinta);
+		font-size: 16px;
+		transition:
+			border-color 0.4s var(--ease-ui),
+			box-shadow 0.4s var(--ease-ui);
+	}
+
+	.campo textarea {
+		resize: vertical;
+	}
+
+	.campo ::placeholder {
+		color: var(--color-pizarra);
+		opacity: 0.7;
+	}
+
+	.campo input:hover,
+	.campo select:hover,
+	.campo textarea:hover {
+		border-color: var(--color-foco-campo);
+	}
+
+	.campo input:focus-visible,
+	.campo select:focus-visible,
+	.campo textarea:focus-visible {
+		border-color: var(--color-tinta);
+		box-shadow: inset 0 -2px 0 var(--color-tinta);
+		outline: none;
+	}
+
+	.campo:focus-within .etiqueta {
+		color: var(--color-tinta);
+		letter-spacing: 5px;
+	}
+
+	.consentimiento input {
+		width: 20px;
+		height: 20px;
+		flex-shrink: 0;
+		margin-top: 2px;
+		accent-color: var(--color-tinta);
+		cursor: pointer;
+	}
+
+	.campo .etiqueta {
+		color: var(--color-pizarra);
+		transition:
+			color 0.4s var(--ease-ui),
+			letter-spacing 0.6s var(--ease-asentamiento);
+	}
+</style>
+
+<script>
+	const params = new URLSearchParams(location.search);
+	const clave = params.has('servicio') ? `servicio:${params.get('servicio')}` : `producto:${params.get('producto')}`;
+	const opcion = document.querySelector<HTMLOptionElement>(`[data-interes] option[data-clave="${CSS.escape(clave)}"]`);
+	if (opcion) opcion.selected = true;
+</script>
