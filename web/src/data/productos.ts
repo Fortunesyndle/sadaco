@@ -1,24 +1,15 @@
 import type { ImageMetadata } from 'astro';
-import fotoInstrumentacion from '../assets/fotos/producto-instrumentacion.png';
-import fotoAutomatizacion from '../assets/fotos/producto-automatizacion.png';
-import fotoValvulas from '../assets/fotos/producto-valvulas.png';
-import fotoElectrico from '../assets/fotos/producto-electrico.png';
-import fotoMecanico from '../assets/fotos/producto-mecanico.png';
-import fotoMetales from '../assets/fotos/producto-metales.png';
-import catalogoInstrumentacion from '../assets/fotos/catalogo-instrumentacion.jpg';
-import catalogoAutomatizacion from '../assets/fotos/catalogo-automatizacion.jpg';
-import catalogoValvulas from '../assets/fotos/catalogo-valvulas.jpg';
-import catalogoElectrico from '../assets/fotos/catalogo-electrico.jpg';
-import catalogoMecanico from '../assets/fotos/catalogo-mecanico.jpg';
-import catalogoMetales from '../assets/fotos/catalogo-metales.jpg';
+import fotoInstrumentacion from '../assets/fotos/producto-instrumentacion.jpg';
+import fotoAutomatizacion from '../assets/fotos/producto-automatizacion.jpg';
+import fotoValvulas from '../assets/fotos/producto-valvulas.jpg';
+import fotoElectrico from '../assets/fotos/producto-electrico.jpg';
+import fotoMecanico from '../assets/fotos/producto-mecanico.jpg';
+import fotoMetales from '../assets/fotos/producto-metales-barras.jpg';
 
 export interface Producto {
 	slug: string;
 	nombre: string;
-	/** Fondo oscuro: para banners y portadas a sangre con texto blanco encima. */
 	foto: ImageMetadata;
-	/** Fondo gris claro de catálogo: para tarjetas. */
-	catalogo: ImageMetadata;
 	alt: string;
 	resumen: string;
 	descripcion: string;
@@ -32,8 +23,7 @@ export const productos: Producto[] = [
 		slug: 'instrumentacion',
 		nombre: 'Instrumentación',
 		foto: fotoInstrumentacion,
-		catalogo: catalogoInstrumentacion,
-		alt: 'Manómetro, transmisor de presión y transmisor de temperatura de acero inoxidable',
+		alt: 'Manómetro instalado en un equipo industrial',
 		resumen: 'Instrumentos de medición de presión, temperatura, nivel y caudal para procesos industriales.',
 		descripcion:
 			'Suministramos instrumentos de medición y sus accesorios de instalación para plantas, estaciones y facilidades de producción, seleccionados según las condiciones de proceso y la especificación técnica de cada proyecto.',
@@ -49,8 +39,7 @@ export const productos: Producto[] = [
 		slug: 'automatizacion-y-control',
 		nombre: 'Automatización y control',
 		foto: fotoAutomatizacion,
-		catalogo: catalogoAutomatizacion,
-		alt: 'Controlador lógico programable con módulos, variador de frecuencia y pantalla de operador',
+		alt: 'Tablero de control con controlador lógico programable, módulos y variadores',
 		resumen: 'Controladores, variadores, sensores y componentes para automatizar y controlar procesos.',
 		descripcion:
 			'Proveemos los componentes que integran un sistema de control, desde el sensor en campo hasta el controlador y la interfaz del operador.',
@@ -65,8 +54,7 @@ export const productos: Producto[] = [
 		slug: 'valvulas-y-tuberias',
 		nombre: 'Válvulas, tuberías y conexiones',
 		foto: fotoValvulas,
-		catalogo: catalogoValvulas,
-		alt: 'Válvula de bola bridada, válvula de compuerta, brida y codos de acero',
+		alt: 'Válvulas de volante y conexiones bridadas en una línea de proceso',
 		resumen: 'Válvulas, tubería, bridas y conexiones para líneas de proceso y servicios.',
 		descripcion:
 			'Suministramos válvulas, tubería y conexiones en los materiales, clases de presión y normas que exige cada línea de proceso.',
@@ -80,8 +68,7 @@ export const productos: Producto[] = [
 		slug: 'material-electrico',
 		nombre: 'Material y equipos eléctricos',
 		foto: fotoElectrico,
-		catalogo: catalogoElectrico,
-		alt: 'Rollos de cable de cobre, interruptores, caja a prueba de explosión y luminaria industrial',
+		alt: 'Carretes de cable en un galpón industrial',
 		resumen: 'Conductores, protecciones, tableros e iluminación para instalaciones industriales.',
 		descripcion:
 			'Proveemos material y equipos eléctricos para instalaciones industriales nuevas, ampliaciones y mantenimiento, incluidos equipos para áreas clasificadas.',
@@ -96,8 +83,7 @@ export const productos: Producto[] = [
 		slug: 'equipos-mecanicos',
 		nombre: 'Equipos mecánicos',
 		foto: fotoMecanico,
-		catalogo: catalogoMecanico,
-		alt: 'Bomba centrífuga acoplada a un motor eléctrico con rodamiento, sello mecánico y acople',
+		alt: 'Motores eléctricos acoplados a bombas en una planta',
 		resumen: 'Bombas, motores, transmisiones y repuestos para equipos rotativos.',
 		descripcion:
 			'Suministramos equipos mecánicos y repuestos para mantener en operación bombas, motores y sistemas de transmisión.',
@@ -111,8 +97,7 @@ export const productos: Producto[] = [
 		slug: 'metales',
 		nombre: 'Metales y aceros',
 		foto: fotoMetales,
-		catalogo: catalogoMetales,
-		alt: 'Tubos de acero inoxidable, barras cuadradas, ángulos de aluminio y una plancha de acero',
+		alt: 'Barras y tubos de acero en estanterías de un almacén de metales',
 		resumen: 'Metales ferrosos y no ferrosos en láminas, tubos, barras y perfiles.',
 		descripcion:
 			'Suministramos metales ferrosos y no ferrosos para fabricación, construcción y mantenimiento industrial.',

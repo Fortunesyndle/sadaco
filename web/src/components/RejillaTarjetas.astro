@@ -84,6 +84,7 @@ const { items, boton = 'Ver más' } = Astro.props;
 	}
 
 	.tarjeta-foto :global(img) {
+		filter: saturate(0.45) contrast(1.02) brightness(0.72);
 		transition:
 			scale 1.6s var(--ease-asentamiento),
 			filter 1.6s var(--ease-asentamiento);

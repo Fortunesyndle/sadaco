@@ -1,9 +1,9 @@
 import type { ImageMetadata } from 'astro';
-import fotoProcura from '../assets/fotos/servicio-procura.png';
+import fotoProcura from '../assets/fotos/servicio-procura-tuberia.jpg';
 import fotoIngenieria from '../assets/fotos/servicio-ingenieria.png';
 import fotoProyectos from '../assets/fotos/servicio-proyectos.png';
-import fotoAsistencia from '../assets/fotos/servicio-asistencia.png';
-import fotoPersonal from '../assets/fotos/servicio-personal.png';
+import fotoAsistencia from '../assets/fotos/servicio-asistencia-tecnicos.jpg';
+import fotoPersonal from '../assets/fotos/servicio-personal-ingenieros.jpg';
 
 export interface Servicio {
 	slug: string;
@@ -21,7 +21,7 @@ export const servicios: Servicio[] = [
 		slug: 'procura-y-suministro',
 		titulo: 'Procura y suministro',
 		foto: fotoProcura,
-		alt: 'Montacargas cargando equipos industriales en un camión frente a un almacén con tuberías y válvulas',
+		alt: 'Tubería de acero apilada en un almacén industrial con grúa puente',
 		resumen: 'Equipos y materiales para el sector industrial, con movilización y traslado hasta su operación.',
 		descripcion:
 			'Gestionamos la procura y el suministro de equipos y materiales especializados de marcas reconocidas en el mercado nacional e internacional. Nos encargamos también de la movilización y el traslado, para que cada pedido llegue completo y a tiempo al sitio donde se necesita.',
@@ -75,7 +75,7 @@ export const servicios: Servicio[] = [
 		slug: 'asistencia-tecnica',
 		titulo: 'Asistencia técnica',
 		foto: fotoAsistencia,
-		alt: 'Dos ingenieros revisando planos técnicos junto a una laptop con una planta industrial de fondo',
+		alt: 'Técnicos con casco operando un panel de control industrial',
 		resumen: 'Acompañamiento técnico en la elaboración de proyectos, desde el alcance hasta las especificaciones.',
 		descripcion:
 			'Apoyamos a su equipo en la elaboración de proyectos con criterio técnico y experiencia operativa, para que cada decisión responda a las condiciones reales de la instalación.',
@@ -90,7 +90,7 @@ export const servicios: Servicio[] = [
 		slug: 'personal-especializado',
 		titulo: 'Personal especializado',
 		foto: fotoPersonal,
-		alt: 'Equipo de ingenieros y técnicos con casco y braga azul en una instalación petrolera',
+		alt: 'Equipo de ingenieros con casco y braga azul revisando una tablet en una planta industrial',
 		resumen: 'Personal profesional y técnico altamente calificado en ingeniería y gestión de proyectos.',
 		descripcion:
 			'Suministramos personal profesional, técnico y especializado para reforzar a su equipo durante un proyecto o una operación, con la formación y la experiencia que exigen los sectores petrolero y petroquímico.',

@@ -12,10 +12,10 @@ import { servicios } from '../data/servicios';
 import { productos } from '../data/productos';
 import fotoPortada from '../assets/fotos/hero-refineria.png';
 import fotoCita from '../assets/fotos/cita-inicio.jpg';
-import fotoBanner from '../assets/fotos/operadores-campo.jpg';
+import fotoBanner from '../assets/fotos/operadores-campo-ingeniero.jpg';
 
 const tarjetasServicios = servicios.map((s) => ({ titulo: s.titulo, texto: s.resumen, foto: s.foto, alt: s.alt, href: `/soluciones/${s.slug}` }));
-const tarjetasProductos = productos.map((p) => ({ titulo: p.nombre, texto: p.resumen, foto: p.catalogo, alt: p.alt, href: `/productos/${p.slug}` }));
+const tarjetasProductos = productos.map((p) => ({ titulo: p.nombre, texto: p.resumen, foto: p.foto, alt: p.alt, href: `/productos/${p.slug}` }));
 ---
 
 <BaseLayout>
