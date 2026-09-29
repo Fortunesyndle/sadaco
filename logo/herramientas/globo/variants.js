@@ -42,7 +42,7 @@ window.VARIANTS = [
   {
     "file": "08-relieve",
     "title": "Relieve",
-    "desc": "Venezuela se levanta del mapa, más grande y con sombra, como una pieza en relieve."
+    "desc": "Venezuela y Estados Unidos en blanco, levantados del mapa con canto y sombra, como piezas en relieve."
   },
   {
     "file": "09-coordenadas",

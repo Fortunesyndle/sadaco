@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import globo from '../assets/logo/globo.png';
+import globo from '../assets/logo/globo-relieve.png';
 import Flecha from './Flecha.astro';
 import { servicios } from '../data/servicios';
 import { productos } from '../data/productos';
@@ -78,7 +78,7 @@ const grupos = [
 		<div class="barra flex items-center justify-between">
 			<div class="flex items-center gap-5 max-[479px]:gap-3">
 				<a href="/" class="logo" aria-label="SADACO, inicio">
-					<Image src={globo} alt="" width={160} height={160} class="size-full" loading="eager" />
+					<Image src={globo} alt="" width={192} height={192} class="size-full" loading="eager" />
 				</a>
 				<button type="button" class="menu-boton" aria-expanded="false" aria-controls="megamenu" data-menu-boton>
 					<span class="sr-only">Abrir menú</span>
@@ -145,8 +145,8 @@ const grupos = [
 
 	.logo {
 		display: block;
-		width: 68px;
-		height: 68px;
+		width: 82px;
+		height: 82px;
 		transition: scale 0.7s var(--ease-asentamiento);
 	}
 
@@ -164,8 +164,8 @@ const grupos = [
 
 	@media (width < 480px) {
 		.logo {
-			width: 54px;
-			height: 54px;
+			width: 64px;
+			height: 64px;
 		}
 	}
 

@@ -15,7 +15,14 @@ const ROTATE = [75, -15];
 const land50 = JSON.parse(fs.readFileSync('node_modules/world-atlas/land-50m.json'));
 const countries10 = JSON.parse(fs.readFileSync('node_modules/world-atlas/countries-10m.json'));
 const land = topojson.feature(land50, land50.objects.land);
-const venezuela10 = topojson.feature(countries10, countries10.objects.countries).features.find(f => f.id === '862');
+const countryFeatures = topojson.feature(countries10, countries10.objects.countries).features;
+const venezuela10 = countryFeatures.find(f => f.id === '862');
+const usa10 = countryFeatures.find(f => f.id === '840');
+const isHawaii = poly => Math.max(...poly[0].map(p => p[1])) < 30 && Math.min(...poly[0].map(p => p[0])) < -140;
+const usa = {
+  ...usa10,
+  geometry: { type: 'MultiPolygon', coordinates: usa10.geometry.coordinates.filter(poly => !isHawaii(poly)) },
+};
 const MAX_LAT = 13.5;
 const venezuela = {
   ...venezuela10,
@@ -45,6 +52,7 @@ const D = {
   graticule: path(geoGraticule().step([15, 15])()),
   ven: path(venezuela),
   eseq: path(esequibo),
+  usa: path(usa),
   meridian: path({ type: 'LineString', coordinates: Array.from({ length: 181 }, (_, i) => [-66, i - 90]) }),
   parallel: path({ type: 'LineString', coordinates: Array.from({ length: 361 }, (_, i) => [i - 180, 7]) }),
 };
@@ -97,6 +105,30 @@ const venShape = (fill, extra = '') => `<g fill="${fill}" stroke="${fill}" strok
   <path d="${D.ven}"/><path d="${D.eseq}"/></g>`;
 const venOutline = (color, w) => `<g fill="none" stroke="${color}" stroke-width="${w}" stroke-linejoin="round">
   <path d="${D.ven}"/><path d="${D.eseq}"/></g>`;
+const usaShape = fill => `<path d="${D.usa}" fill="${fill}" stroke="${fill}" stroke-width=".35" stroke-linejoin="round"/>`;
+
+const EDGE = '#7F95AE';
+function relief(shape, { k = 1, depth = 2.5, dx = 5, dy = 7.5 } = {}) {
+  const at = (x, y) => `translate(${(x / k).toFixed(3)},${(y / k).toFixed(3)})`;
+  const edge = Array.from({ length: 8 }, (_, i) => {
+    const f = (i + 1) / 8;
+    return `<g transform="${at(depth * f * .6, depth * f)}">${shape(EDGE)}</g>`;
+  }).reverse().join('');
+  return `<g transform="${at(dx, dy)}" opacity=".6" filter="url(#castShadow)">${shape(NAVY)}</g>
+    <g transform="${at(depth * .9, depth * 1.4)}" opacity=".7" filter="url(#soft)">${shape(NAVY)}</g>
+    ${edge}<g filter="url(#bevel)">${shape(WHITE)}</g>`;
+}
+
+const RELIEF_DEFS = `
+  <filter id="castShadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3"/></filter>
+  <filter id="bevel" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceAlpha" stdDeviation=".8" result="bump"/>
+    <feDiffuseLighting in="bump" surfaceScale="2.6" diffuseConstant="1" lighting-color="#FFFFFF" result="light">
+      <feDistantLight azimuth="235" elevation="58"/></feDiffuseLighting>
+    <feComponentTransfer in="light" result="shade">
+      <feFuncR type="linear" slope=".82" intercept=".3"/><feFuncG type="linear" slope=".78" intercept=".34"/>
+      <feFuncB type="linear" slope=".7" intercept=".42"/></feComponentTransfer>
+    <feComposite in="shade" in2="SourceAlpha" operator="in"/></filter>`;
 
 function pop(s, content, { dx = 2.5, dy = 3.5, shadow = .4 } = {}) {
   const t = `translate(${vx},${vy}) scale(${s}) translate(${-vx},${-vy})`;
@@ -179,8 +211,13 @@ const VARIANTS = [
   ['07-resplandor', 'Resplandor', 'Venezuela verde con un halo de luz blanca alrededor.',
     () => ({ over: `<g filter="url(#glow)">${venOutline(WHITE, 14)}${venShape(WHITE)}</g>` + venOutline(WHITE, 3) + venShape(GREEN) }),
     `<filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="6"/></filter>`],
-  ['08-relieve', 'Relieve', 'Venezuela se levanta del mapa, más grande y con sombra, como una pieza en relieve.',
-    () => ({ over: pop(1.65, venOutline(WHITE, 3.5 / 1.65) + venShape(RED), { dx: 4, dy: 5.5, shadow: .5 }) })],
+  ['08-relieve', 'Relieve', 'Venezuela y Estados Unidos en blanco, levantados del mapa con canto y sombra, como piezas en relieve.',
+    () => {
+      const K = 1.65;
+      const t = `translate(${vx},${vy}) scale(${K}) translate(${-vx},${-vy})`;
+      return { over: relief(usaShape, { depth: 2.1, dx: 4.5, dy: 6.5 }) + `<g transform="${t}">${relief(venShape, { k: K })}</g>` };
+    },
+    RELIEF_DEFS],
   ['09-coordenadas', 'Coordenadas', 'El meridiano y el paralelo que cruzan Venezuela se resaltan y marcan su posición.',
     () => ({
       gridOpacity: .55,
