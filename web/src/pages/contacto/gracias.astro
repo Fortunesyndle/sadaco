@@ -1,31 +1,6 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import PortadaInterna from '../../components/PortadaInterna.astro';
-import ListaFlecha from '../../components/ListaFlecha.astro';
+import EnConstruccion from '../../components/EnConstruccion.astro';
 import fotoPortada from '../../assets/fotos/portada-gracias.jpg';
 ---
 
-<BaseLayout title="Solicitud enviada">
-	<PortadaInterna etiqueta="Contacto" lineas={['Solicitud', 'enviada.']} pie="Gracias por escribirnos" imagen={fotoPortada} alto="reducido">
-		<a href="/" class="btn btn-claro">Volver al inicio</a>
-	</PortadaInterna>
-
-	<section class="seccion">
-		<div class="contenedor grid gap-y-12 md:grid-cols-3">
-			<p class="t-title md:col-span-2 md:pr-6" data-coleccion>
-				Recibimos su requerimiento. Nuestro equipo lo revisará y le responderá por correo electrónico.
-			</p>
-			<div class="md:pl-6" data-coleccion style="--retraso: 150ms">
-				<p class="etiqueta linea-etiqueta">Mientras tanto</p>
-				<ListaFlecha
-					class="mt-8"
-					items={[
-						{ texto: 'Soluciones', href: '/soluciones' },
-						{ texto: 'Productos', href: '/productos' },
-						{ texto: 'Nosotros', href: '/nosotros' },
-					]}
-				/>
-			</div>
-		</div>
-	</section>
-</BaseLayout>
+<EnConstruccion etiqueta="Contacto" imagen={fotoPortada} />

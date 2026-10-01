@@ -1,0 +1,70 @@
+---
+interface Props {
+	titulo: string;
+	texto: string;
+	/** Adelanto de lo que se publicará en la sección. */
+	items: string[];
+}
+
+const { titulo, texto, items } = Astro.props;
+---
+
+<div class="aviso grid bg-tinta text-white md:grid-cols-3" data-coleccion>
+	<div class="flex flex-col p-6 pt-10 pb-[30px] md:col-span-2 md:p-10 md:pb-12">
+		<p class="etiqueta flex items-center gap-4">
+			<span class="pulso" aria-hidden="true"></span>
+			En construcción
+		</p>
+		<p class="t-headline mt-16 max-w-[16ch] max-md:mt-10">{titulo}</p>
+		<p class="t-cuerpo mt-6 max-w-[48ch] text-white/60">{texto}</p>
+	</div>
+	<div class="border-white/15 p-6 pb-[30px] max-md:border-t md:border-l md:p-10">
+		<p class="etiqueta text-white/60">Próximamente</p>
+		<ul class="mt-6 border-t border-white/15">
+			{
+				items.map((item, i) => (
+					<li class="flex items-center gap-6 border-b border-white/15 py-4">
+						<span class="etiqueta text-white/40">{String(i + 1).padStart(2, '0')}</span>
+						<span class="t-title-sm font-normal text-white/80">{item}</span>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</div>
+
+<style>
+	.pulso {
+		position: relative;
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: #fff;
+	}
+
+	.pulso::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		background: #fff;
+		animation: pulso 2.4s var(--ease-ui) infinite;
+	}
+
+	@keyframes pulso {
+		from {
+			opacity: 0.6;
+			scale: 1;
+		}
+		to {
+			opacity: 0;
+			scale: 3;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.pulso::after {
+			animation: none;
+		}
+	}
+</style>

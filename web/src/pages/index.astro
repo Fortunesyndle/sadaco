@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Precarga from '../components/Precarga.astro';
 import PortadaInterna from '../components/PortadaInterna.astro';
 import Intro from '../components/Intro.astro';
-import RejillaTarjetas from '../components/RejillaTarjetas.astro';
+import AvisoConstruccion from '../components/AvisoConstruccion.astro';
 import SeccionCita from '../components/SeccionCita.astro';
 import Banner from '../components/Banner.astro';
 import Pilares from '../components/Pilares.astro';
@@ -13,9 +13,6 @@ import { productos } from '../data/productos';
 import fotoPortada from '../assets/fotos/hero-refineria.png';
 import fotoCita from '../assets/fotos/cita-inicio.jpg';
 import fotoBanner from '../assets/fotos/operadores-campo-ingeniero.jpg';
-
-const tarjetasServicios = servicios.map((s) => ({ titulo: s.titulo, texto: s.resumen, foto: s.foto, alt: s.alt, href: `/soluciones/${s.slug}` }));
-const tarjetasProductos = productos.map((p) => ({ titulo: p.nombre, texto: p.resumen, foto: p.foto, alt: p.alt, href: `/productos/${p.slug}` }));
 ---
 
 <BaseLayout>
@@ -58,15 +55,13 @@ const tarjetasProductos = productos.map((p) => ({ titulo: p.nombre, texto: p.res
 
 	<section class="seccion">
 		<div class="contenedor">
-			<Intro etiqueta="Soluciones" titulo="Lo que hacemos." boton={{ texto: 'Todas las soluciones', href: '/soluciones' }} />
+			<Intro etiqueta="Soluciones" titulo="Lo que hacemos." />
 			<div class="mt-16">
-				<RejillaTarjetas items={tarjetasServicios} boton="Ver solución">
-					<div class="flex w-full flex-col bg-niebla p-6 pb-[30px]">
-						<p class="etiqueta">A la medida</p>
-						<p class="t-title mt-6 max-w-[16ch]">Cuéntenos su requerimiento y armamos la solución.</p>
-						<a href="/contacto" class="btn mt-auto self-start max-lg:mt-10">Solicitar cotización</a>
-					</div>
-				</RejillaTarjetas>
+				<AvisoConstruccion
+					titulo="Estamos preparando esta sección."
+					texto="Muy pronto encontrará aquí el detalle de cada solución: alcance, etapas y lo que incluye."
+					items={servicios.map((s) => s.titulo)}
+				/>
 			</div>
 		</div>
 	</section>
@@ -81,9 +76,13 @@ const tarjetasProductos = productos.map((p) => ({ titulo: p.nombre, texto: p.res
 
 	<section class="seccion">
 		<div class="contenedor">
-			<Intro etiqueta="Productos" titulo="Suministro con respaldo." boton={{ texto: 'Todos los productos', href: '/productos' }} />
+			<Intro etiqueta="Productos" titulo="Suministro con respaldo." />
 			<div class="mt-16">
-				<RejillaTarjetas items={tarjetasProductos} boton="Ver productos" />
+				<AvisoConstruccion
+					titulo="Estamos preparando el catálogo."
+					texto="Muy pronto podrá consultar aquí cada línea de productos, con sus marcas y especificaciones."
+					items={productos.map((p) => p.nombre)}
+				/>
 			</div>
 
 			<Intro

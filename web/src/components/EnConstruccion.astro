@@ -1,0 +1,42 @@
+---
+import type { ImageMetadata } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PortadaInterna from './PortadaInterna.astro';
+import ListaFlecha from './ListaFlecha.astro';
+import { contactoDirecto, empresa } from '../data/empresa';
+
+interface Props {
+	/** Sección a la que pertenece la página; encabeza la portada. */
+	etiqueta: string;
+	/** Título del navegador; por defecto, la etiqueta. */
+	titulo?: string;
+	imagen: ImageMetadata;
+}
+
+const { etiqueta, titulo = etiqueta, imagen } = Astro.props;
+---
+
+<BaseLayout title={titulo}>
+	<PortadaInterna etiqueta={etiqueta} lineas={['Página en', 'construcción.']} pie="Muy pronto disponible" imagen={imagen} alto="reducido">
+		<a href="/" class="btn btn-claro">Ir al inicio</a>
+	</PortadaInterna>
+
+	<section class="seccion">
+		<div class="contenedor grid gap-y-12 md:grid-cols-3">
+			<div class="md:col-span-2 md:pr-6" data-coleccion>
+				<p class="etiqueta linea-etiqueta">En construcción</p>
+				<p class="t-title mt-8 max-w-[32ch]">
+					Estamos preparando esta sección del sitio para mostrarle todo lo que SADACO puede hacer por su operación.
+				</p>
+				<p class="t-cuerpo mt-5 max-w-[56ch]">
+					Mientras tanto, nuestro equipo atiende cotizaciones y consultas por los canales directos.
+				</p>
+			</div>
+			<div class="md:pl-6" data-coleccion style="--retraso: 150ms">
+				<p class="etiqueta linea-etiqueta">Contacto directo</p>
+				<ListaFlecha class="mt-8" items={[...contactoDirecto, { texto: 'Volver al inicio', href: '/' }]} />
+				<p class="t-cuerpo mt-8">{empresa.horario}</p>
+			</div>
+		</div>
+	</section>
+</BaseLayout>

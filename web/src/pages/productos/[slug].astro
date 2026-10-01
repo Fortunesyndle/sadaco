@@ -1,14 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import PortadaInterna from '../../components/PortadaInterna.astro';
-import Cinta from '../../components/Cinta.astro';
-import Detalles from '../../components/Detalles.astro';
-import ListaFlecha from '../../components/ListaFlecha.astro';
-import Intro from '../../components/Intro.astro';
-import Banner from '../../components/Banner.astro';
+import EnConstruccion from '../../components/EnConstruccion.astro';
 import { productos, type Producto } from '../../data/productos';
-import fotoBanner from '../../assets/fotos/banner-productos.jpg';
 
 export const getStaticPaths = (() =>
 	productos.map((producto) => ({ params: { slug: producto.slug }, props: { producto } }))) satisfies GetStaticPaths;
@@ -18,72 +11,6 @@ interface Props {
 }
 
 const { producto } = Astro.props;
-const cotizar = `/contacto?producto=${producto.slug}`;
-const suministro = [
-	'Selección según la especificación técnica',
-	'Marcas reconocidas en el mercado nacional e internacional',
-	'Seguimiento desde la orden hasta la entrega',
-	'Traslado hasta el sitio de operación',
-];
 ---
 
-<BaseLayout title={producto.nombre} description={producto.resumen}>
-	<PortadaInterna etiqueta="Productos" lineas={[`${producto.nombre}.`]} pie={producto.resumen} imagen={producto.foto} alto="pantalla">
-		<a href={cotizar} class="btn btn-claro">Solicitar cotización</a>
-	</PortadaInterna>
-
-	<Cinta items={producto.lineas.flatMap((l) => l.items)} />
-
-	<section class="seccion">
-		<div class="contenedor">
-			<Detalles>
-				<Fragment slot="a">
-					<p class="etiqueta linea-etiqueta">Detalles</p>
-					<p class="t-title mt-8">{producto.resumen}</p>
-					<p class="t-cuerpo mt-5">{producto.descripcion}</p>
-					<p class="t-cuerpo mt-5">
-						Si necesita una marca, norma o especificación en particular, indíquela en su solicitud y la incluimos en la
-						propuesta.
-					</p>
-				</Fragment>
-				<Fragment slot="b">
-					<p class="etiqueta linea-etiqueta">Cómo lo suministramos</p>
-					<ListaFlecha class="mt-8" items={suministro.map((texto) => ({ texto }))} verificacion />
-				</Fragment>
-				<Fragment slot="lateral">
-					<p class="etiqueta linea-etiqueta">Otros productos</p>
-					<nav aria-label="Otros productos">
-						<ListaFlecha
-							class="mt-8"
-							items={productos.map((p) => ({ texto: p.nombre, href: `/productos/${p.slug}`, actual: p.slug === producto.slug }))}
-						/>
-					</nav>
-					<a href={cotizar} class="btn mt-10">Solicitar cotización</a>
-				</Fragment>
-			</Detalles>
-		</div>
-	</section>
-
-	<section class="seccion bg-niebla">
-		<div class="contenedor">
-			<Intro etiqueta="Líneas" titulo="Lo que suministramos." />
-			<ul class="mt-16 grid gap-px border border-contorno bg-contorno sm:grid-cols-2 lg:grid-cols-3">
-				{
-					producto.lineas.map((l, i) => (
-						<li class="bg-white p-6 pb-[30px]" data-tarjeta style={`--retraso: ${(i % 3) * 150}ms`}>
-							<h3 class="t-title">{l.titulo}</h3>
-							<ListaFlecha class="mt-8" items={l.items.map((texto) => ({ texto }))} verificacion />
-						</li>
-					))
-				}
-			</ul>
-		</div>
-	</section>
-
-	<Banner
-		etiqueta="Cotización"
-		titulo="¿Necesita estos productos?"
-		imagen={fotoBanner}
-		boton={{ texto: 'Solicitar cotización', href: cotizar }}
-	/>
-</BaseLayout>
+<EnConstruccion etiqueta="Productos" titulo={producto.nombre} imagen={producto.foto} />
